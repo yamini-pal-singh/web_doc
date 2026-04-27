@@ -6,7 +6,7 @@
   <title>What is Shunya? — Shunya Labs Docs</title>
   <meta name="description" content="A 2-minute intro to Shunya Labs: Indic-first voice AI, CPU-compatible architecture, and sovereign deployment.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=12">
+  <link rel="stylesheet" href="/assets/css/main.css?v=13">
   <script src="/assets/js/theme.js"></script>
 </head>
 <body>
@@ -51,9 +51,9 @@
   F --> G[Audio out]
   B -.->|translate| H[Vāķ]
   H -.-> F
-  style B fill:#eef2ff,stroke:#6366f1
-  style F fill:#eef2ff,stroke:#6366f1
-  style H fill:#eef2ff,stroke:#6366f1'>graph LR
+  style B fill:#6366f1,stroke:#4338ca,color:#fff,stroke-width:2px
+  style F fill:#6366f1,stroke:#4338ca,color:#fff,stroke-width:2px
+  style H fill:#6366f1,stroke:#4338ca,color:#fff,stroke-width:2px'>graph LR
   A[Audio in] --> B[Zero STT]
   B --> C[Intelligence layer]
   C -->|intent · emotion · summary| D[Your app / CRM]
@@ -62,9 +62,9 @@
   F --> G[Audio out]
   B -.->|translate| H[Vāķ]
   H -.-> F
-  style B fill:#eef2ff,stroke:#6366f1
-  style F fill:#eef2ff,stroke:#6366f1
-  style H fill:#eef2ff,stroke:#6366f1</div>
+  style B fill:#6366f1,stroke:#4338ca,color:#fff,stroke-width:2px
+  style F fill:#6366f1,stroke:#4338ca,color:#fff,stroke-width:2px
+  style H fill:#6366f1,stroke:#4338ca,color:#fff,stroke-width:2px</div>
 
         <h3>What each piece does</h3>
 
@@ -215,8 +215,6 @@
   <script src="/assets/js/shell.js"></script>
   <script src="/assets/js/nav.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-  <script>
-    mermaid.initialize({ startOnLoad: true, theme: document.documentElement.classList.contains('dark') ? 'dark' : 'neutral', securityLevel: 'loose' });
-  </script>
+  <script src="/assets/js/mermaid-init.js?v=1"></script>
 </body>
 </html>

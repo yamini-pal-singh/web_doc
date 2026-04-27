@@ -6,7 +6,7 @@
   <title>Researcher journey — Shunya Labs Docs</title>
   <meta name="description" content="Pull open-weight models from Hugging Face, fine-tune on your own data, and run air-gapped inference.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=12">
+  <link rel="stylesheet" href="/assets/css/main.css?v=13">
   <script src="/assets/js/theme.js"></script>
 </head>
 <body>
@@ -28,7 +28,7 @@
   D -->|Inference| E[transformers / ctranslate2]
   D -->|Fine-tune| F[Your training loop]
   D -->|Deploy| G[Triton / vLLM / custom]
-  style A fill:#eef2ff,stroke:#6366f1</div>
+  style A fill:#6366f1,stroke:#4338ca,color:#fff,stroke-width:2px</div>
 
         <h2>Step 1 — Browse the Hugging Face org</h2>
         <p>All open models live at <a href="https://huggingface.co/shunyalabs" target="_blank" rel="noopener">huggingface.co/shunyalabs</a>. Today's catalogue:</p>
@@ -159,8 +159,6 @@ print(out["text"])  # mixed Devanagari + Latin tokens preserved</code></pre>
   <script src="/assets/js/shell.js"></script>
   <script src="/assets/js/nav.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-  <script>
-    mermaid.initialize({ startOnLoad: true, theme: document.documentElement.classList.contains('dark') ? 'dark' : 'neutral', securityLevel: 'loose' });
-  </script>
+  <script src="/assets/js/mermaid-init.js?v=1"></script>
 </body>
 </html>

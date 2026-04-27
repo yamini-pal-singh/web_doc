@@ -871,14 +871,69 @@ html.dark .persona-label { color: var(--accent-hover); }
   gap: 0.25rem;
 }
 
-/* Mermaid override */
+/* Mermaid override — branded diagram container.
+   Soft gradient backdrop, rounded, subtle shadow, with a thin
+   accent strip across the top so the figure reads as a deliberate
+   element rather than a raw SVG dump. */
 .mermaid {
+  position: relative;
   text-align: center;
-  margin: 1.5rem 0;
-  padding: 1rem;
-  background: var(--bg-subtle);
+  margin: 1.5rem 0 1.75rem;
+  padding: 1.5rem 1rem 1.25rem;
+  background:
+    linear-gradient(180deg, rgba(99, 102, 241, 0.04), transparent 40%),
+    var(--bg-subtle);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
+  overflow-x: auto;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.03),
+    0 4px 14px rgba(99, 102, 241, 0.06);
+}
+html.dark .mermaid {
+  background:
+    linear-gradient(180deg, rgba(129, 140, 248, 0.06), transparent 40%),
+    var(--bg-subtle);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.3),
+    0 4px 14px rgba(129, 140, 248, 0.1);
+}
+.mermaid::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 1.25rem;
+  right: 1.25rem;
+  height: 2px;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899, #f59e0b, #14b8a6);
+  border-radius: 0 0 2px 2px;
+  opacity: 0.7;
+}
+/* Mermaid renders the diagram as an inline SVG inside the .mermaid div.
+   Soften node corners and give labels the body font weight so they
+   match the rest of the page. */
+.mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
+.mermaid .nodeLabel,
+.mermaid .edgeLabel {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+  font-weight: 500 !important;
+}
+.mermaid .node rect,
+.mermaid .node polygon,
+.mermaid .node circle,
+.mermaid .node ellipse {
+  rx: 8;
+  ry: 8;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.06));
+}
+html.dark .mermaid .node rect,
+html.dark .mermaid .node polygon,
+html.dark .mermaid .node circle,
+html.dark .mermaid .node ellipse {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
 }
 
 /* Pagination (prev/next at page bottom) */

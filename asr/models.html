@@ -6,7 +6,7 @@
   <title>ASR models — Shunya Labs Docs</title>
   <meta name="description" content="Zero STT models: zero-indic, zero-universal, zero-med, zero-codeswitch. When to use each.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=12">
+  <link rel="stylesheet" href="/assets/css/main.css?v=13">
   <script src="/assets/js/theme.js"></script>
 </head>
 <body>
@@ -131,10 +131,10 @@
   B --> CS[<code>zero-codeswitch</code>]
   C --> IND[<code>zero-indic</code>]
   D --> UNI[<code>zero-universal</code>]
-  style MED fill:#eef2ff,stroke:#6366f1
-  style CS fill:#eef2ff,stroke:#6366f1
-  style IND fill:#eef2ff,stroke:#6366f1
-  style UNI fill:#eef2ff,stroke:#6366f1</div>
+  style MED fill:#6366f1,stroke:#4338ca,color:#fff,stroke-width:2px
+  style CS fill:#6366f1,stroke:#4338ca,color:#fff,stroke-width:2px
+  style IND fill:#6366f1,stroke:#4338ca,color:#fff,stroke-width:2px
+  style UNI fill:#6366f1,stroke:#4338ca,color:#fff,stroke-width:2px</div>
 
         <div class="callout callout-info">
           <div class="callout-title">Not sure which?</div>
@@ -159,8 +159,6 @@
   <script src="/assets/js/shell.js"></script>
   <script src="/assets/js/nav.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-  <script>
-    mermaid.initialize({ startOnLoad: true, theme: document.documentElement.classList.contains('dark') ? 'dark' : 'neutral', securityLevel: 'loose' });
-  </script>
+  <script src="/assets/js/mermaid-init.js?v=1"></script>
 </body>
 </html>

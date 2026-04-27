@@ -6,7 +6,7 @@
   <title>TTS overview — Shunya Labs Docs</title>
   <meta name="description" content="Zero TTS overview: 46 voices, 23 Indic languages, 11 expression styles, voice cloning.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=12">
+  <link rel="stylesheet" href="/assets/css/main.css?v=13">
   <script src="/assets/js/theme.js"></script>
 </head>
 <body>
@@ -28,8 +28,8 @@
   D --> F[Audio chunks<br/>played incrementally]
   G[Voice + Style + Speed] -.-> C
   G -.-> D
-  style C fill:#eef2ff,stroke:#6366f1
-  style D fill:#eef2ff,stroke:#6366f1</div>
+  style C fill:#6366f1,stroke:#4338ca,color:#fff,stroke-width:2px
+  style D fill:#6366f1,stroke:#4338ca,color:#fff,stroke-width:2px</div>
 
         <h2>Batch vs Streaming</h2>
         <p>Two synthesis modes are available. Same model, same voices — different transport and different "when does the first byte of audio leave the server."</p>
@@ -270,8 +270,6 @@ response.stream_to_file("output.mp3")</code></pre>
   <script src="/assets/js/shell.js"></script>
   <script src="/assets/js/nav.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-  <script>
-    mermaid.initialize({ startOnLoad: true, theme: document.documentElement.classList.contains('dark') ? 'dark' : 'neutral', securityLevel: 'loose' });
-  </script>
+  <script src="/assets/js/mermaid-init.js?v=1"></script>
 </body>
 </html>

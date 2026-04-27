@@ -6,7 +6,7 @@
   <title>Enterprise journey — Shunya Labs Docs</title>
   <meta name="description" content="Solution blueprints, compliance, integrations, and deployment guides for decision makers.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=12">
+  <link rel="stylesheet" href="/assets/css/main.css?v=13">
   <script src="/assets/js/theme.js"></script>
 </head>
 <body>
@@ -27,8 +27,8 @@
   C --> D[4. Pilot]
   D --> E[5. Integrate<br/>with CRM/CCaaS]
   E --> F[6. Production]
-  style A fill:#eef2ff,stroke:#6366f1
-  style F fill:#eef2ff,stroke:#6366f1</div>
+  style A fill:#6366f1,stroke:#4338ca,color:#fff,stroke-width:2px
+  style F fill:#6366f1,stroke:#4338ca,color:#fff,stroke-width:2px</div>
 
         <h2>Solution blueprints</h2>
         <p>Pre-designed flows, ready to adapt. Each links to the full implementation guide.</p>
@@ -167,8 +167,6 @@
   <script src="/assets/js/shell.js"></script>
   <script src="/assets/js/nav.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-  <script>
-    mermaid.initialize({ startOnLoad: true, theme: document.documentElement.classList.contains('dark') ? 'dark' : 'neutral', securityLevel: 'loose' });
-  </script>
+  <script src="/assets/js/mermaid-init.js?v=1"></script>
 </body>
 </html>
