@@ -6,7 +6,7 @@
   <title>TTS overview — Shunya Labs Docs</title>
   <meta name="description" content="Zero TTS overview: 46 voices, 23 Indic languages, 11 expression styles, voice cloning.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=3">
+  <link rel="stylesheet" href="/assets/css/main.css?v=4">
   <script src="/assets/js/theme.js"></script>
 </head>
 <body>
@@ -64,10 +64,10 @@
                 <span class="bs-section-label">Properties</span>
                 <dl class="bs-props">
                   <dt>Transport</dt><dd>HTTP POST</dd>
-                  <dt>Endpoint</dt><dd>https://tts.shunyalabs.ai/v1/audio/speech</dd>
-                  <dt>Auth</dt><dd>Bearer &lt;API_KEY&gt;</dd>
-                  <dt>Required</dt><dd>text, model, voice</dd>
-                  <dt>Default format</dt><dd>mp3</dd>
+                  <dt>Endpoint</dt><dd><code>https://tts.shunyalabs.ai/v1/audio/speech</code></dd>
+                  <dt>Auth</dt><dd>Bearer <code>&lt;API_KEY&gt;</code></dd>
+                  <dt>Required</dt><dd><code>text</code>, <code>model</code>, <code>voice</code></dd>
+                  <dt>Default format</dt><dd><code>mp3</code></dd>
                 </dl>
               </div>
 
@@ -113,9 +113,9 @@
                 <span class="bs-section-label">Properties</span>
                 <dl class="bs-props">
                   <dt>Transport</dt><dd>WebSocket</dd>
-                  <dt>Endpoint</dt><dd>wss://tts.shunyalabs.ai/ws/v1/audio/speech<br/>also: /ws/tts, /ws</dd>
-                  <dt>Config</dt><dd>TTSConfig</dd>
-                  <dt>Default format</dt><dd>mp3</dd>
+                  <dt>Endpoint</dt><dd><code>wss://tts.shunyalabs.ai/ws/v1/audio/speech</code><br/><span style="color: var(--text-subtle); font-size: 0.8125rem;">also: <code>/ws/tts</code>, <code>/ws</code></span></dd>
+                  <dt>Config</dt><dd><code>TTSConfig</code></dd>
+                  <dt>Default format</dt><dd><code>mp3</code></dd>
                 </dl>
               </div>
 

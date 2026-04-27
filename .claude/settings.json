@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(curl -s \"http://localhost:8765/assets/css/main.css?v=3\")"
+      "Bash(curl -s \"http://localhost:8765/assets/css/main.css?v=3\")",
+      "Bash(curl -sI \"http://localhost:8765/get-started/what-is-shunya.html\")",
+      "Bash(curl -sI \"http://localhost:8765/asr/overview.html\")",
+      "Bash(curl -sI \"http://localhost:8765/tts/overview.html\")"
     ]
   }
 }

@@ -913,8 +913,8 @@ html.dark .bs-title { color: var(--bs-fg); }
 .bs-subtitle {
   font-size: 0.8125rem;
   color: var(--text-muted);
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
   margin-top: 2px;
+  font-weight: 500;
 }
 .bs-summary {
   margin: 0;
@@ -986,9 +986,19 @@ html.dark .bs-section-label { color: var(--bs-fg-strong); }
 .bs-props dd {
   margin: 0;
   color: var(--text);
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
+  font-weight: 500;
   word-break: break-word;
+  line-height: 1.45;
+}
+.bs-props dd code {
+  background: rgba(0, 0, 0, 0.05);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 0.825rem;
+}
+html.dark .bs-props dd code {
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .bs-flow {
@@ -1040,7 +1050,12 @@ html.dark .bs-step {
   flex-wrap: wrap;
   gap: 0.4rem;
 }
-.bs-events .bs-step { padding: 0.3rem 0.625rem; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.78rem; }
+.bs-events .bs-step {
+  padding: 0.3rem 0.7rem;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
 
 .bs-source {
   font-size: 0.78rem;

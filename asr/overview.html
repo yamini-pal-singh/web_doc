@@ -6,7 +6,7 @@
   <title>ASR overview — Shunya Labs Docs</title>
   <meta name="description" content="Speech-to-text overview: models, endpoints, and when to use each.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=3">
+  <link rel="stylesheet" href="/assets/css/main.css?v=4">
   <script src="/assets/js/theme.js"></script>
 </head>
 <body>
@@ -78,12 +78,12 @@
               <div class="bs-section">
                 <span class="bs-section-label">Properties</span>
                 <dl class="bs-props">
-                  <dt>Endpoint</dt><dd>POST /v1/audio/transcriptions</dd>
-                  <dt>Host</dt><dd>asr.shunyalabs.ai</dd>
-                  <dt>Content type</dt><dd>multipart/form-data</dd>
-                  <dt>Auth</dt><dd>Bearer &lt;API_KEY&gt;</dd>
-                  <dt>Required</dt><dd>file (or url) and model</dd>
-                  <dt>Default response</dt><dd>verbose_json</dd>
+                  <dt>Endpoint</dt><dd>POST <code>/v1/audio/transcriptions</code></dd>
+                  <dt>Host</dt><dd><code>asr.shunyalabs.ai</code></dd>
+                  <dt>Content type</dt><dd><code>multipart/form-data</code></dd>
+                  <dt>Auth</dt><dd>Bearer <code>&lt;API_KEY&gt;</code></dd>
+                  <dt>Required</dt><dd><code>file</code> (or <code>url</code>) and <code>model</code></dd>
+                  <dt>Default response</dt><dd><code>verbose_json</code></dd>
                 </dl>
               </div>
 
@@ -128,11 +128,11 @@
               <div class="bs-section">
                 <span class="bs-section-label">Properties</span>
                 <dl class="bs-props">
-                  <dt>Endpoint</dt><dd>wss://asr.shunyalabs.ai/ws</dd>
+                  <dt>Endpoint</dt><dd><code>wss://asr.shunyalabs.ai/ws</code></dd>
                   <dt>Init message</dt><dd>JSON config (first frame)</dd>
-                  <dt>Sample rate</dt><dd>16000 Hz (default)</dd>
-                  <dt>Chunk size</dt><dd>2.0 s (default)</dd>
-                  <dt>Silence threshold</dt><dd>0.8 s (default)</dd>
+                  <dt>Sample rate</dt><dd><code>16000</code> Hz (default)</dd>
+                  <dt>Chunk size</dt><dd><code>2.0</code> s (default)</dd>
+                  <dt>Silence threshold</dt><dd><code>0.8</code> s (default)</dd>
                 </dl>
               </div>
 
