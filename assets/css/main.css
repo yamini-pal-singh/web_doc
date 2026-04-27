@@ -1182,6 +1182,13 @@ html.dark .bs-step {
 html.dark .screenshot {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
 }
+/* Placeholder applied automatically when the real screenshot is missing.
+   Slightly muted with a dashed border so it's obviously not the real thing. */
+.screenshot.screenshot--placeholder {
+  border: 1.5px dashed var(--border-strong);
+  box-shadow: none;
+  opacity: 0.92;
+}
 .screenshot-caption {
   font-size: 0.8125rem;
   color: var(--text-subtle);
