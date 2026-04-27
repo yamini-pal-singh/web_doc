@@ -6,7 +6,7 @@
   <title>ASR overview — Shunya Labs Docs</title>
   <meta name="description" content="Speech-to-text overview: models, endpoints, and when to use each.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/main.css?v=3">
   <script src="/assets/js/theme.js"></script>
 </head>
 <body>
@@ -50,107 +50,120 @@
         <p>Same models, same intelligence layer — different transports. Pick batch when you have a complete audio file in hand. Pick streaming when audio is arriving live and you want partial transcripts as the speaker is still talking.</p>
 
         <div class="bs-compare">
-          <div class="bs-vs">VS</div>
-
           <!-- BATCH -->
           <div class="bs-card bs-card-batch">
-            <div class="bs-head">
-              <div class="bs-icon" aria-hidden="true">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <div class="bs-card-body">
+              <div class="bs-head">
+                <div class="bs-icon" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                </div>
+                <div>
+                  <div class="bs-title">Batch</div>
+                  <div class="bs-subtitle">HTTP POST · transcribe an audio file</div>
+                </div>
               </div>
-              <div>
-                <div class="bs-title">Batch</div>
-                <div class="bs-subtitle">HTTP POST · transcribe an audio file</div>
+
+              <p class="bs-summary">Accepts <code>multipart/form-data</code>. Required fields: <code>file</code> (or <code>url</code>) and <code>model</code>.</p>
+
+              <div class="bs-section">
+                <span class="bs-section-label">Models available</span>
+                <ul class="bs-best">
+                  <li><code>zero-indic</code> — General Indian languages (Hindi, Tamil, Telugu, Kannada, Marathi, Bengali, etc.)</li>
+                  <li><code>zero-med</code> — Medical/clinical audio — auto-applies medical terminology correction via MedGemma</li>
+                  <li><code>zero-codeswitch</code> — Code-switched speech (Hinglish, Tanglish, etc.) — auto-restores English words to Latin script via Gemini</li>
+                  <li><code>zero-universal</code> — 99-language Whisper model — English, European, Asian, and African languages</li>
+                </ul>
               </div>
-            </div>
 
-            <p style="margin: 0; font-size: 0.95rem; line-height: 1.55;">
-              Accepts <code>multipart/form-data</code>. Required fields: <code>file</code> (or <code>url</code>) and <code>model</code>.
-            </p>
+              <div class="bs-section">
+                <span class="bs-section-label">Properties</span>
+                <dl class="bs-props">
+                  <dt>Endpoint</dt><dd>POST /v1/audio/transcriptions</dd>
+                  <dt>Host</dt><dd>asr.shunyalabs.ai</dd>
+                  <dt>Content type</dt><dd>multipart/form-data</dd>
+                  <dt>Auth</dt><dd>Bearer &lt;API_KEY&gt;</dd>
+                  <dt>Required</dt><dd>file (or url) and model</dd>
+                  <dt>Default response</dt><dd>verbose_json</dd>
+                </dl>
+              </div>
 
-            <div class="bs-section-label">Models available</div>
-            <ul class="bs-best">
-              <li><code>zero-indic</code> — General Indian languages (Hindi, Tamil, Telugu, Kannada, Marathi, Bengali, etc.)</li>
-              <li><code>zero-med</code> — Medical/clinical audio — auto-applies medical terminology correction via MedGemma</li>
-              <li><code>zero-codeswitch</code> — Code-switched speech (Hinglish, Tanglish, etc.) — auto-restores English words to Latin script via Gemini</li>
-              <li><code>zero-universal</code> — 99-language Whisper model — English, European, Asian, and African languages</li>
-            </ul>
-
-            <div class="bs-section-label">Properties</div>
-            <dl class="bs-props">
-              <dt>Endpoint</dt><dd>POST https://asr.shunyalabs.ai/v1/audio/transcriptions</dd>
-              <dt>Content type</dt><dd>multipart/form-data</dd>
-              <dt>Auth</dt><dd>Authorization: Bearer &lt;API_KEY&gt;</dd>
-              <dt>Required fields</dt><dd>file (or url) and model</dd>
-              <dt>Default response</dt><dd>verbose_json (full segments, speakers, NLP, timing)</dd>
-            </dl>
-
-            <div class="bs-section-label">Flow</div>
-            <div class="bs-flow">
-              <span class="bs-step"><span class="bs-step-num">1</span>Upload file or url</span>
-              <span class="bs-arrow">→</span>
-              <span class="bs-step"><span class="bs-step-num">2</span>Server transcribes</span>
-              <span class="bs-arrow">→</span>
-              <span class="bs-step"><span class="bs-step-num">3</span>Single JSON response</span>
+              <div class="bs-section">
+                <span class="bs-section-label">Flow</span>
+                <div class="bs-flow">
+                  <span class="bs-step"><span class="bs-step-num">1</span>Upload file or url</span>
+                  <span class="bs-arrow">→</span>
+                  <span class="bs-step"><span class="bs-step-num">2</span>Server transcribes</span>
+                  <span class="bs-arrow">→</span>
+                  <span class="bs-step"><span class="bs-step-num">3</span>Single JSON response</span>
+                </div>
+              </div>
             </div>
           </div>
 
           <!-- STREAMING -->
           <div class="bs-card bs-card-stream">
-            <div class="bs-head">
-              <div class="bs-icon" aria-hidden="true">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <div class="bs-card-body">
+              <div class="bs-head">
+                <div class="bs-icon" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                </div>
+                <div>
+                  <div class="bs-title">Streaming</div>
+                  <div class="bs-subtitle">WebSocket · real-time partials + finals</div>
+                </div>
               </div>
-              <div>
-                <div class="bs-title">Streaming</div>
-                <div class="bs-subtitle">WebSocket · real-time partials + finals</div>
+
+              <p class="bs-summary">Real-time streaming transcription over WebSocket. Supports binary mode (raw PCM/ulaw/alaw bytes) and JSON mode (base64-encoded audio frames).</p>
+
+              <div class="bs-section">
+                <span class="bs-section-label">Audio formats (dtype)</span>
+                <ul class="bs-best">
+                  <li><code>ulaw</code> — G.711 mu-law (8-bit) · Telephony (8 kHz)</li>
+                  <li><code>alaw</code> — G.711 A-law (8-bit) · Telephony (8 kHz)</li>
+                  <li><code>int16</code> — 16-bit signed PCM · General recording</li>
+                  <li><code>float32</code> — 32-bit IEEE float · Pre-processed audio</li>
+                </ul>
               </div>
-            </div>
 
-            <p style="margin: 0; font-size: 0.95rem; line-height: 1.55;">
-              Real-time streaming transcription over WebSocket. Supports binary mode (raw PCM/ulaw/alaw bytes) and JSON mode (base64-encoded audio frames).
-            </p>
+              <div class="bs-section">
+                <span class="bs-section-label">Properties</span>
+                <dl class="bs-props">
+                  <dt>Endpoint</dt><dd>wss://asr.shunyalabs.ai/ws</dd>
+                  <dt>Init message</dt><dd>JSON config (first frame)</dd>
+                  <dt>Sample rate</dt><dd>16000 Hz (default)</dd>
+                  <dt>Chunk size</dt><dd>2.0 s (default)</dd>
+                  <dt>Silence threshold</dt><dd>0.8 s (default)</dd>
+                </dl>
+              </div>
 
-            <div class="bs-section-label">Audio formats (dtype)</div>
-            <ul class="bs-best">
-              <li><code>ulaw</code> — G.711 mu-law (8-bit) · Telephony (8 kHz)</li>
-              <li><code>alaw</code> — G.711 A-law (8-bit) · Telephony (8 kHz)</li>
-              <li><code>int16</code> — 16-bit signed PCM · General recording</li>
-              <li><code>float32</code> — 32-bit IEEE float · Pre-processed audio</li>
-            </ul>
+              <div class="bs-section">
+                <span class="bs-section-label">Connection flow</span>
+                <div class="bs-flow">
+                  <span class="bs-step"><span class="bs-step-num">1</span>Connect to /ws</span>
+                  <span class="bs-arrow">→</span>
+                  <span class="bs-step"><span class="bs-step-num">2</span>Send JSON init</span>
+                  <span class="bs-arrow">→</span>
+                  <span class="bs-step"><span class="bs-step-num">3</span>Stream audio frames</span>
+                  <span class="bs-arrow">→</span>
+                  <span class="bs-step"><span class="bs-step-num">4</span>Send "END"</span>
+                  <span class="bs-arrow">→</span>
+                  <span class="bs-step"><span class="bs-step-num">5</span>Receive events until done</span>
+                </div>
+              </div>
 
-            <div class="bs-section-label">Properties</div>
-            <dl class="bs-props">
-              <dt>Endpoint</dt><dd>wss://asr.shunyalabs.ai/ws</dd>
-              <dt>Init message</dt><dd>JSON config as the first frame</dd>
-              <dt>Default sample rate</dt><dd>16000 Hz</dd>
-              <dt>Default chunk size</dt><dd>2.0 s</dd>
-              <dt>Silence threshold</dt><dd>0.8 s</dd>
-            </dl>
-
-            <div class="bs-section-label">Connection flow</div>
-            <div class="bs-flow">
-              <span class="bs-step"><span class="bs-step-num">1</span>Connect to /ws</span>
-              <span class="bs-arrow">→</span>
-              <span class="bs-step"><span class="bs-step-num">2</span>Send JSON init</span>
-              <span class="bs-arrow">→</span>
-              <span class="bs-step"><span class="bs-step-num">3</span>Stream audio frames</span>
-              <span class="bs-arrow">→</span>
-              <span class="bs-step"><span class="bs-step-num">4</span>Send "END"</span>
-              <span class="bs-arrow">→</span>
-              <span class="bs-step"><span class="bs-step-num">5</span>Receive events until done</span>
-            </div>
-
-            <div class="bs-section-label">Server → client events</div>
-            <div class="bs-flow">
-              <span class="bs-step">ready</span>
-              <span class="bs-step">speech_start</span>
-              <span class="bs-step">partial</span>
-              <span class="bs-step">speech_end</span>
-              <span class="bs-step">final_segment</span>
-              <span class="bs-step">end_of_transcript</span>
-              <span class="bs-step">done</span>
-              <span class="bs-step">error</span>
+              <div class="bs-section">
+                <span class="bs-section-label">Server → client events</span>
+                <div class="bs-events">
+                  <span class="bs-step">ready</span>
+                  <span class="bs-step">speech_start</span>
+                  <span class="bs-step">partial</span>
+                  <span class="bs-step">speech_end</span>
+                  <span class="bs-step">final_segment</span>
+                  <span class="bs-step">end_of_transcript</span>
+                  <span class="bs-step">done</span>
+                  <span class="bs-step">error</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>

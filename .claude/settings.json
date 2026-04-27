@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s \"http://localhost:8765/assets/css/main.css?v=3\")"
+    ]
+  }
+}

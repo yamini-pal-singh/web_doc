@@ -6,7 +6,7 @@
   <title>TTS overview — Shunya Labs Docs</title>
   <meta name="description" content="Zero TTS overview: 46 voices, 23 Indic languages, 11 expression styles, voice cloning.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/main.css?v=3">
   <script src="/assets/js/theme.js"></script>
 </head>
 <body>
@@ -35,90 +35,100 @@
         <p>Two synthesis modes are available. Same model, same voices — different transport and different "when does the first byte of audio leave the server."</p>
 
         <div class="bs-compare">
-          <div class="bs-vs">VS</div>
-
           <!-- BATCH -->
           <div class="bs-card bs-card-batch">
-            <div class="bs-head">
-              <div class="bs-icon" aria-hidden="true">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <div class="bs-card-body">
+              <div class="bs-head">
+                <div class="bs-icon" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                </div>
+                <div>
+                  <div class="bs-title">Batch</div>
+                  <div class="bs-subtitle">HTTP POST · returns a complete file</div>
+                </div>
               </div>
-              <div>
-                <div class="bs-title">Batch</div>
-                <div class="bs-subtitle">HTTP POST · returns a complete file</div>
+
+              <p class="bs-summary">Send text via HTTP POST and receive a complete audio file in a single response.</p>
+
+              <div class="bs-section">
+                <span class="bs-section-label">Best for</span>
+                <ul class="bs-best">
+                  <li>Pre-rendered voice prompts for IVR and telephony systems.</li>
+                  <li>Notification audio — order updates, alerts, reminders.</li>
+                  <li>Podcast, audiobook, and long-form content generation.</li>
+                  <li>Any use case where audio does not need to start playing before synthesis is complete.</li>
+                </ul>
               </div>
-            </div>
 
-            <p style="margin: 0; font-size: 0.95rem; line-height: 1.55;">
-              Send text via HTTP POST and receive a complete audio file in a single response.
-            </p>
+              <div class="bs-section">
+                <span class="bs-section-label">Properties</span>
+                <dl class="bs-props">
+                  <dt>Transport</dt><dd>HTTP POST</dd>
+                  <dt>Endpoint</dt><dd>https://tts.shunyalabs.ai/v1/audio/speech</dd>
+                  <dt>Auth</dt><dd>Bearer &lt;API_KEY&gt;</dd>
+                  <dt>Required</dt><dd>text, model, voice</dd>
+                  <dt>Default format</dt><dd>mp3</dd>
+                </dl>
+              </div>
 
-            <div class="bs-section-label">Best for</div>
-            <ul class="bs-best">
-              <li>Pre-rendered voice prompts for IVR and telephony systems.</li>
-              <li>Notification audio — order updates, alerts, reminders.</li>
-              <li>Podcast, audiobook, and long-form content generation.</li>
-              <li>Any use case where audio does not need to start playing before synthesis is complete.</li>
-            </ul>
-
-            <div class="bs-section-label">Properties</div>
-            <dl class="bs-props">
-              <dt>Transport</dt><dd>HTTP POST</dd>
-              <dt>Endpoint</dt><dd>https://tts.shunyalabs.ai/v1/audio/speech</dd>
-              <dt>Auth</dt><dd>Authorization: Bearer &lt;API_KEY&gt;</dd>
-              <dt>Required fields</dt><dd>text, model, voice</dd>
-              <dt>Default format</dt><dd>mp3</dd>
-            </dl>
-
-            <div class="bs-section-label">Flow</div>
-            <div class="bs-flow">
-              <span class="bs-step"><span class="bs-step-num">1</span>POST text</span>
-              <span class="bs-arrow">→</span>
-              <span class="bs-step"><span class="bs-step-num">2</span>Server synthesizes</span>
-              <span class="bs-arrow">→</span>
-              <span class="bs-step"><span class="bs-step-num">3</span>Receive audio</span>
+              <div class="bs-section">
+                <span class="bs-section-label">Flow</span>
+                <div class="bs-flow">
+                  <span class="bs-step"><span class="bs-step-num">1</span>POST text</span>
+                  <span class="bs-arrow">→</span>
+                  <span class="bs-step"><span class="bs-step-num">2</span>Server synthesizes</span>
+                  <span class="bs-arrow">→</span>
+                  <span class="bs-step"><span class="bs-step-num">3</span>Receive audio</span>
+                </div>
+              </div>
             </div>
           </div>
 
           <!-- STREAMING -->
           <div class="bs-card bs-card-stream">
-            <div class="bs-head">
-              <div class="bs-icon" aria-hidden="true">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <div class="bs-card-body">
+              <div class="bs-head">
+                <div class="bs-icon" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                </div>
+                <div>
+                  <div class="bs-title">Streaming</div>
+                  <div class="bs-subtitle">WebSocket · chunks arrive in real time</div>
+                </div>
               </div>
-              <div>
-                <div class="bs-title">Streaming</div>
-                <div class="bs-subtitle">WebSocket · chunks arrive in real time</div>
+
+              <p class="bs-summary">Open a persistent WebSocket connection and receive audio chunks in real time as synthesis happens.</p>
+
+              <div class="bs-section">
+                <span class="bs-section-label">Best for</span>
+                <ul class="bs-best">
+                  <li>Voice agents and conversational AI requiring sub-second audio start.</li>
+                  <li>IVR and telephony pipelines.</li>
+                  <li>Real-time audio playback in applications.</li>
+                  <li>Any use case where audio must begin playing before synthesis of the full text is complete.</li>
+                </ul>
               </div>
-            </div>
 
-            <p style="margin: 0; font-size: 0.95rem; line-height: 1.55;">
-              Open a persistent WebSocket connection and receive audio chunks in real time as synthesis happens.
-            </p>
+              <div class="bs-section">
+                <span class="bs-section-label">Properties</span>
+                <dl class="bs-props">
+                  <dt>Transport</dt><dd>WebSocket</dd>
+                  <dt>Endpoint</dt><dd>wss://tts.shunyalabs.ai/ws/v1/audio/speech<br/>also: /ws/tts, /ws</dd>
+                  <dt>Config</dt><dd>TTSConfig</dd>
+                  <dt>Default format</dt><dd>mp3</dd>
+                </dl>
+              </div>
 
-            <div class="bs-section-label">Best for</div>
-            <ul class="bs-best">
-              <li>Voice agents and conversational AI requiring sub-second audio start.</li>
-              <li>IVR and telephony pipelines.</li>
-              <li>Real-time audio playback in applications.</li>
-              <li>Any use case where audio must begin playing before synthesis of the full text is complete.</li>
-            </ul>
-
-            <div class="bs-section-label">Properties</div>
-            <dl class="bs-props">
-              <dt>Transport</dt><dd>WebSocket</dd>
-              <dt>Endpoint</dt><dd>wss://tts.shunyalabs.ai/ws/v1/audio/speech<br/><span style="color: var(--text-subtle);">also: /ws/tts, /ws</span></dd>
-              <dt>Config object</dt><dd>TTSConfig</dd>
-              <dt>Default format</dt><dd>mp3</dd>
-            </dl>
-
-            <div class="bs-section-label">Lifecycle</div>
-            <div class="bs-flow">
-              <span class="bs-step"><span class="bs-step-num">1</span>Connect</span>
-              <span class="bs-arrow">→</span>
-              <span class="bs-step"><span class="bs-step-num">2</span>Receive chunks</span>
-              <span class="bs-arrow">→</span>
-              <span class="bs-step"><span class="bs-step-num">3</span>Done</span>
+              <div class="bs-section">
+                <span class="bs-section-label">Lifecycle</span>
+                <div class="bs-flow">
+                  <span class="bs-step"><span class="bs-step-num">1</span>Connect</span>
+                  <span class="bs-arrow">→</span>
+                  <span class="bs-step"><span class="bs-step-num">2</span>Receive chunks</span>
+                  <span class="bs-arrow">→</span>
+                  <span class="bs-step"><span class="bs-step-num">3</span>Done</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
