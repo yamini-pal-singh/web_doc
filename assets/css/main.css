@@ -426,15 +426,50 @@ html.dark .toc a.active { color: var(--accent-hover); }
    ============================================================ */
 
 .card {
+  position: relative;
   background: var(--bg-elevated);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 1.25rem;
-  transition: border-color 150ms ease, transform 150ms ease, box-shadow 150ms ease;
+  transition: border-color 220ms ease, transform 220ms ease, box-shadow 220ms ease;
+}
+/* Colourful gradient border on hover — visible on all .card elements site-wide.
+   Uses a pseudo-element rather than the real border so the gradient renders
+   crisply at any radius and doesn't shift the card's layout. */
+.card::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: linear-gradient(135deg, #6366f1 0%, #ec4899 35%, #f59e0b 70%, #14b8a6 100%);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 220ms ease;
+  pointer-events: none;
 }
 .card:hover {
-  border-color: var(--border-strong);
-  box-shadow: var(--shadow);
+  transform: translateY(-2px);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.04),
+    0 8px 24px rgba(99, 102, 241, 0.12),
+    0 16px 48px rgba(236, 72, 153, 0.06);
+  border-color: transparent;
+}
+.card:hover::after { opacity: 1; }
+html.dark .card:hover {
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.4),
+    0 8px 24px rgba(129, 140, 248, 0.20),
+    0 16px 48px rgba(236, 72, 153, 0.10);
+}
+@media (prefers-reduced-motion: reduce) {
+  .card, .card::after { transition: none; }
+  .card:hover { transform: none; }
 }
 .card-title {
   font-weight: 600;
@@ -456,7 +491,6 @@ html.dark .toc a.active { color: var(--accent-hover); }
   color: inherit;
 }
 .card-link:hover { color: inherit; }
-.card-link:hover .card { transform: translateY(-2px); border-color: var(--accent); }
 
 .grid {
   display: grid;
@@ -711,20 +745,51 @@ html.dark .feat-icon { background: rgba(129, 140, 248, 0.12); color: var(--accen
 
 /* Persona cards */
 .persona-card {
+  position: relative;
   padding: 1.5rem;
   border-radius: var(--radius-lg);
   border: 1px solid var(--border);
   background: var(--bg-elevated);
-  transition: all 150ms ease;
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
   display: block;
   color: inherit;
   text-decoration: none;
 }
+.persona-card::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: linear-gradient(135deg, #6366f1 0%, #ec4899 35%, #f59e0b 70%, #14b8a6 100%);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 220ms ease;
+  pointer-events: none;
+}
 .persona-card:hover {
   transform: translateY(-3px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--accent);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.05),
+    0 12px 28px rgba(99, 102, 241, 0.16),
+    0 20px 48px rgba(236, 72, 153, 0.08);
+  border-color: transparent;
   color: inherit;
+}
+.persona-card:hover::after { opacity: 1; }
+html.dark .persona-card:hover {
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.4),
+    0 12px 28px rgba(129, 140, 248, 0.24),
+    0 20px 48px rgba(236, 72, 153, 0.12);
+}
+@media (prefers-reduced-motion: reduce) {
+  .persona-card, .persona-card::after { transition: none; }
+  .persona-card:hover { transform: none; }
 }
 .persona-label {
   font-size: 0.75rem;

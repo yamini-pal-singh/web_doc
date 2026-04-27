@@ -15,9 +15,9 @@
       heading: 'Pick your journey',
       items: [
         { href: '/personas/developer.html', label: 'Developer', icon: 'code' },
-        { href: '/personas/researcher.html', label: 'Researcher (Hugging Face)', icon: 'flask' },
-        { href: '/personas/enterprise.html', label: 'Enterprise / Decision Maker', icon: 'building' },
-        { href: '/personas/operator.html', label: 'End-user / Operator', icon: 'user' },
+        { href: '/personas/researcher.html', label: 'Hugging Face', icon: 'flask' },
+        { href: '/personas/enterprise.html', label: 'Enterprise', icon: 'building' },
+        { href: '/personas/operator.html', label: 'Non-technical user', icon: 'user' },
       ]
     },
     {
