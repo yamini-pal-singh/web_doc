@@ -6,7 +6,7 @@
   <title>Operator journey — Shunya Labs Docs</title>
   <meta name="description" content="Upload audio, transcribe, edit, and export — no code required.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=5">
+  <link rel="stylesheet" href="/assets/css/main.css?v=6">
   <script src="/assets/js/theme.js"></script>
 </head>
 <body>
@@ -54,45 +54,110 @@
           </div>
         </div>
 
-        <h2>Dashboard walkthrough <span class="pill pill-illustrative">Illustrative</span></h2>
-        <div class="callout callout-illustrative">
-          <div class="callout-title">Illustrative — the live dashboard may differ</div>
-          The walkthrough below describes a <strong>plausible flow</strong> for a transcription dashboard. Shunya's actual playground at <a href="https://playground.shunyalabs.ai" target="_blank" rel="noopener">playground.shunyalabs.ai</a> is sign-in-only, so we've documented the most likely affordances based on the API's capabilities. Your real navigation labels, file-size limits, and export options may differ — confirm with the live product before training internal users on this guide.
-        </div>
+        <h2>API Playground walkthrough</h2>
+        <p>The Shunya Labs <strong>API Playground</strong> is the no-code interface for the whole stack. Despite the name, you don't need to write any code — upload audio, configure parameters, and get results instantly.</p>
 
-        <h3>1. Upload audio</h3>
-        <p>From <strong>Transcriptions → New</strong>, drag a file into the drop zone (or click to browse). Supported formats: MP3, WAV, M4A, OGG, FLAC, WebM. Maximum file size: 500 MB.</p>
-        <div class="callout callout-info">
-          <div class="callout-title">Tip for best accuracy</div>
-          Clear audio beats clever settings. 16 kHz or higher, single channel per speaker, minimal background noise. If your audio is noisy, toggle <strong>Enhance → Denoise</strong> before transcribing.
-        </div>
+        <figure>
+          <img class="screenshot" src="/assets/img/playground/01-empty-state.png" alt="The Shunya Labs API Playground homepage with three workflow tabs (Speech to Text, Text to Speech, Voice Agent), Configuration card, Upload Your Audio card, and Features panel.">
+          <figcaption class="screenshot-caption">The Playground home — three workflows across the top, configuration and upload below.</figcaption>
+        </figure>
 
-        <h3>2. Choose model & language</h3>
-        <ul>
-          <li><strong>Language:</strong> set to "Auto" unless you know the clip is a single language — locking the language improves accuracy on short clips.</li>
-          <li><strong>Model:</strong>
+        <div class="wt-step">
+          <div class="wt-step-num">1</div>
+          <div class="wt-step-body">
+            <div class="wt-step-title">Pick a workflow</div>
+            <p>Three pill-shaped tabs at the top of the page. Pick the one that matches what you're trying to do:</p>
             <ul>
-              <li><em>Indic</em> — for Hindi, Tamil, Telugu, Bengali, and other Indian languages.</li>
-              <li><em>Universal</em> — for English or non-Indian languages.</li>
-              <li><em>Code-switch</em> — when speakers mix languages (Hinglish, Tanglish).</li>
-              <li><em>Medical</em> — for clinical recordings with drug names, procedures, diagnoses.</li>
+              <li><strong>Speech to Text</strong> — transcribe an audio file (this walkthrough covers this flow).</li>
+              <li><strong>Text to Speech</strong> — generate a voiceover from typed text.</li>
+              <li><strong>Voice Agent</strong> — try out a real-time conversational agent.</li>
             </ul>
-          </li>
-          <li><strong>Diarization:</strong> toggle on if you have more than one speaker.</li>
-        </ul>
+          </div>
+        </div>
 
-        <h3>3. Review & edit</h3>
-        <p>Once the job finishes, you'll see a split view: waveform at the top, transcript below. Clicking any word jumps the player to that timestamp. Double-click to edit. Hover a speaker label to rename (if you've registered voices, they appear automatically as "Priya", "Rahul", etc.).</p>
+        <div class="wt-step">
+          <div class="wt-step-num">2</div>
+          <div class="wt-step-body">
+            <div class="wt-step-title">Configure your job</div>
+            <p>The <strong>Configuration</strong> card has three fields. Your remaining credit balance is shown in the top-right of this card.</p>
+            <ul>
+              <li><strong>Transcription Mode</strong> — defaults to <em>Prerecorded</em> for files you upload.</li>
+              <li><strong>Model</strong> — pick from <em>Zero Indic</em>, <em>Zero Med</em>, or <em>Zero Codeswitch</em>. Use Codeswitch when speakers mix English with Hindi or other Indian languages (Hinglish, Tanglish), Med for clinical recordings with drug and procedure names, and Indic for general Indian-language audio.</li>
+              <li><strong>Language</strong> — leave on <em>Auto Detect</em> if you're not sure, or pick from the searchable list. The list is grouped (<em>Most Used</em>, <em>African</em>, etc.) so common languages are at the top.</li>
+            </ul>
+            <div class="screenshot-grid">
+              <figure>
+                <img class="screenshot" src="/assets/img/playground/02-model-dropdown.png" alt="Model dropdown open showing the three options: Zero Indic, Zero Med, Zero Codeswitch.">
+                <figcaption class="screenshot-caption">Model selector: Indic · Med · Codeswitch.</figcaption>
+              </figure>
+              <figure>
+                <img class="screenshot" src="/assets/img/playground/03-language-dropdown.png" alt="Language picker open with a search bar at top and grouped options including Most Used (Auto Detect, English, Hindi) and African.">
+                <figcaption class="screenshot-caption">Language picker with search and grouped options.</figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
 
-        <h3>4. Export</h3>
-        <p>From the <strong>Export</strong> button, pick:</p>
-        <ul>
-          <li><strong>PDF</strong> — formatted transcript with timestamps and speaker labels</li>
-          <li><strong>DOCX</strong> — Microsoft Word format for further editing</li>
-          <li><strong>SRT / VTT</strong> — for video subtitles</li>
-          <li><strong>TXT</strong> — plain text</li>
-          <li><strong>JSON</strong> — machine-readable output with timestamps</li>
-        </ul>
+        <div class="wt-step">
+          <div class="wt-step-num">3</div>
+          <div class="wt-step-body">
+            <div class="wt-step-title">Upload your audio</div>
+            <p>Click <strong>Choose Audio File</strong> in the <em>Upload Your Audio</em> card. Supported formats include MP3, WAV, FLAC, M4A, and more.</p>
+            <p>Once the file uploads, you'll see a green <strong>Uploaded</strong> badge with a progress bar, the filename, and the file size. The "Choose Audio File" button now shows the filename in place of its original label, and a <strong>Replace File</strong> link lets you swap it without starting over.</p>
+            <figure>
+              <img class="screenshot" src="/assets/img/playground/04-uploaded.png" alt="Upload card after a file uploads — green checkmark with Uploaded label, gradient progress bar, filename and 3.9 MB size, and a Replace File link.">
+              <figcaption class="screenshot-caption">After upload — clear confirmation plus a Replace File link.</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <div class="wt-step">
+          <div class="wt-step-num">4</div>
+          <div class="wt-step-body">
+            <div class="wt-step-title">Pick features (optional)</div>
+            <p>The <strong>Features</strong> tab below the upload card lists everything you can layer on top of the basic transcript. The <strong>Code Sample</strong> tab next to it shows the equivalent API call for whatever you've selected — handy if a developer later wants to wire this up.</p>
+            <p>Features are split into two groups:</p>
+            <ul>
+              <li><strong>Audio Intelligence</strong> — Translation · Transliteration · Speaker Diarization · Speaker Identification · Word Timestamps.</li>
+              <li><strong>Intelligence Features</strong> — Profanity Hashing · Custom Keyword Hashing · Intent Detection · Sentiment Analysis · Emotion Diarization · Summarisation · Keyword Normalisation.</li>
+            </ul>
+            <p>Each option has an <em>info</em> icon — hover it for a one-line description of what that feature does to your transcript.</p>
+          </div>
+        </div>
+
+        <div class="wt-step">
+          <div class="wt-step-num">5</div>
+          <div class="wt-step-body">
+            <div class="wt-step-title">Run analysis</div>
+            <p>Click <strong>Run Analysis</strong> in the bottom-right of the result card. The button switches to a <em>Running…</em> state with a spinner, and the result area shows a <em>Transcribing your file…</em> indicator until processing finishes.</p>
+            <figure>
+              <img class="screenshot" src="/assets/img/playground/05-running.png" alt="Result card while a job runs — Running button at top right and a centred spinner with the message 'Transcribing your file…'.">
+              <figcaption class="screenshot-caption">While the model is working — Run Analysis becomes Running…</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <div class="wt-step">
+          <div class="wt-step-num">6</div>
+          <div class="wt-step-body">
+            <div class="wt-step-title">Read your results</div>
+            <p>When the job completes, the result card shows:</p>
+            <ul>
+              <li>A <strong>play / scrub bar</strong> across the top — clicking jumps to a position in the audio.</li>
+              <li>A <strong>Detected Language</strong> pill (e.g. <em>Detected Language: Hindi</em>).</li>
+              <li>The full <strong>transcript</strong> below, including any features you turned on (timestamps, speaker labels, summary, sentiment, etc.).</li>
+            </ul>
+            <p>Two tabs let you switch the view:</p>
+            <ul>
+              <li><strong>Transcript</strong> — human-readable, ready to copy.</li>
+              <li><strong>JSON</strong> — the raw response, exactly as the API would return it.</li>
+            </ul>
+            <figure>
+              <img class="screenshot" src="/assets/img/playground/06-transcript.png" alt="Result card with the audio scrub bar across the top, a Detected Language: Hindi pill below it, and the full Hinglish transcript shown in the panel.">
+              <figcaption class="screenshot-caption">Final view — audio player, detected language, and the transcript.</figcaption>
+            </figure>
+          </div>
+        </div>
 
         <h2>Vāķ — live 2-way translation <span class="pill pill-illustrative">Illustrative</span></h2>
         <p>For meetings or conversations across languages:</p>
