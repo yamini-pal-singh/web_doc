@@ -302,36 +302,89 @@ tbody tr:hover { background: var(--bg-subtle); }
 .sidebar-section {
   padding: 0.25rem 1rem;
 }
-.sidebar-section + .sidebar-section { margin-top: 0.5rem; }
-.sidebar-heading {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-subtle);
-  padding: 0.75rem 0.5rem 0.375rem;
+.sidebar-section + .sidebar-section {
+  margin-top: 0.625rem;
+  padding-top: 0.625rem;
+  border-top: 1px solid var(--border);
 }
-.sidebar-link {
+
+/* Section headings — brighter colour, bolder, with a gradient accent bar.
+   Clearly outranks the links below them. */
+.sidebar-heading {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.375rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--text);
+  padding: 0.625rem 0.5rem 0.5rem;
+}
+.sidebar-heading::before {
+  content: "";
+  width: 3px;
+  height: 14px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #6366f1 0%, #8b5cf6 60%, #ec4899 100%);
+  flex-shrink: 0;
+}
+html.dark .sidebar-heading {
+  color: #f1f5f9;
+}
+
+/* Links — visible left accent bar that slides in on hover, plus a soft
+   gradient tint and a small padding shift so the cursor target is obvious. */
+.sidebar-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.625rem 0.4rem 0.75rem;
   border-radius: 6px;
   color: var(--text-muted);
   font-size: 0.875rem;
-  transition: background 100ms ease, color 100ms ease;
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    padding-left 160ms ease;
+}
+.sidebar-link::before {
+  content: "";
+  position: absolute;
+  left: -2px;
+  top: 50%;
+  width: 3px;
+  height: 65%;
+  border-radius: 0 3px 3px 0;
+  background: linear-gradient(180deg, #6366f1, #8b5cf6);
+  transform: translateY(-50%) scaleY(0);
+  transform-origin: center;
+  transition: transform 180ms ease;
 }
 .sidebar-link:hover {
-  background: var(--bg-muted);
+  background: linear-gradient(90deg, rgba(99, 102, 241, 0.07) 0%, rgba(139, 92, 246, 0.03) 100%);
   color: var(--text);
+  padding-left: 1rem;
+}
+.sidebar-link:hover::before {
+  transform: translateY(-50%) scaleY(1);
+}
+html.dark .sidebar-link:hover {
+  background: linear-gradient(90deg, rgba(129, 140, 248, 0.12) 0%, rgba(167, 139, 250, 0.06) 100%);
+  color: #f8fafc;
 }
 .sidebar-link.active {
-  background: var(--accent-subtle);
+  background: linear-gradient(90deg, rgba(99, 102, 241, 0.12) 0%, rgba(139, 92, 246, 0.05) 100%);
   color: var(--accent-text);
-  font-weight: 500;
+  font-weight: 600;
+  padding-left: 1rem;
+}
+.sidebar-link.active::before {
+  transform: translateY(-50%) scaleY(1);
 }
 html.dark .sidebar-link.active {
-  background: rgba(129, 140, 248, 0.12);
+  background: linear-gradient(90deg, rgba(129, 140, 248, 0.18) 0%, rgba(167, 139, 250, 0.08) 100%);
   color: var(--accent-hover);
 }
 .sidebar-link .ico {
@@ -339,6 +392,12 @@ html.dark .sidebar-link.active {
   height: 14px;
   opacity: 0.75;
   flex-shrink: 0;
+  transition: opacity 160ms ease, color 160ms ease;
+}
+.sidebar-link:hover .ico,
+.sidebar-link.active .ico { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .sidebar-link, .sidebar-link::before { transition: none; }
 }
 
 /* Main content */
