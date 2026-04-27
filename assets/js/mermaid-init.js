@@ -1,7 +1,14 @@
 /* Shared Mermaid bootstrap.
- * Picks themeVariables that match the rest of the site (Inter font,
- * slate base, indigo/violet accents) and re-renders diagrams when
- * the user toggles light/dark/auto via the header theme switch. */
+ *
+ * Captures each diagram's original source code before Mermaid renders
+ * for the first time, then re-renders using that snapshot whenever the
+ * site theme flips between light and dark.
+ *
+ * Bug we're guarding against: once Mermaid renders, .textContent of the
+ * .mermaid div is the SVG's accumulated text, not the original DSL — if
+ * we fed that back as the source on a re-render, we'd get
+ * "Syntax error in text" from Mermaid. So we capture sources up front
+ * and never read .textContent again. */
 (function () {
   if (typeof window === 'undefined') return;
 
@@ -72,13 +79,11 @@
     noteBorderColor: '#f59e0b',
   };
 
-  function isDark() {
-    return document.documentElement.classList.contains('dark');
-  }
+  const isDark = () => document.documentElement.classList.contains('dark');
 
-  function config() {
+  function makeConfig() {
     return {
-      startOnLoad: true,
+      startOnLoad: false,
       theme: 'base',
       themeVariables: isDark() ? DARK : LIGHT,
       flowchart: { curve: 'basis', padding: 14, htmlLabels: true },
@@ -87,34 +92,63 @@
     };
   }
 
-  function init() {
-    if (typeof mermaid === 'undefined') return false;
-    mermaid.initialize(config());
-    return true;
-  }
-
-  // Initial render — guard for the case where mermaid loads after this script.
-  if (!init()) {
-    const ready = setInterval(() => { if (init()) clearInterval(ready); }, 50);
-  }
-
-  // Re-render every diagram when the theme class on <html> changes,
-  // so light → dark (or back) doesn't leave stale colours on the page.
-  let rerendering = false;
-  const observer = new MutationObserver(async () => {
-    if (typeof mermaid === 'undefined' || rerendering) return;
-    rerendering = true;
-    mermaid.initialize(config());
+  /* Snapshot every .mermaid block's source code into a dataset attr.
+     MUST run before mermaid renders for the first time. */
+  function captureSources() {
     document.querySelectorAll('.mermaid').forEach((el) => {
-      // Save the original source the first time we see this node
-      if (!el.dataset.mermaidSource) {
-        el.dataset.mermaidSource = el.getAttribute('data-src') || el.textContent.trim();
-      }
-      el.removeAttribute('data-processed');
-      el.innerHTML = el.dataset.mermaidSource;
+      if (el.dataset.mermaidSource) return; // already captured
+      const src = (el.getAttribute('data-src') || el.textContent || '').trim();
+      el.dataset.mermaidSource = src;
     });
-    try { await mermaid.run({ querySelector: '.mermaid' }); } catch (e) {}
-    rerendering = false;
+  }
+
+  async function renderAll() {
+    if (typeof mermaid === 'undefined') return;
+    document.querySelectorAll('.mermaid').forEach((el) => {
+      el.removeAttribute('data-processed');
+      // restore the captured source so mermaid sees the original DSL
+      el.innerHTML = el.dataset.mermaidSource || '';
+    });
+    try {
+      await mermaid.run({ querySelector: '.mermaid' });
+    } catch (err) {
+      // Surface in the console so debugging is possible without breaking the page
+      console.warn('Mermaid render failed:', err);
+    }
+  }
+
+  function boot() {
+    if (typeof mermaid === 'undefined') {
+      // mermaid library hasn't loaded yet — try again shortly
+      setTimeout(boot, 50);
+      return;
+    }
+    captureSources();
+    mermaid.initialize(makeConfig());
+    renderAll();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot, { once: true });
+  } else {
+    boot();
+  }
+
+  /* Watch <html> class for theme flips. Re-render every diagram with
+     the new themeVariables. We debounce via rAF so a rapid sequence
+     of class mutations only triggers one re-render pass. */
+  let pending = false;
+  const observer = new MutationObserver(() => {
+    if (pending || typeof mermaid === 'undefined') return;
+    pending = true;
+    requestAnimationFrame(async () => {
+      mermaid.initialize(makeConfig());
+      await renderAll();
+      pending = false;
+    });
   });
-  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['class'],
+  });
 })();
