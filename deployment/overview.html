@@ -6,7 +6,7 @@
   <title>Deployment — Shunya Labs Docs</title>
   <meta name="description" content="Cloud API, on-prem / VPC, air-gapped CPU — same API surface, different deployment shapes.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=10">
+  <link rel="stylesheet" href="/assets/css/main.css?v=11">
   <script src="/assets/js/theme.js"></script>
 </head>
 <body>
@@ -68,7 +68,7 @@ TTS streaming: wss://tts.shunyalabs.ai/ws/v1/audio/speech</code></pre>
         </ul>
 
         <h3>Sizing</h3>
-        <p>Hardware requirements depend on concurrency, codec, audio length, NLP add-ons, and Triton configuration. Shunya doesn't publish a sizing matrix — engage <a href="mailto:0@shunyalabs.ai">0@shunyalabs.ai</a> for a sizing exercise before specifying hardware.</p>
+        <p>Hardware requirements depend on concurrency, codec, audio length, NLP add-ons, and Triton configuration. Shunya doesn't publish a sizing matrix — <a href="https://www.shunyalabs.ai/contact" target="_blank" rel="noopener">contact Shunya Labs ↗</a> for a sizing exercise before specifying hardware.</p>
 
         <h3>Network topology</h3>
         <div class="mermaid">graph LR
@@ -109,7 +109,7 @@ segments = tx.transcribe("meeting.wav")</code></pre>
 
         <div class="callout callout-info">
           <div class="callout-title">Production serving in an air-gapped zone</div>
-          If you need production-quality serving (multi-tenant, streaming, horizontally scaled) in the secure zone, the on-prem package is easier than rolling your own Triton config. Contact <a href="mailto:0@shunyalabs.ai">0@shunyalabs.ai</a>.
+          If you need production-quality serving (multi-tenant, streaming, horizontally scaled) in the secure zone, the on-prem package is easier than rolling your own Triton config. <a href="https://www.shunyalabs.ai/contact" target="_blank" rel="noopener">Contact Shunya Labs ↗</a>.
         </div>
 
         <h2>License reminder</h2>
