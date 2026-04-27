@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact centres blueprint — Shunya Labs Docs</title>
+  <meta name="description" content="Live transcription, agent assist, automated QA, and real-time analytics for contact centres.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <script src="/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/index.html">Docs</a><span class="sep">/</span><span>Solutions</span><span class="sep">/</span><span>Contact centres</span>
+        </div>
+        <h1>Contact centres — live agent assist + analytics</h1>
+        <p class="lead">Real-time transcription with sub-100 ms latency. Agent-assist suggestions, sentiment tracking, automated QA on every call. Plugs into Genesys, NICE, Five9, Avaya, Twilio via SIPREC or WebRTC.</p>
+
+        <h2>Reference architecture</h2>
+        <div class="mermaid">graph LR
+  A[Caller] --> B[CCaaS / PBX<br/>Genesys · NICE · Five9 · Avaya · Twilio]
+  B --> C[Streaming ASR<br/>zero-indic / zero-codeswitch]
+  C --> D[Live transcript]
+  D --> E[Intent + sentiment]
+  E --> F[Agent desktop<br/>live transcript · suggested replies]
+  D --> G[Post-call<br/>summary · QA score]
+  G --> H[CRM<br/>Salesforce · Zendesk]
+  style C fill:#eef2ff,stroke:#6366f1</div>
+
+        <h2>Common workflows</h2>
+
+        <h3>Live agent assist</h3>
+        <ul>
+          <li>Call audio forks via SIPREC or CCaaS audio-hook into Shunya's streaming ASR.</li>
+          <li>Partial transcripts appear on the agent desktop in near real time.</li>
+          <li>A sidecar service runs intent + sentiment detection on rolling windows; detected topics trigger suggested replies from a knowledge-base RAG.</li>
+          <li>Escalation rules — e.g. angry sentiment sustained &gt; 30 s — notify supervisors.</li>
+        </ul>
+
+        <h3>Automated QA</h3>
+        <ul>
+          <li>Every completed call is batch-transcribed with diarization + sentiment + summary.</li>
+          <li>A QA engine scores against a scorecard: mandatory disclosures, greeting compliance, hold time, hang-up behaviour.</li>
+          <li>Scores feed into the analytics warehouse; outlier calls are sampled for human review.</li>
+        </ul>
+
+        <h3>Multi-lingual routing</h3>
+        <ul>
+          <li>Inbound calls hit a language-detection step. 3–5 seconds of "Hello, how can I help you?" is enough.</li>
+          <li>Calls route to the language-matched agent queue. If queue depth exceeds threshold, fall back to a voice bot that uses Vāķ to translate agent-to-customer in real time.</li>
+        </ul>
+
+        <h2>Recommended stack</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Layer</th><th>Shunya component</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td>Real-time transcription</td><td>Streaming <code>zero-indic</code> or <code>zero-codeswitch</code></td><td>WebSocket · μ-law · 8 kHz · <code>silence_threshold_sec=0.5</code></td></tr>
+              <tr><td>Diarization</td><td>Built-in streaming diarization</td><td>Separates agent from customer for per-side analytics</td></tr>
+              <tr><td>Emotion &amp; sentiment</td><td><code>enable_emotion_diarization</code> + <code>enable_sentiment_analysis</code></td><td>Per-segment emotion, overall sentiment</td></tr>
+              <tr><td>Intent detection</td><td>Custom intent list for your domain</td><td>Product-catalogue-aware: billing, tech_support, upgrade, cancellation, complaint</td></tr>
+              <tr><td>Summarization</td><td><code>enable_summarization</code> batch post-call</td><td>Auto-populates CRM case note</td></tr>
+              <tr><td>TTS for bot-agents</td><td><code>zero-indic</code> · voice cloning</td><td>μ-law 8 kHz for telephony</td></tr>
+              <tr><td>Deployment</td><td>Cloud for pilots; on-prem for scale</td><td>Same containers in your VPC for data residency</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>CCaaS integration patterns</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Platform</th><th>Audio source</th><th>Integration</th></tr></thead>
+            <tbody>
+              <tr><td>Genesys Cloud CX</td><td>AudioHook API</td><td>Genesys pushes audio frames over WSS to your bridge; your bridge forwards to Shunya WSS.</td></tr>
+              <tr><td>NICE CXone</td><td>Real-Time Speech Analytics feed</td><td>NICE forks audio → your bridge → Shunya.</td></tr>
+              <tr><td>Five9</td><td>SIPREC fork</td><td>SIP recording fork to a Kamailio/FreeSWITCH bridge → Shunya.</td></tr>
+              <tr><td>Avaya</td><td>DMCC / SIPREC</td><td>DMCC or SIP fork to bridge → Shunya.</td></tr>
+              <tr><td>Twilio</td><td>Media Streams</td><td>Twilio <code>&lt;Stream&gt;</code> TwiML → your WSS → Shunya.</td></tr>
+              <tr><td>Asterisk / FreeSWITCH</td><td>ChanSpy / mod_sndfile</td><td>Custom mod forwards audio over WSS.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Dashboard metrics we've seen matter</h2>
+        <div class="grid grid-3">
+          <div class="card"><div class="card-title">Live</div><p class="card-desc">Current sentiment · detected intent · agent talk ratio · silence streaks</p></div>
+          <div class="card"><div class="card-title">Per-call</div><p class="card-desc">Summary · disposition · mandatory disclosure compliance · QA score</p></div>
+          <div class="card"><div class="card-title">Queue-level</div><p class="card-desc">Sentiment trend · first-contact resolution · escalation rate · language mix</p></div>
+        </div>
+
+        <h2>ROI levers we've seen</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Metric</th><th>Before</th><th>With agent assist</th></tr></thead>
+            <tbody>
+              <tr><td>Average handle time (AHT)</td><td>Baseline</td><td>–15 to –25%</td></tr>
+              <tr><td>After-call work time</td><td>2–4 min</td><td>30–60 s</td></tr>
+              <tr><td>QA coverage</td><td>5–10% sampled</td><td>100%</td></tr>
+              <tr><td>First-contact resolution</td><td>Baseline</td><td>+10–15%</td></tr>
+              <tr><td>Supervisor call-listening time</td><td>Hours</td><td>Outlier-focused</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pager">
+          <a class="pager-link" href="/solutions/healthcare.html">
+            <div class="pager-label">← Previous</div>
+            <div class="pager-title">Healthcare</div>
+          </a>
+          <a class="pager-link pager-right" href="/solutions/media.html">
+            <div class="pager-label">Next →</div>
+            <div class="pager-title">Media &amp; entertainment</div>
+          </a>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/nav.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: document.documentElement.classList.contains('dark') ? 'dark' : 'neutral', securityLevel: 'loose' });
+  </script>
+</body>
+</html>

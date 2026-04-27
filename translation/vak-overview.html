@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vāķ Translate — Shunya Labs Docs</title>
+  <meta name="description" content="Vāķ Translate: 55 Indian languages, 2,970 language pairs, BLEU 38.5 weighted. Indic-native translation.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <script src="/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/index.html">Docs</a><span class="sep">/</span><span>Translation</span><span class="sep">/</span><span>Vāķ</span>
+        </div>
+        <h1>Vāķ Translate</h1>
+        <p class="lead">Vāķ is Shunya's open-weight translation model for Indian languages. 55 Indian languages, 2,970 any-to-any language pairs, BLEU 38.5 weighted average. Native handling of all major Indic scripts. Released under CC-BY-SA-4.0.</p>
+
+        <h2>At a glance</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Property</th><th>Value</th></tr></thead>
+            <tbody>
+              <tr><td>Model</td><td><code>vak-translate-1.3b-ct2</code></td></tr>
+              <tr><td>Parameters</td><td>1.3B — encoder-decoder, 24/24 layers, d=1024, 16 heads, FFN 8192</td></tr>
+              <tr><td>Vocabulary</td><td>256,206 tokens · SentencePiece BPE</td></tr>
+              <tr><td>Max input</td><td>512 tokens</td></tr>
+              <tr><td>Languages</td><td>55 Indian languages across 5 families</td></tr>
+              <tr><td>Pairs</td><td>2,970 any-to-any</td></tr>
+              <tr><td>Native speakers covered</td><td>1.17 billion+</td></tr>
+              <tr><td>Weighted BLEU</td><td>38.5</td></tr>
+              <tr><td>License</td><td>CC-BY-SA-4.0</td></tr>
+              <tr><td>Stack</td><td>ctranslate2 + transformers + sentencepiece</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Language families</h2>
+        <div class="grid grid-3">
+          <div class="card"><div class="card-title">Indo-Aryan</div><p class="card-desc">43 languages — Hindi, Bengali, Marathi, Gujarati, Urdu, Punjabi, Odia, Maithili, Konkani, Sindhi, Dogri, Kashmiri, Sanskrit…</p></div>
+          <div class="card"><div class="card-title">Dravidian</div><p class="card-desc">7 languages — Tamil, Telugu, Kannada, Malayalam, Tulu, Kodava, Kurukh</p></div>
+          <div class="card"><div class="card-title">Austroasiatic</div><p class="card-desc">1 language — Santali</p></div>
+          <div class="card"><div class="card-title">Sino-Tibetan</div><p class="card-desc">3 languages — Bodo, Manipuri, Garo</p></div>
+          <div class="card"><div class="card-title">Indo-European (non-Indic)</div><p class="card-desc">1 language — English</p></div>
+        </div>
+
+        <h2>Quality tiers</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Tier</th><th>BLEU range</th><th>Languages</th></tr></thead>
+            <tbody>
+              <tr><td>Strong</td><td>35–43</td><td>Hindi (42), Tamil (42), Bengali (41), Telugu (41), Marathi (40), and 21 more</td></tr>
+              <tr><td>Good</td><td>25–35</td><td>Mid-resource languages</td></tr>
+              <tr><td>Experimental</td><td>2–4</td><td>Dogri, Kurukh, Tulu, Manipuri, Santali, Kangri, Mahasu Pahari, Kodava, Bodo, Garo</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-title">Experimental tier note</div>
+          The experimental languages have small parallel corpora available. Output is often understandable but rough — suitable for gist translation, not production content. Quality improves as more training data becomes available.
+        </div>
+
+        <h2>Running Vāķ locally</h2>
+<pre><code>import ctranslate2
+from transformers import NllbTokenizer
+
+tok = NllbTokenizer.from_pretrained("shunyalabs/vak-translate-1.3b-ct2")
+mt  = ctranslate2.Translator("shunyalabs/vak-translate-1.3b-ct2", device="cuda")
+
+# Hindi → Tamil
+src = tok("आप कैसे हैं?", return_tensors="np")
+tokens = tok.convert_ids_to_tokens(src["input_ids"][0])
+result = mt.translate_batch([tokens], target_prefix=[["tam_Taml"]])
+print(tok.decode(tok.convert_ids_to_tokens(result[0].hypotheses[0][1:])))
+# → நீங்கள் எப்படி இருக்கிறீர்கள்?</code></pre>
+
+        <h3>Language codes</h3>
+        <p>Vāķ uses NLLB-style language codes: <code>&lt;iso-639-3&gt;_&lt;iso-15924&gt;</code>. Examples:</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Language</th><th>Code</th></tr></thead>
+            <tbody>
+              <tr><td>English</td><td><code>eng_Latn</code></td></tr>
+              <tr><td>Hindi</td><td><code>hin_Deva</code></td></tr>
+              <tr><td>Bengali</td><td><code>ben_Beng</code></td></tr>
+              <tr><td>Tamil</td><td><code>tam_Taml</code></td></tr>
+              <tr><td>Telugu</td><td><code>tel_Telu</code></td></tr>
+              <tr><td>Kannada</td><td><code>kan_Knda</code></td></tr>
+              <tr><td>Marathi</td><td><code>mar_Deva</code></td></tr>
+              <tr><td>Gujarati</td><td><code>guj_Gujr</code></td></tr>
+              <tr><td>Urdu</td><td><code>urd_Arab</code></td></tr>
+              <tr><td>Punjabi</td><td><code>pan_Guru</code></td></tr>
+              <tr><td>Malayalam</td><td><code>mal_Mlym</code></td></tr>
+              <tr><td>Odia</td><td><code>ory_Orya</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Citation</h2>
+<pre><code>@article{bandyopadhyay2026vak,
+  title   = {Vak Translate: Open-Weight Translation for Every Indian Language},
+  author  = {Bandyopadhyay, Sourav and others},
+  journal = {arXiv preprint},
+  year    = {2026}
+}</code></pre>
+
+        <h2>Combining with ASR + TTS</h2>
+        <p>Vāķ is the translation bridge for live 2-way conversation. The dashboard's live-translation feature (and any voice agent you build) uses it in a pipeline like this:</p>
+
+        <div class="mermaid">graph LR
+  A[User A audio<br/>Hindi] --> B[Zero STT<br/>zero-indic]
+  B --> C[Text: Hindi]
+  C --> D[Vāķ Translate]
+  D --> E[Text: Tamil]
+  E --> F[Zero TTS<br/>voice: Murugan]
+  F --> G[User B audio<br/>Tamil]
+  style D fill:#f3e8ff,stroke:#a855f7</div>
+
+        <h2>Next steps</h2>
+        <div class="grid grid-2">
+          <a href="https://huggingface.co/shunyalabs/vak-translate-1.3b-ct2" target="_blank" rel="noopener" class="card-link"><div class="card">
+            <div class="card-title">Model card on Hugging Face ↗</div>
+            <p class="card-desc">Full benchmarks, license text, and download links.</p>
+          </div></a>
+          <a href="/personas/researcher.html" class="card-link"><div class="card">
+            <div class="card-title">Researcher journey →</div>
+            <p class="card-desc">Fine-tuning, air-gapped deployment, evaluation.</p>
+          </div></a>
+        </div>
+
+        <div class="pager">
+          <a class="pager-link" href="/tts/api-reference.html">
+            <div class="pager-label">← Previous</div>
+            <div class="pager-title">TTS API reference</div>
+          </a>
+          <a class="pager-link pager-right" href="/solutions/bfsi.html">
+            <div class="pager-label">Next →</div>
+            <div class="pager-title">BFSI blueprint</div>
+          </a>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/nav.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: document.documentElement.classList.contains('dark') ? 'dark' : 'neutral', securityLevel: 'loose' });
+  </script>
+</body>
+</html>

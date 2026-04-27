@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TTS quickstart — Shunya Labs Docs</title>
+  <meta name="description" content="Synthesize your first audio in five minutes: SDK, REST, and OpenAI-compatible clients.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <script src="/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/index.html">Docs</a><span class="sep">/</span><span>Text-to-Speech</span><span class="sep">/</span><span>Quickstart</span>
+        </div>
+        <h1>TTS quickstart</h1>
+        <p class="lead">Install, authenticate, synthesize. By the end of this page you'll have an MP3 on disk and know how to switch voice, language, speed, and format.</p>
+
+        <h2>1. Install the SDK (optional)</h2>
+<pre><code>pip install "shunyalabs[TTS]"         # TTS only
+pip install "shunyalabs[all]"         # TTS + ASR + everything
+pip install "shunyalabs[extras]"      # + audio playback helpers (sounddevice)</code></pre>
+
+        <p>You can also call the REST API directly with <code>requests</code> or any HTTP client — the SDK is just a thin wrapper.</p>
+
+        <h2>2. Configure authentication</h2>
+<pre><code>export SHUNYALABS_API_KEY="sk-your-key"</code></pre>
+
+        <p>Or pass it in code:</p>
+<pre><code>client = AsyncShunyaClient(api_key="sk-your-key")</code></pre>
+
+        <h2>3. First synthesis</h2>
+
+        <h3>Python SDK (recommended)</h3>
+<pre><code>import asyncio
+from shunyalabs import AsyncShunyaClient
+from shunyalabs.tts import TTSConfig
+
+async def main():
+    async with AsyncShunyaClient() as client:
+        result = await client.tts.synthesize(
+            "Hello, how are you today?",
+            config=TTSConfig(model="zero-indic", voice="Varun"),
+        )
+        result.save("output.mp3")
+        print(f"{len(result.audio_data)} bytes saved · {result.sample_rate} Hz")
+
+asyncio.run(main())</code></pre>
+
+        <h3>REST API (cURL)</h3>
+<pre><code>curl -X POST https://tts.shunyalabs.ai/v1/audio/speech \
+  -H "Authorization: Bearer $SHUNYALABS_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"model": "zero-indic", "input": "Hello, how are you today?", "voice": "Varun"}' \
+  --output output.mp3</code></pre>
+
+        <h3>REST API (Python requests)</h3>
+<pre><code>import requests
+
+response = requests.post(
+    "https://tts.shunyalabs.ai/v1/audio/speech",
+    headers={"Authorization": f"Bearer {API_KEY}"},
+    json={"model": "zero-indic", "input": "Hello!", "voice": "Varun"},
+    timeout=120,
+)
+response.raise_for_status()
+with open("output.mp3", "wb") as f:
+    f.write(response.content)</code></pre>
+
+        <h3>OpenAI SDK (compatible)</h3>
+<pre><code>from openai import OpenAI
+
+client = OpenAI(api_key=API_KEY, base_url="https://tts.shunyalabs.ai/v1")
+response = client.audio.speech.create(
+    model="zero-indic",
+    input="Hello!",
+    voice="Varun",
+    response_format="mp3",
+)
+response.stream_to_file("output.mp3")</code></pre>
+
+        <h2>4. Switch voice, language, speed, format</h2>
+
+        <h3>Pick a different voice</h3>
+<pre><code># Hindi female
+TTSConfig(model="zero-indic", voice="Sunita")
+
+# Tamil male
+TTSConfig(model="zero-indic", voice="Murugan")
+
+# English female
+TTSConfig(model="zero-indic", voice="Nisha")</code></pre>
+
+        <p>46 voices total. See <a href="/tts/voices.html">Voices & languages</a> for the full catalogue.</p>
+
+        <h3>Change speed</h3>
+<pre><code>TTSConfig(model="zero-indic", voice="Nisha", speed=1.3)   # fast notifications
+TTSConfig(model="zero-indic", voice="Nisha", speed=0.85)  # slower dictation</code></pre>
+
+        <h3>Change output format</h3>
+<pre><code>TTSConfig(model="zero-indic", voice="Varun", response_format="pcm")    # real-time playback
+TTSConfig(model="zero-indic", voice="Varun", response_format="mulaw")  # telephony
+TTSConfig(model="zero-indic", voice="Varun", response_format="wav")    # editing</code></pre>
+
+        <p>Full format list at <a href="/tts/audio-formats.html">Audio formats</a>.</p>
+
+        <h3>Add an expression style</h3>
+<pre><code>await client.tts.synthesize(
+    "&lt;Happy&gt; Welcome aboard!",
+    config=TTSConfig(model="zero-indic", voice="Sunita"),
+)</code></pre>
+
+        <p>11 styles: Happy, Sad, Angry, Fearful, Surprised, Disgust, News, Conversational, Narrative, Enthusiastic, Neutral. See <a href="/tts/expression-styles.html">Expression styles</a>.</p>
+
+        <h2>5. Stream it</h2>
+        <p>For real-time use (voice agents, IVR), stream audio as it synthesizes instead of waiting for the full file:</p>
+
+<pre><code>config = TTSConfig(model="zero-indic", voice="Varun", response_format="pcm")
+
+async for chunk in await client.tts.stream("Hello!", config=config):
+    # play chunk bytes as they arrive
+    speaker.write(chunk)</code></pre>
+
+        <p>Full streaming details at <a href="/tts/streaming.html">Streaming</a>.</p>
+
+        <h2>6. Handle errors</h2>
+<pre><code>from shunyalabs.exceptions import (
+    AuthenticationError, RateLimitError,
+    SynthesisError, ServerError, ShunyalabsError,
+)
+
+try:
+    result = await client.tts.synthesize("Hello!", config=config)
+except AuthenticationError:
+    print("Invalid API key")
+except RateLimitError:
+    print("Rate limited — back off and retry")
+except SynthesisError as e:
+    print(f"Bad input: {e}")
+except ServerError:
+    print("Server error — safe to retry")
+except ShunyalabsError as e:
+    print(f"SDK error: {e}")</code></pre>
+
+        <div class="callout callout-success">
+          <div class="callout-title">You're done</div>
+          You now have text → audio working. Next, skim <a href="/tts/voices.html">voices</a> and <a href="/tts/audio-formats.html">audio formats</a> to pick the right ones for your use case.
+        </div>
+
+        <div class="pager">
+          <a class="pager-link" href="/tts/overview.html">
+            <div class="pager-label">← Previous</div>
+            <div class="pager-title">TTS overview</div>
+          </a>
+          <a class="pager-link pager-right" href="/tts/voices.html">
+            <div class="pager-label">Next →</div>
+            <div class="pager-title">Voices & languages</div>
+          </a>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TTS streaming — Shunya Labs Docs</title>
+  <meta name="description" content="Stream synthesized audio as it's generated over WebSocket. First audio in under 350 ms.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <script src="/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/index.html">Docs</a><span class="sep">/</span><span>Text-to-Speech</span><span class="sep">/</span><span>Streaming</span>
+        </div>
+        <h1>Streaming TTS</h1>
+        <p class="lead">Open a persistent WebSocket and receive audio chunks in real time as synthesis happens. Best for voice agents, IVR, and any case where audio has to start playing before the full text is synthesized.</p>
+
+        <h2>Endpoint</h2>
+<pre><code>wss://tts.shunyalabs.ai/ws/v1/audio/speech
+# Also accepts: /ws/tts, /ws</code></pre>
+
+        <h2>Connection lifecycle</h2>
+        <div class="mermaid">sequenceDiagram
+  participant C as Client
+  participant S as Shunya TTS
+  C->>S: Open WebSocket (Authorization header)
+  C->>S: JSON request { model, input, voice, response_format }
+  loop Streaming synthesis
+    S-->>C: { type: "chunk", chunk_index, format, sample_rate }
+    S-->>C: [binary audio frame]
+  end
+  S-->>C: { type: "completion", total_chunks, total_duration_seconds }</div>
+
+        <h2>Your first stream</h2>
+
+        <h3>Python SDK</h3>
+<pre><code>import asyncio
+from shunyalabs import AsyncShunyaClient
+from shunyalabs.tts import TTSConfig
+
+async def main():
+    async with AsyncShunyaClient() as client:
+        config = TTSConfig(
+            model="zero-indic",
+            voice="Varun",
+            response_format="pcm",
+        )
+        with open("output.pcm", "wb") as f:
+            async for audio in await client.tts.stream("Hello!", config=config):
+                f.write(audio)
+
+asyncio.run(main())</code></pre>
+
+        <h3>Raw WebSocket (wscat)</h3>
+<pre><code># Install: npm install -g wscat
+wscat -c "wss://tts.shunyalabs.ai/ws/v1/audio/speech" \
+  -H "Authorization: Bearer $SHUNYALABS_API_KEY"
+
+# Send synthesis request
+&gt; {"model": "zero-indic", "input": "Hello!", "voice": "Varun", "response_format": "pcm"}
+
+# Receive metadata + binary + completion
+&lt; {"type": "chunk", "chunk_index": 0, "format": "pcm", "sample_rate": 16000, ...}
+&lt; [binary audio data]
+&lt; {"type": "completion", "total_chunks": 3, "total_duration_seconds": 0.8, ...}</code></pre>
+
+        <h2>Streaming methods (SDK)</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Method</th><th>What it does</th></tr></thead>
+            <tbody>
+              <tr><td><code>stream(text, config)</code></td><td>Async generator yielding audio bytes per chunk. Primary streaming method.</td></tr>
+              <tr><td><code>stream(text, config, detailed=True)</code></td><td>Yields <code>(chunk_meta, audio_bytes)</code> tuples with chunk_index and timing.</td></tr>
+              <tr><td><code>synthesize_stream(text, config)</code></td><td>Collects all chunks internally and returns combined bytes. Convenience wrapper.</td></tr>
+              <tr><td><code>stream_to_file(text, path, config)</code></td><td>Streams directly to disk. No in-memory buffer required.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Pick the right variant</h3>
+<pre><code># 1. Raw byte stream — play or process each chunk immediately
+async for audio in await client.tts.stream("Hello!", config=config):
+    speaker.write(audio)
+
+# 2. With chunk metadata
+async for chunk_meta, audio in await client.tts.stream("Hello!", config=config, detailed=True):
+    print(f"chunk {chunk_meta.chunk_index}: {len(audio)} bytes")
+
+# 3. One-shot — collect all chunks internally
+audio_bytes = await client.tts.synthesize_stream("Hello!", config=config)
+
+# 4. Constant-memory file write — best for long-form synthesis
+await client.tts.stream_to_file("Hello!", "output.pcm", config=config)</code></pre>
+
+        <h2>Flush &amp; close commands</h2>
+        <p>For interactive sessions with multiple text messages, you can flush buffered text mid-stream.</p>
+<pre><code># Send over the WebSocket connection
+&gt; {"type": "flush"}
+
+# Server acknowledges and returns audio for buffered text
+&lt; [binary audio data]
+&lt; {"type": "flushed", "sequence_id": 1}
+
+# Close the session
+&gt; {"type": "close"}</code></pre>
+
+        <h2>Error handling</h2>
+        <p>Connection-level errors raise on stream start; server errors can arrive mid-stream.</p>
+<pre><code>from shunyalabs.exceptions import (
+    AuthenticationError, ConnectionError, ShunyalabsError,
+)
+
+try:
+    async for audio in await client.tts.stream("Hello!", config=config):
+        chunks.append(audio)
+except AuthenticationError:
+    print("Invalid API key")
+except ConnectionError:
+    print("WebSocket connection failed — check network or endpoint")
+except ShunyalabsError as e:
+    print(f"SDK error: {e}")</code></pre>
+
+        <h2>Reconnection pattern</h2>
+<pre><code>MAX_RECONNECT = 3
+
+async def stream_with_reconnect(text, config):
+    for attempt in range(MAX_RECONNECT):
+        try:
+            chunks = []
+            async for audio in await client.tts.stream(text, config=config):
+                chunks.append(audio)
+            return b"".join(chunks)
+        except ConnectionError:
+            wait = 2 ** attempt
+            print(f"Reconnecting in {wait}s...")
+            await asyncio.sleep(wait)
+    raise ConnectionError("Max reconnects exceeded")</code></pre>
+
+        <h2>Tips for streaming</h2>
+
+        <h3>Picking the format</h3>
+        <ul>
+          <li><strong>PCM</strong> — real-time playback. No decoding overhead, lowest latency.</li>
+          <li><strong>mulaw</strong> — telephony pipelines. 8 kHz, forward directly to Twilio or SIP.</li>
+          <li><strong>Avoid FLAC</strong> — lossless formats require full-file assembly before playback.</li>
+        </ul>
+
+        <h3>Minimising time-to-first-audio</h3>
+        <ul>
+          <li>Pre-open the WebSocket before your LLM call — saves ~200 ms of connection setup.</li>
+          <li>Use PCM — no client-side decoding overhead.</li>
+          <li>Use shorter sentences as flush units if piping from an LLM — see <a href="/tts/llm-to-tts.html">LLM → TTS pipeline</a>.</li>
+        </ul>
+
+        <h2>Production readiness checklist</h2>
+        <ul>
+          <li>✅ <code>SHUNYALABS_API_KEY</code> from env, not code</li>
+          <li>✅ Error handler covers <code>ConnectionError</code> and <code>AuthenticationError</code></li>
+          <li>✅ Reconnection logic for long-running sessions</li>
+          <li>✅ Audio played incrementally per chunk — not buffered</li>
+          <li>✅ <code>stream_to_file()</code> used for long-form synthesis (audiobooks) to avoid memory pressure</li>
+        </ul>
+
+        <div class="pager">
+          <a class="pager-link" href="/tts/voice-cloning.html">
+            <div class="pager-label">← Previous</div>
+            <div class="pager-title">Voice cloning</div>
+          </a>
+          <a class="pager-link pager-right" href="/tts/llm-to-tts.html">
+            <div class="pager-label">Next →</div>
+            <div class="pager-title">LLM → TTS pipeline</div>
+          </a>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/nav.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: document.documentElement.classList.contains('dark') ? 'dark' : 'neutral', securityLevel: 'loose' });
+  </script>
+</body>
+</html>

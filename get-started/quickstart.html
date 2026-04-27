@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quickstart — Shunya Labs Docs</title>
+  <meta name="description" content="Authenticate, transcribe, and synthesize in under 5 minutes.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <script src="/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/index.html">Docs</a><span class="sep">/</span><span>Get Started</span><span class="sep">/</span><span>Quickstart</span>
+        </div>
+        <h1>Quickstart</h1>
+        <p class="lead">Get from nothing to a working transcription and a working synthesis in five minutes. You'll need an API key and about three lines of code per direction.</p>
+
+        <h2>1. Get an API key</h2>
+        <ol>
+          <li>Sign in at <a href="https://accounts.shunyalabs.ai" target="_blank" rel="noopener">accounts.shunyalabs.ai</a>.</li>
+          <li>Navigate to <strong>API Keys</strong> and click <strong>Create New Key</strong>.</li>
+          <li>Copy the key immediately — it's shown once.</li>
+        </ol>
+
+        <div class="callout callout-warn">
+          <div class="callout-title">Keep the key out of source control</div>
+          Store it in a <code>.env</code> file or a secrets manager. Add <code>.env</code> to <code>.gitignore</code>. Rotate if leaked.
+        </div>
+
+        <h3>Set the environment variable</h3>
+        <div class="code-group">
+          <div class="code-tabs" role="tablist">
+            <button class="code-tab active">macOS / Linux</button>
+            <button class="code-tab">Windows (PowerShell)</button>
+          </div>
+          <div class="code-panel active"><pre><code class="language-bash">export SHUNYALABS_API_KEY="sk-your-key-here"</code></pre></div>
+          <div class="code-panel"><pre><code class="language-bash">$env:SHUNYALABS_API_KEY = "sk-your-key-here"</code></pre></div>
+        </div>
+
+        <h2>2. Transcribe an audio file</h2>
+        <p>Send audio to <code>POST /v1/audio/transcriptions</code>. The response is a JSON object with the transcript and per-segment timestamps.</p>
+
+        <div class="code-group">
+          <div class="code-tabs" role="tablist">
+            <button class="code-tab active">cURL</button>
+            <button class="code-tab">Python</button>
+            <button class="code-tab">Node.js</button>
+            <button class="code-tab">OpenAI SDK</button>
+          </div>
+          <div class="code-panel active">
+            <div class="code-header"><span>shell</span><button class="copy-btn">Copy</button></div>
+            <pre><code class="language-bash">curl -X POST https://asr.shunyalabs.ai/v1/audio/transcriptions \
+  -H "Authorization: Bearer $SHUNYALABS_API_KEY" \
+  -F "file=@meeting.wav" \
+  -F "model=zero-indic"</code></pre>
+          </div>
+          <div class="code-panel">
+            <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
+            <pre><code class="language-python">import os, requests
+
+with open("meeting.wav", "rb") as f:
+    r = requests.post(
+        "https://asr.shunyalabs.ai/v1/audio/transcriptions",
+        headers={"Authorization": f"Bearer {os.environ['SHUNYALABS_API_KEY']}"},
+        files={"file": f},
+        data={"model": "zero-indic"},
+    )
+r.raise_for_status()
+print(r.json()["text"])</code></pre>
+          </div>
+          <div class="code-panel">
+            <div class="code-header"><span>node</span><button class="copy-btn">Copy</button></div>
+            <pre><code class="language-javascript">import fs from "node:fs";
+
+const form = new FormData();
+form.append("file", new Blob([fs.readFileSync("meeting.wav")]), "meeting.wav");
+form.append("model", "zero-indic");
+
+const r = await fetch("https://asr.shunyalabs.ai/v1/audio/transcriptions", {
+  method: "POST",
+  headers: { Authorization: `Bearer ${process.env.SHUNYALABS_API_KEY}` },
+  body: form,
+});
+const data = await r.json();
+console.log(data.text);</code></pre>
+          </div>
+          <div class="code-panel">
+            <div class="code-header"><span>openai SDK</span><button class="copy-btn">Copy</button></div>
+            <pre><code class="language-python">from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["SHUNYALABS_API_KEY"],
+    base_url="https://asr.shunyalabs.ai/v1",
+)
+r = client.audio.transcriptions.create(
+    model="zero-indic",
+    file=open("meeting.wav", "rb"),
+)
+print(r.text)</code></pre>
+          </div>
+        </div>
+
+        <h3>What you get back</h3>
+<pre><code class="language-json">{
+  "success": true,
+  "request_id": "b3f1a2c4-...",
+  "text": "नमस्ते मोहम्मद जी, ये एक ज़रूरी कॉल है।",
+  "segments": [
+    { "start": 0.51, "end": 5.70, "text": "नमस्ते मोहम्मद जी..." }
+  ],
+  "detected_language": "Hindi",
+  "audio_duration": 5.7,
+  "inference_time_ms": 812.3
+}</code></pre>
+
+        <h2>3. Synthesize speech</h2>
+        <p>Now send text to <code>POST /v1/audio/speech</code>. The response body is audio bytes in your requested format.</p>
+
+        <div class="code-group">
+          <div class="code-tabs" role="tablist">
+            <button class="code-tab active">cURL</button>
+            <button class="code-tab">Python</button>
+            <button class="code-tab">Python SDK</button>
+          </div>
+          <div class="code-panel active">
+            <div class="code-header"><span>shell</span><button class="copy-btn">Copy</button></div>
+            <pre><code class="language-bash">curl -X POST https://tts.shunyalabs.ai/v1/audio/speech \
+  -H "Authorization: Bearer $SHUNYALABS_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"model":"zero-indic","input":"Hello, how are you today?","voice":"Varun"}' \
+  --output hello.mp3</code></pre>
+          </div>
+          <div class="code-panel">
+            <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
+            <pre><code class="language-python">import os, requests
+
+r = requests.post(
+    "https://tts.shunyalabs.ai/v1/audio/speech",
+    headers={"Authorization": f"Bearer {os.environ['SHUNYALABS_API_KEY']}"},
+    json={"model": "zero-indic", "input": "Hello, how are you today?", "voice": "Varun"},
+    timeout=120,
+)
+r.raise_for_status()
+with open("hello.mp3", "wb") as f:
+    f.write(r.content)</code></pre>
+          </div>
+          <div class="code-panel">
+            <div class="code-header"><span>shunyalabs SDK</span><button class="copy-btn">Copy</button></div>
+            <pre><code class="language-python">import asyncio
+from shunyalabs import AsyncShunyaClient
+from shunyalabs.tts import TTSConfig
+
+async def main():
+    async with AsyncShunyaClient() as client:
+        result = await client.tts.synthesize(
+            "Hello, how are you today?",
+            config=TTSConfig(model="zero-indic", voice="Varun"),
+        )
+        result.save("hello.mp3")
+
+asyncio.run(main())</code></pre>
+          </div>
+        </div>
+
+        <h2>4. Stream in real time</h2>
+        <p>For voice agents and IVR, both ASR and TTS support streaming over WebSocket. You get partial transcripts as speech is happening, and synthesized audio as text is generated.</p>
+
+        <div class="grid grid-2">
+          <a href="/asr/streaming.html" class="card-link"><div class="card">
+            <div class="card-title">Streaming ASR →</div>
+            <p class="card-desc">Send PCM or μ-law frames, receive partial and final transcripts with &lt;100 ms latency.</p>
+          </div></a>
+          <a href="/tts/streaming.html" class="card-link"><div class="card">
+            <div class="card-title">Streaming TTS →</div>
+            <p class="card-desc">Start playing audio before synthesis is complete. First-audio &lt; 350 ms.</p>
+          </div></a>
+        </div>
+
+        <h2>5. Check service health</h2>
+        <p>Public endpoint, no auth needed.</p>
+<pre><code class="language-bash">curl https://asr.shunyalabs.ai/health
+curl https://tts.shunyalabs.ai/health</code></pre>
+
+        <h2>Next steps</h2>
+        <div class="grid grid-3">
+          <a href="/personas/developer.html" class="card-link"><div class="card">
+            <div class="card-title">Developer journey</div>
+            <p class="card-desc">Build a real voice bot end-to-end.</p>
+          </div></a>
+          <a href="/asr/features.html" class="card-link"><div class="card">
+            <div class="card-title">ASR features</div>
+            <p class="card-desc">Diarization, intent, emotion, redaction.</p>
+          </div></a>
+          <a href="/tts/voice-cloning.html" class="card-link"><div class="card">
+            <div class="card-title">Voice cloning</div>
+            <p class="card-desc">Clone a voice from a 3-6 second sample.</p>
+          </div></a>
+        </div>
+
+        <div class="pager">
+          <a class="pager-link" href="/get-started/what-is-shunya.html">
+            <div class="pager-label">← Previous</div>
+            <div class="pager-title">What is Shunya?</div>
+          </a>
+          <a class="pager-link pager-right" href="/get-started/capability-matrix.html">
+            <div class="pager-label">Next →</div>
+            <div class="pager-title">Capability matrix</div>
+          </a>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/nav.js"></script>
+</body>
+</html>

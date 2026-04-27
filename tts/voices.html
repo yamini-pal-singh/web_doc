@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Voices & languages — Shunya Labs Docs</title>
+  <meta name="description" content="All 46 Zero TTS voices across 23 Indic languages and English. Any voice can speak any language.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <script src="/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/index.html">Docs</a><span class="sep">/</span><span>Text-to-Speech</span><span class="sep">/</span><span>Voices & languages</span>
+        </div>
+        <h1>Voices & languages</h1>
+        <p class="lead">46 speaker voices — one male and one female per language — spanning 23 Indic languages and English. The <code>voice</code> parameter controls vocal character; the <em>input text</em> controls the language spoken. They're independent.</p>
+
+        <div class="callout callout-info">
+          <div class="callout-title">Cross-lingual synthesis</div>
+          Any voice can speak any language. A Tamil-native voice can read Hindi text (with a Tamil-inflected accent); an English-native voice can read Bengali. Useful for brand consistency across markets.
+        </div>
+
+        <h2>The full catalogue</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Language</th><th>ISO</th><th>Male</th><th>Female</th></tr></thead>
+            <tbody>
+              <tr><td>Assamese</td><td>as</td><td><code>Bimal</code></td><td><code>Anjana</code></td></tr>
+              <tr><td>Bengali</td><td>bn</td><td><code>Arjun</code></td><td><code>Priyanka</code></td></tr>
+              <tr><td>Bodo</td><td>brx</td><td><code>Daimalu</code></td><td><code>Hasina</code></td></tr>
+              <tr><td>Dogri</td><td>doi</td><td><code>Vishal</code></td><td><code>Neelam</code></td></tr>
+              <tr><td>English</td><td>en</td><td><code>Varun</code></td><td><code>Nisha</code></td></tr>
+              <tr><td>Gujarati</td><td>gu</td><td><code>Rakesh</code></td><td><code>Pooja</code></td></tr>
+              <tr><td>Hindi</td><td>hi</td><td><code>Rajesh</code></td><td><code>Sunita</code></td></tr>
+              <tr><td>Kannada</td><td>kn</td><td><code>Kiran</code></td><td><code>Shreya</code></td></tr>
+              <tr><td>Kashmiri</td><td>ks</td><td><code>Farooq</code></td><td><code>Habba</code></td></tr>
+              <tr><td>Konkani</td><td>gom</td><td><code>Mohan</code></td><td><code>Sarita</code></td></tr>
+              <tr><td>Maithili</td><td>mai</td><td><code>Suresh</code></td><td><code>Meera</code></td></tr>
+              <tr><td>Malayalam</td><td>ml</td><td><code>Krishnan</code></td><td><code>Deepa</code></td></tr>
+              <tr><td>Manipuri</td><td>mni</td><td><code>Tomba</code></td><td><code>Ibemhal</code></td></tr>
+              <tr><td>Marathi</td><td>mr</td><td><code>Siddharth</code></td><td><code>Ananya</code></td></tr>
+              <tr><td>Nepali</td><td>ne</td><td><code>Bikash</code></td><td><code>Sapana</code></td></tr>
+              <tr><td>Odia</td><td>or</td><td><code>Bijay</code></td><td><code>Sujata</code></td></tr>
+              <tr><td>Punjabi</td><td>pa</td><td><code>Gurpreet</code></td><td><code>Simran</code></td></tr>
+              <tr><td>Sanskrit</td><td>sa</td><td><code>Vedant</code></td><td><code>Gayatri</code></td></tr>
+              <tr><td>Santali</td><td>sat</td><td><code>Chandu</code></td><td><code>Roshni</code></td></tr>
+              <tr><td>Sindhi</td><td>sd</td><td><code>Amjad</code></td><td><code>Kavita</code></td></tr>
+              <tr><td>Tamil</td><td>ta</td><td><code>Murugan</code></td><td><code>Thangam</code></td></tr>
+              <tr><td>Telugu</td><td>te</td><td><code>Vishnu</code></td><td><code>Lakshmi</code></td></tr>
+              <tr><td>Urdu</td><td>ur</td><td><code>Salman</code></td><td><code>Fatima</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Cross-lingual examples</h2>
+
+<pre><code># English-native voice speaking Hindi
+config = TTSConfig(model="zero-indic", voice="Varun")
+await client.tts.synthesize("नमस्ते, आप कैसे हैं?", config=config)
+
+# Tamil-native voice speaking English
+config = TTSConfig(model="zero-indic", voice="Murugan")
+await client.tts.synthesize("Good morning, how are you?", config=config)
+
+# Hindi-native voice speaking Bengali
+config = TTSConfig(model="zero-indic", voice="Sunita")
+await client.tts.synthesize("আমি ভালো আছি, ধন্যবাদ।", config=config)
+
+# Kannada-native voice speaking Tamil
+config = TTSConfig(model="zero-indic", voice="Shreya")
+await client.tts.synthesize("வணக்கம், நீங்கள் எப்படி இருக்கிறீர்கள்?", config=config)</code></pre>
+
+        <h2>Voice selection guide</h2>
+        <p>Pick the voice whose native language matches the primary language of your content — it produces the most natural accent and prosody. Only pick a cross-lingual voice when you have a specific brand reason.</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Use case</th><th>Recommended male</th><th>Recommended female</th></tr></thead>
+            <tbody>
+              <tr><td>Hindi IVR / telephony</td><td><code>Rajesh</code></td><td><code>Sunita</code></td></tr>
+              <tr><td>English voice agent</td><td><code>Varun</code></td><td><code>Nisha</code></td></tr>
+              <tr><td>Tamil content</td><td><code>Murugan</code></td><td><code>Thangam</code></td></tr>
+              <tr><td>Telugu content</td><td><code>Vishnu</code></td><td><code>Lakshmi</code></td></tr>
+              <tr><td>Bengali content</td><td><code>Arjun</code></td><td><code>Priyanka</code></td></tr>
+              <tr><td>Kannada content</td><td><code>Kiran</code></td><td><code>Shreya</code></td></tr>
+              <tr><td>Marathi content</td><td><code>Siddharth</code></td><td><code>Ananya</code></td></tr>
+              <tr><td>Malayalam content</td><td><code>Krishnan</code></td><td><code>Deepa</code></td></tr>
+              <tr><td>Punjabi content</td><td><code>Gurpreet</code></td><td><code>Simran</code></td></tr>
+              <tr><td>Gujarati content</td><td><code>Rakesh</code></td><td><code>Pooja</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Language hint for preprocessing</h2>
+        <p>The optional <code>language</code> field in <code>TTSConfig</code> hints the <em>text preprocessor</em> — it decides how to expand numbers, dates, and script-specific rules. It does not restrict what language the model speaks.</p>
+<pre><code># Hint Hindi preprocessing — Devanagari number expansion, Hindi date formats
+config = TTSConfig(model="zero-indic", voice="Rajesh", language="hi")
+
+# Hint English preprocessing — English number expansion, English date formats
+config = TTSConfig(model="zero-indic", voice="Varun", language="en")
+
+# No hint — model auto-handles mixed scripts natively (recommended for code-switched text)
+config = TTSConfig(model="zero-indic", voice="Varun")</code></pre>
+
+        <h2>Need a custom voice?</h2>
+        <p>Two paths:</p>
+        <div class="grid grid-2">
+          <a href="/tts/voice-cloning.html" class="card-link"><div class="card">
+            <div class="card-title">Voice cloning</div>
+            <p class="card-desc">Clone a voice from a 3–6 s reference clip. Works across all 23 languages. Self-service.</p>
+          </div></a>
+          <div class="card">
+            <div class="card-title">Custom-trained voice</div>
+            <p class="card-desc">For brand voices with strict prosody requirements, Shunya can train a dedicated model. Available on Enterprise plans — contact <a href="mailto:0@shunyalabs.ai">0@shunyalabs.ai</a>.</p>
+          </div>
+        </div>
+
+        <div class="pager">
+          <a class="pager-link" href="/tts/quickstart.html">
+            <div class="pager-label">← Previous</div>
+            <div class="pager-title">Quickstart</div>
+          </a>
+          <a class="pager-link pager-right" href="/tts/audio-formats.html">
+            <div class="pager-label">Next →</div>
+            <div class="pager-title">Audio formats</div>
+          </a>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/nav.js"></script>
+</body>
+</html>

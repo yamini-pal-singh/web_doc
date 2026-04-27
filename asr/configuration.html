@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ASR configuration — Shunya Labs Docs</title>
+  <meta name="description" content="Every ASR parameter explained with defaults, examples, and when to change them.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <script src="/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/index.html">Docs</a><span class="sep">/</span><span>Speech-to-Text</span><span class="sep">/</span><span>Configuration</span>
+        </div>
+        <h1>Configuration</h1>
+        <p class="lead">Every parameter you can pass to <code>POST /v1/audio/transcriptions</code>, in one place. Two are required (<code>file</code> or <code>url</code>, and <code>model</code>); the rest have safe defaults.</p>
+
+        <h2>Required</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>file</code></td><td>file upload</td><td>Audio file (WAV, MP3, M4A, OGG, FLAC, WebM). One of <code>file</code> or <code>url</code> required.</td></tr>
+              <tr><td><code>url</code></td><td>string</td><td>Public audio URL. Can't be combined with <code>file</code>.</td></tr>
+              <tr><td><code>model</code></td><td>string</td><td>One of <code>zero-indic</code>, <code>zero-universal</code>, <code>zero-med</code>, <code>zero-codeswitch</code>.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Language & output</h2>
+
+        <h3><code>language_code</code></h3>
+        <p><em>string · default <code>"auto"</code></em></p>
+        <p>Language hint. ISO 639-1 code (<code>hi</code>, <code>ta</code>, <code>kn</code>, <code>bn</code>, <code>mr</code>, <code>te</code>, <code>gu</code>, <code>pa</code>, <code>ml</code>, <code>or</code>, <code>ur</code>, <code>en</code>) or full name (<code>Hindi</code>, <code>Tamil</code>). Use <code>auto</code> to detect.</p>
+        <div class="callout callout-info">
+          <div class="callout-title">Why setting this matters</div>
+          On clips &lt; 5 seconds, language detection is error-prone and the model can "translate" instead of transcribe. Locking the language avoids both.
+        </div>
+
+        <h3><code>response_format</code></h3>
+        <p><em>string · default <code>"verbose_json"</code></em></p>
+        <p>Response structure.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Value</th><th>Output</th></tr></thead>
+            <tbody>
+              <tr><td><code>verbose_json</code></td><td>Full response: segments, NLP, timing, language.</td></tr>
+              <tr><td><code>json</code></td><td>Minimal: <code>{"text": "..."}</code>. OpenAI-compatible.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3><code>output_script</code></h3>
+        <p><em>string · default <code>"auto"</code></em></p>
+        <p>Transliterate output to a different script without changing the language. Common values: <code>Devanagari</code>, <code>Bengali</code>, <code>Telugu</code>, <code>Tamil</code>, <code>Kannada</code>, <code>Latin</code>, <code>ITRANS</code>. Powered by <a href="https://aksharamukha.appspot.com/" target="_blank" rel="noopener">aksharamukha</a> — no LLM, no latency cost.</p>
+<pre><code># Hindi audio → Devanagari text romanised to Latin
+-F "model=zero-indic" -F "language_code=hi" -F "output_script=Latin"
+# → "namaste mohammad ji ye ek zaruri call hai"</code></pre>
+
+        <h3><code>output_language</code></h3>
+        <p><em>string · default none</em></p>
+        <p>Translate the full transcript to a target language via Gemini. Result lives in <code>nlp_analysis.translation</code>. Accepts ISO codes or full names. Set this for translated captions; for script change only, use <code>output_script</code>.</p>
+
+        <h2>Audio pre-processing</h2>
+
+        <h3><code>use_vad_chunking</code></h3>
+        <p><em>bool · default <code>true</code></em></p>
+        <p>Split audio at natural speech pauses using Voice Activity Detection. Silence is stripped before the model sees it. Set <code>false</code> only for continuous dictation with no pauses.</p>
+
+        <h3><code>chunk_size</code></h3>
+        <p><em>int seconds · default <code>30</code></em></p>
+        <p>Applies when <code>use_vad_chunking=false</code>. Accepted range 1–60. Sets a fixed segment length.</p>
+
+        <h3><code>enable_denoising</code></h3>
+        <p><em>bool · default <code>false</code></em></p>
+        <p>Runs noise reduction before transcription. Skipped automatically for files &gt; 5 MB to avoid latency. Use for call-centre and field recordings.</p>
+
+        <h2>Segmentation & alignment</h2>
+
+        <h3><code>word_timestamps</code></h3>
+        <p><em>bool · default <code>false</code></em></p>
+        <p>Adds per-word <code>start</code>, <code>end</code>, and <code>score</code> to every segment. Uses CTC forced alignment on an ONNX model — runs on GPU, no external call.</p>
+
+        <h3><code>enable_diarization</code></h3>
+        <p><em>bool · default <code>false</code></em></p>
+        <p>Speaker-level segmentation. Every segment gets a <code>speaker: SPEAKER_XX</code> label; the top-level transcript is prefixed with speaker tags; <code>speakers</code> array lists all unique speakers detected. Segments are capped at 30 s each for quality.</p>
+
+        <h3><code>enable_speaker_identification</code> + <code>project</code></h3>
+        <p><em>bool · default <code>false</code></em></p>
+        <p>Resolves anonymous <code>SPEAKER_XX</code> labels to registered names (e.g. <code>Priya</code>, <code>Rahul</code>). Requires <code>enable_diarization=true</code> and pre-registered voice profiles. <code>project</code> scopes the speaker library — useful for per-customer isolation.</p>
+
+        <a href="/asr/api-reference.html#speakers" class="persona-link">Speaker registration API →</a>
+
+        <h3><code>enable_emotion_diarization</code></h3>
+        <p><em>bool · default <code>false</code></em></p>
+        <p>Detects the dominant emotion in each segment and adds an <code>emotion</code> field. Works alongside standard diarization.</p>
+
+        <h2>Intelligence layer</h2>
+
+        <h3><code>enable_intent_detection</code> + <code>intent_choices</code></h3>
+        <p><em>bool · default <code>false</code></em></p>
+        <p>Classifies the overall transcript intent using Gemini. Optionally constrain to a list of allowed intents by passing <code>intent_choices</code> as a JSON-encoded array. Result appears in <code>nlp_analysis.intent</code> with <code>label</code>, <code>confidence</code>, and <code>reasoning</code>.</p>
+<pre><code>-F "enable_intent_detection=true"
+-F 'intent_choices=["complaint","inquiry","service_request","compliment"]'</code></pre>
+
+        <h3><code>enable_summarization</code> + <code>summary_max_length</code></h3>
+        <p><em>bool · default <code>false</code></em></p>
+        <p>Generates a concise transcript summary via Gemini. <code>summary_max_length</code> is an approximate word count (default 150). Result in <code>nlp_analysis.summary</code>.</p>
+
+        <h3><code>enable_sentiment_analysis</code></h3>
+        <p><em>bool · default <code>false</code></em></p>
+        <p>Returns <code>nlp_analysis.sentiment</code> with a <code>label</code> (positive/negative/neutral), a numeric <code>score</code>, and a short <code>explanation</code>.</p>
+
+        <h3><code>enable_keyterm_normalization</code> + <code>keyterm_keywords</code></h3>
+        <p><em>bool · default <code>false</code></em></p>
+        <p>Normalises domain-specific terms that the ASR model might render informally. Optionally focus on specific terms by passing <code>keyterm_keywords</code> as a JSON array. Output preserves the original language. Result in <code>nlp_analysis.normalized_text</code>.</p>
+
+        <h2>Redaction</h2>
+
+        <h3><code>enable_profanity_hashing</code></h3>
+        <p><em>bool · default <code>false</code></em></p>
+        <p>Replaces profane words with <code>****</code> in-place in both <code>segments[].text</code> and the top-level <code>text</code>. Uses Gemini for detection.</p>
+
+        <h3><code>hash_keywords</code></h3>
+        <p><em>JSON array · default none</em></p>
+        <p>Masks a specific list of words/phrases using regex (case-insensitive, no LLM). Independent of profanity hashing. Use it for account numbers, card numbers, OTP, and any custom sensitive terms.</p>
+<pre><code>-F 'hash_keywords=["account number","card number","OTP"]'</code></pre>
+
+        <h2>Legacy / compatibility</h2>
+
+        <h3><code>task</code></h3>
+        <p><em>string · default <code>"transcribe"</code></em></p>
+        <p>OpenAI-compatible field. Only <code>"transcribe"</code> is supported today.</p>
+
+        <h2>Putting it all together</h2>
+<pre><code>curl -X POST https://asr.shunyalabs.ai/v1/audio/transcriptions \
+  -H "Authorization: Bearer $SHUNYALABS_API_KEY" \
+  -F "file=@call.wav" \
+  -F "model=zero-indic" \
+  -F "language_code=hi" \
+  -F "enable_diarization=true" \
+  -F "enable_speaker_identification=true" \
+  -F "project=support_team" \
+  -F "enable_emotion_diarization=true" \
+  -F "word_timestamps=true" \
+  -F "enable_intent_detection=true" \
+  -F 'intent_choices=["complaint","inquiry","service_request"]' \
+  -F "enable_summarization=true" \
+  -F "enable_sentiment_analysis=true" \
+  -F "enable_denoising=true"</code></pre>
+
+        <div class="callout callout-success">
+          <div class="callout-title">A sane default set</div>
+          For a contact-centre transcription with agent-assist, start with: <code>model=zero-indic</code>, <code>enable_diarization=true</code>, <code>enable_intent_detection=true</code>, <code>enable_sentiment_analysis=true</code>. Add <code>word_timestamps=true</code> if you need precise search.
+        </div>
+
+        <div class="pager">
+          <a class="pager-link" href="/asr/models.html">
+            <div class="pager-label">← Previous</div>
+            <div class="pager-title">ASR models</div>
+          </a>
+          <a class="pager-link pager-right" href="/asr/features.html">
+            <div class="pager-label">Next →</div>
+            <div class="pager-title">Features</div>
+          </a>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ASR API reference — Shunya Labs Docs</title>
+  <meta name="description" content="Complete API reference for Zero STT: endpoints, request fields, response schema, error codes, speaker APIs.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <script src="/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/index.html">Docs</a><span class="sep">/</span><span>Speech-to-Text</span><span class="sep">/</span><span>API reference</span>
+        </div>
+        <h1>ASR API reference</h1>
+        <p class="lead">Every endpoint under <code>asr.shunyalabs.ai</code>, their request fields, response shapes, and error codes.</p>
+
+        <h2>Authentication</h2>
+        <p>All endpoints except <code>/health</code> require a bearer token:</p>
+<pre><code>Authorization: Bearer sk-your-api-key</code></pre>
+
+        <h2>POST /v1/audio/transcriptions</h2>
+        <p>Batch transcription of an audio file or URL. Returns the full transcript, per-segment timestamps, and any intelligence results you enabled.</p>
+
+        <h3>Request</h3>
+        <p>Content-Type: <code>multipart/form-data</code>. One of <code>file</code> or <code>url</code> required.</p>
+
+        <h3>Fields</h3>
+        <p>See <a href="/asr/configuration.html">Configuration</a> for every field. Required: <code>file</code> (or <code>url</code>) and <code>model</code>.</p>
+
+        <h3>Response (<code>verbose_json</code>)</h3>
+<pre><code>{
+  "success": true,
+  "request_id": "b3f1a2c4-...",
+  "text": "नमस्ते मोहम्मद जी...",
+  "segments": [
+    { "start": 0.51, "end": 5.70, "text": "...", "speaker": "SPEAKER_00" }
+  ],
+  "detected_language": "Hindi",
+  "speakers": ["SPEAKER_00", "SPEAKER_01"],
+  "audio_duration": 5.7,
+  "inference_time_ms": 812.3,
+  "nlp_analysis": {
+    "intent": { "label": "...", "confidence": 0.92, "reasoning": "..." },
+    "sentiment": { "label": "neutral", "score": 0.12, "explanation": "..." },
+    "summary": "...",
+    "translation": "...",
+    "normalized_text": "..."
+  }
+}</code></pre>
+
+        <h3>Response (<code>json</code>)</h3>
+<pre><code>{ "text": "नमस्ते मोहम्मद जी..." }</code></pre>
+
+        <h2>WebSocket /ws</h2>
+        <p>Full protocol documented in <a href="/asr/streaming.html">Streaming</a>. Summary:</p>
+        <ol>
+          <li>Open <code>wss://asr.shunyalabs.ai/ws</code></li>
+          <li>Send JSON init with <code>api_key</code>, <code>model</code>, <code>language</code>, <code>sample_rate</code>, <code>dtype</code></li>
+          <li>Stream binary audio frames</li>
+          <li>Send <code>"END"</code> / <code>{"type":"end"}</code> / empty binary to finalize</li>
+          <li>Receive <code>ready</code> → <code>speech_start</code> → <code>partial</code>* → <code>speech_end</code> → <code>final_segment</code> → ... → <code>end_of_transcript</code> → <code>done</code></li>
+        </ol>
+
+        <h2>GET /health</h2>
+        <p>Unauthenticated. Use for deployment smoke tests.</p>
+<pre><code>curl https://asr.shunyalabs.ai/health
+
+{
+  "status": "ok",
+  "services": {
+    "triton": "ready",
+    "qwen3_asr_streaming": "ready",
+    "qwen3_asr_bls": "ready",
+    "auth": "connected"
+  }
+}</code></pre>
+
+        <p><code>status</code> is <code>"ok"</code> when Triton is healthy, <code>"degraded"</code> otherwise.</p>
+
+        <h2>GET /languages</h2>
+        <p>Returns the full supported language list with ISO codes and script mappings.</p>
+<pre><code>curl https://asr.shunyalabs.ai/languages \
+  -H "Authorization: Bearer $SHUNYALABS_API_KEY"</code></pre>
+
+        <h2 id="speakers">Speaker APIs</h2>
+        <p>Diarization produces <code>SPEAKER_00</code>-style labels. To map those to actual names, register voice profiles.</p>
+
+        <h3>POST /v1/speakers/register</h3>
+<pre><code>curl -X POST https://asr.shunyalabs.ai/v1/speakers/register \
+  -H "Authorization: Bearer $SHUNYALABS_API_KEY" \
+  -F "name=Priya" \
+  -F "file=@priya_sample.wav" \
+  -F "project=support_team"
+
+# Response
+{ "success": true, "speaker": "Priya", "message": "Registered successfully" }</code></pre>
+
+        <div class="callout callout-info">
+          <div class="callout-title">Reference clip requirements</div>
+          5–15 seconds · speaker alone · no background music · no overlapping voices · 16 kHz or higher sample rate.
+        </div>
+
+        <h3>GET /v1/speakers/list</h3>
+<pre><code>curl "https://asr.shunyalabs.ai/v1/speakers/list?project=support_team" \
+  -H "Authorization: Bearer $SHUNYALABS_API_KEY"
+
+# Response
+{
+  "speakers": [
+    { "name": "Priya", "project": "support_team", "registered_at": "2026-03-17T10:00:00" },
+    { "name": "Rahul", "project": "support_team", "registered_at": "2026-03-17T10:05:00" }
+  ]
+}</code></pre>
+
+        <h3>POST /v1/speakers/identify</h3>
+        <p>Standalone speaker ID — skip diarization, just identify who is in a clip.</p>
+<pre><code>curl -X POST https://asr.shunyalabs.ai/v1/speakers/identify \
+  -H "Authorization: Bearer $SHUNYALABS_API_KEY" \
+  -F "file=@unknown.wav" \
+  -F "project=support_team"
+
+# Response
+{ "speaker": "Priya", "confidence": 0.91 }
+# Or: { "speaker": "unknown", "confidence": 0.23 }</code></pre>
+
+        <h3>DELETE /v1/speakers/delete</h3>
+<pre><code>curl -X DELETE https://asr.shunyalabs.ai/v1/speakers/delete \
+  -H "Authorization: Bearer $SHUNYALABS_API_KEY" \
+  -F "name=Priya" \
+  -F "project=support_team"
+
+{ "success": true }</code></pre>
+
+        <h2>HTTP error codes</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Status</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td>200</td><td>Success — audio or JSON body returned.</td></tr>
+              <tr><td>400</td><td>Bad request — missing or malformed fields. Response body: <code>{"detail": "..."}</code>.</td></tr>
+              <tr><td>401</td><td>Unauthorized — API key invalid or missing.</td></tr>
+              <tr><td>422</td><td>Synthesis / transcription error (invalid text or config).</td></tr>
+              <tr><td>429</td><td>Rate limit exceeded. Back off and retry.</td></tr>
+              <tr><td>500</td><td>Internal server error — unexpected server-side failure.</td></tr>
+              <tr><td>503</td><td>Service unavailable — Triton or Redis temporarily down.</td></tr>
+              <tr><td>504</td><td>Gateway timeout — request exceeded the processing window.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 id="reconnect">Retry patterns</h2>
+        <p>Safe to retry: <code>429</code>, <code>500</code>, <code>502</code>, <code>503</code>, <code>504</code>. Not safe: <code>400</code>, <code>401</code>, <code>422</code> — fix the request first.</p>
+
+        <h3>Exponential backoff (Python)</h3>
+<pre><code>import time, requests
+
+def transcribe_with_retry(file_path, retries=3):
+    for attempt in range(retries):
+        with open(file_path, "rb") as f:
+            r = requests.post(
+                "https://asr.shunyalabs.ai/v1/audio/transcriptions",
+                headers={"Authorization": f"Bearer {API_KEY}"},
+                files={"file": f},
+                data={"model": "zero-indic"},
+                timeout=120,
+            )
+        if r.status_code == 200:
+            return r.json()
+        if r.status_code in (429, 500, 502, 503, 504):
+            time.sleep(2 ** attempt)  # 1s, 2s, 4s
+            continue
+        r.raise_for_status()
+    raise RuntimeError("Max retries exceeded")</code></pre>
+
+        <h3>WebSocket reconnection</h3>
+<pre><code>async def stream_with_reconnect(max_attempts=3):
+    for attempt in range(max_attempts):
+        try:
+            async with websockets.connect("wss://asr.shunyalabs.ai/ws") as ws:
+                await ws.send(json.dumps({...}))
+                async for msg in ws:
+                    yield json.loads(msg)
+                return
+        except websockets.ConnectionClosed:
+            await asyncio.sleep(2 ** attempt)
+    raise RuntimeError("Max reconnects exceeded")</code></pre>
+
+        <h2>Rate limits</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Limit</th><th>Value</th></tr></thead>
+            <tbody>
+              <tr><td>Max file size</td><td>500 MB</td></tr>
+              <tr><td>Max audio duration per file</td><td>4 hours</td></tr>
+              <tr><td>Concurrent requests (default tier)</td><td>16</td></tr>
+              <tr><td>HTTP request timeout</td><td>Use at least 120 s for long audio</td></tr>
+              <tr><td>WebSocket inactivity timeout</td><td>300 s (configurable up to 3600 s)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Request IDs</h2>
+        <p>Every response includes <code>request_id</code> (and an <code>X-Request-Id</code> header). Log it — Shunya support uses it to trace issues. On WebSocket, the <code>session_id</code> in the <code>ready</code> event is the equivalent.</p>
+
+        <div class="pager">
+          <a class="pager-link" href="/asr/dashboard.html">
+            <div class="pager-label">← Previous</div>
+            <div class="pager-title">Dashboard</div>
+          </a>
+          <a class="pager-link pager-right" href="/tts/overview.html">
+            <div class="pager-label">Next →</div>
+            <div class="pager-title">Text-to-Speech overview</div>
+          </a>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/nav.js"></script>
+</body>
+</html>

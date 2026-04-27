@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TTS API reference — Shunya Labs Docs</title>
+  <meta name="description" content="Complete TTS API reference: endpoints, fields, response schema, error codes, rate limits.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <script src="/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/index.html">Docs</a><span class="sep">/</span><span>Text-to-Speech</span><span class="sep">/</span><span>API reference</span>
+        </div>
+        <h1>TTS API reference</h1>
+        <p class="lead">Every endpoint under <code>tts.shunyalabs.ai</code>, every field, every error code.</p>
+
+        <h2>Base URLs</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Interface</th><th>URL</th></tr></thead>
+            <tbody>
+              <tr><td>Batch</td><td><code>https://tts.shunyalabs.ai</code></td></tr>
+              <tr><td>Streaming</td><td><code>wss://tts.shunyalabs.ai/ws</code></td></tr>
+              <tr><td>Health</td><td><code>https://tts.shunyalabs.ai/health</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Authentication</h2>
+<pre><code># HTTP
+Authorization: Bearer sk-your-api-key
+
+# WebSocket: header on upgrade, or query param if headers unavailable
+wss://tts.shunyalabs.ai/ws?token=sk-your-api-key</code></pre>
+
+        <h2>POST /v1/audio/speech</h2>
+        <p>Batch synthesis. Returns audio bytes in the requested format.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Property</th><th>Value</th></tr></thead>
+            <tbody>
+              <tr><td>Method</td><td>POST</td></tr>
+              <tr><td>URL</td><td><code>https://tts.shunyalabs.ai/v1/audio/speech</code> (also <code>/tts</code>, <code>/</code>)</td></tr>
+              <tr><td>Content-Type</td><td>application/json</td></tr>
+              <tr><td>Response body</td><td>Audio bytes in requested format</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Request fields</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>model</code></td><td>string</td><td>Yes</td><td>—</td><td>Use <code>zero-indic</code>.</td></tr>
+              <tr><td><code>input</code></td><td>string</td><td>Yes</td><td>—</td><td>Text to synthesize. Max 10,000 chars.</td></tr>
+              <tr><td><code>voice</code></td><td>string</td><td>Yes</td><td>—</td><td>Speaker name. See Voices & languages.</td></tr>
+              <tr><td><code>response_format</code></td><td>string</td><td>No</td><td><code>mp3</code></td><td><code>pcm</code>, <code>wav</code>, <code>mp3</code>, <code>ogg_opus</code>, <code>flac</code>, <code>mulaw</code>, <code>alaw</code>.</td></tr>
+              <tr><td><code>speed</code></td><td>float</td><td>No</td><td><code>1.0</code></td><td>0.25 (slowest) to 4.0 (fastest).</td></tr>
+              <tr><td><code>language</code></td><td>string</td><td>No</td><td>null</td><td>ISO 639 code for text preprocessing.</td></tr>
+              <tr><td><code>trim_silence</code></td><td>bool</td><td>No</td><td><code>false</code></td><td>Remove leading/trailing silence.</td></tr>
+              <tr><td><code>volume_normalization</code></td><td>string</td><td>No</td><td>null</td><td><code>peak</code> (0 dBFS) or <code>loudness</code> (EBU R128).</td></tr>
+              <tr><td><code>background_audio</code></td><td>string</td><td>No</td><td>null</td><td>Preset name (<code>office</code>, <code>cafe</code>, <code>rain</code>, <code>street</code>) or base64-encoded WAV/MP3.</td></tr>
+              <tr><td><code>background_volume</code></td><td>float</td><td>No</td><td><code>0.1</code></td><td>Background mix ratio, 0.0–1.0.</td></tr>
+              <tr><td><code>reference_wav</code></td><td>string</td><td>No</td><td>null</td><td>Base64 audio for voice cloning. WAV/FLAC/OGG. 1–6 s.</td></tr>
+              <tr><td><code>reference_text</code></td><td>string</td><td>No</td><td>""</td><td>Transcript of reference audio. Max 500 chars.</td></tr>
+              <tr><td><code>word_timestamps</code></td><td>bool</td><td>No</td><td><code>false</code></td><td>Include word-level timestamps (batch only).</td></tr>
+              <tr><td><code>max_tokens</code></td><td>int</td><td>No</td><td><code>2048</code></td><td>Max tokens for internal LLM generation. 1–8192.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Response headers</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Header</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td><code>Content-Type</code></td><td>MIME type (<code>audio/mpeg</code>, <code>audio/wav</code>, etc.)</td></tr>
+              <tr><td><code>X-Sample-Rate</code></td><td>Sample rate in Hz</td></tr>
+              <tr><td><code>X-Request-Id</code></td><td>Unique identifier — log for support</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>WebSocket /ws</h2>
+        <p>Full protocol in <a href="/tts/streaming.html">Streaming</a>. Summary below.</p>
+
+        <h3>Handshake</h3>
+        <p>Three equivalent ways to send the synthesis request on connect:</p>
+<pre><code># 1. Query params on connect
+wss://tts.shunyalabs.ai/ws?model=zero-indic&voice=Varun&encoding=pcm
+
+# 2. JSON config message after connecting
+&gt; {"type": "config", "model": "zero-indic", "voice": "Varun", "response_format": "pcm"}
+
+# 3. Full synthesis request after connecting
+&gt; {"model": "zero-indic", "input": "Hello!", "voice": "Sunita", "response_format": "pcm"}</code></pre>
+
+        <h3>Inbound fields</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Field</th><th>Required</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>model</code></td><td>Yes</td><td>Use <code>zero-indic</code>.</td></tr>
+              <tr><td><code>input</code></td><td>Yes</td><td>Text. Max 10,000 chars.</td></tr>
+              <tr><td><code>voice</code></td><td>Yes</td><td>Speaker name.</td></tr>
+              <tr><td><code>response_format</code></td><td>No</td><td>Default <code>pcm</code> on WebSocket.</td></tr>
+              <tr><td><code>speed</code></td><td>No</td><td>0.25–4.0, default 1.0.</td></tr>
+              <tr><td><code>language</code></td><td>No</td><td>ISO 639 code for preprocessing.</td></tr>
+              <tr><td><code>trim_silence</code></td><td>No</td><td>Remove silence, default false.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Outbound message shape</h3>
+<pre><code># 1. Chunk metadata (JSON) — sent before each binary audio frame
+{
+  "type": "chunk",
+  "request_id": "uuid",
+  "chunk_index": 0,
+  "is_final": false,
+  "format": "pcm",
+  "sample_rate": 16000
+}
+
+# 2. Audio data (binary frame) — immediately follows the chunk JSON
+# isinstance(msg, bytes) == True
+
+# 3. Completion (JSON) — sent after all chunks have been delivered
+{
+  "type": "completion",
+  "request_id": "uuid",
+  "status": "complete",
+  "total_chunks": 3,
+  "total_duration_seconds": 2.48,
+  "format": "pcm",
+  "sample_rate": 16000
+}
+
+# 4. Error (JSON) — sent instead of completion on failure
+{
+  "type": "error",
+  "request_id": "uuid",
+  "error": "Error description"
+}</code></pre>
+
+        <h2>GET /health</h2>
+<pre><code>curl https://tts.shunyalabs.ai/health \
+  -H "Authorization: Bearer $SHUNYALABS_API_KEY"
+
+{"status": "healthy", "triton_ready": true, "auth_ready": true}</code></pre>
+
+        <h2>SDK exception hierarchy</h2>
+        <p>All SDK exceptions inherit from <code>ShunyalabsError</code>.</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Exception</th><th>HTTP</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>AuthenticationError</code></td><td>401</td><td>Invalid or missing API key.</td></tr>
+              <tr><td><code>PermissionDeniedError</code></td><td>403</td><td>API key lacks permission.</td></tr>
+              <tr><td><code>RateLimitError</code></td><td>429</td><td>Rate limit exceeded. Back off.</td></tr>
+              <tr><td><code>SynthesisError</code></td><td>422</td><td>Invalid text or config.</td></tr>
+              <tr><td><code>ServerError</code></td><td>5xx</td><td>Transient. Safe to retry.</td></tr>
+              <tr><td><code>TimeoutError</code></td><td>—</td><td>Request exceeded timeout.</td></tr>
+              <tr><td><code>ConnectionError</code></td><td>—</td><td>Network failure.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Rate &amp; concurrency limits</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Limit</th><th>Value</th></tr></thead>
+            <tbody>
+              <tr><td>Max text length per request</td><td>10,000 characters</td></tr>
+              <tr><td>Recommended per-request</td><td>Under 500 characters for best quality; split longer text</td></tr>
+              <tr><td>HTTP request timeout</td><td>Set to at least 120 s for long text</td></tr>
+              <tr><td>Concurrent requests (default tier)</td><td>16</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Rate-limit retry pattern</h3>
+<pre><code>import asyncio
+from shunyalabs.exceptions import RateLimitError
+
+async def synthesize_with_backoff(client, text, config, retries=3):
+    for attempt in range(retries):
+        try:
+            return await client.tts.synthesize(text, config=config)
+        except RateLimitError:
+            wait = 2 ** attempt    # 1s, 2s, 4s
+            await asyncio.sleep(wait)
+    raise RateLimitError("Max retries exceeded")</code></pre>
+
+        <h3>Concurrency cap pattern</h3>
+<pre><code>import asyncio
+
+sem = asyncio.Semaphore(16)
+
+async def safe_synthesize(client, text, config):
+    async with sem:
+        return await client.tts.synthesize(text, config=config)
+
+tasks = [safe_synthesize(client, s, config) for s in scripts]
+results = await asyncio.gather(*tasks)</code></pre>
+
+        <h2>HTTP error status codes</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Status</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>200</td><td>Success. Audio bytes in response body.</td></tr>
+              <tr><td>400</td><td>Missing or malformed fields. Body: <code>{"detail": "..."}</code>.</td></tr>
+              <tr><td>401</td><td>API key invalid or missing.</td></tr>
+              <tr><td>422</td><td>Invalid text or config.</td></tr>
+              <tr><td>429</td><td>Rate limited.</td></tr>
+              <tr><td>500</td><td>Internal server error.</td></tr>
+              <tr><td>503</td><td>Backend (Triton/Redis) temporarily unavailable.</td></tr>
+              <tr><td>504</td><td>Gateway timeout.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>SDK configuration reference</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>api_key</code></td><td>string</td><td>None</td><td>Falls back to <code>SHUNYALABS_API_KEY</code> env var.</td></tr>
+              <tr><td><code>timeout</code></td><td>float</td><td>60.0</td><td>Request timeout (seconds).</td></tr>
+              <tr><td><code>max_retries</code></td><td>int</td><td>2</td><td>Retries for 5xx and connection failures.</td></tr>
+              <tr><td><code>tts_url</code></td><td>string</td><td><code>https://tts.shunyalabs.ai</code></td><td>Batch API base URL. Override for self-hosted.</td></tr>
+              <tr><td><code>tts_ws_url</code></td><td>string</td><td><code>wss://tts.shunyalabs.ai/ws/v1/audio/speech</code></td><td>WebSocket URL.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Self-hosted configuration</h2>
+<pre><code>client = AsyncShunyaClient(
+    api_key="your-api-key",
+    tts_url="https://my-tts-server.example.com",
+    tts_ws_url="wss://my-tts-server.example.com/ws",
+)</code></pre>
+
+        <h2>GitHub</h2>
+        <p><a href="https://github.com/Shunyalabsai/shunyalabs-python-sdk" target="_blank" rel="noopener">github.com/Shunyalabsai/shunyalabs-python-sdk</a></p>
+
+        <div class="pager">
+          <a class="pager-link" href="/tts/llm-to-tts.html">
+            <div class="pager-label">← Previous</div>
+            <div class="pager-title">LLM → TTS pipeline</div>
+          </a>
+          <a class="pager-link pager-right" href="/translation/vak-overview.html">
+            <div class="pager-label">Next →</div>
+            <div class="pager-title">Vāķ Translate</div>
+          </a>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/nav.js"></script>
+</body>
+</html>

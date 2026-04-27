@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Compliance & privacy — Shunya Labs Docs</title>
+  <meta name="description" content="SOC 2 Type II, ISO 27001:2022, HIPAA, GDPR, CCPA. Encryption, data retention, access control.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <script src="/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/index.html">Docs</a><span class="sep">/</span><span>Security</span><span class="sep">/</span><span>Compliance</span>
+        </div>
+        <h1>Compliance &amp; privacy</h1>
+        <p class="lead">Shunya treats voice as the sensitive PII it is. Every audio file is encrypted in flight and at rest, deleted on completion of processing, and never used to train models. This page lays out the controls in detail.</p>
+
+        <h2>Certifications</h2>
+        <div class="grid grid-3">
+          <div class="card">
+            <div class="card-title">SOC 2 Type II</div>
+            <p class="card-desc">Audited security, availability, processing integrity, confidentiality, and privacy controls over a 6–12 month window. Report available under NDA.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">ISO/IEC 27001:2022</div>
+            <p class="card-desc">Accredited Information Security Management System. 2022 revision adds modern controls for cloud, threat intelligence, and data protection.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">HIPAA + BAA</div>
+            <p class="card-desc">Business Associate Agreement executed for US covered entities. Zero STT Med is the model cleared for PHI.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">GDPR</div>
+            <p class="card-desc">EU data subject rights honoured: access, rectification, erasure, portability. EU endpoints available on Enterprise.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">CCPA</div>
+            <p class="card-desc">California Consumer Privacy Act rights supported. Do-not-sell preference honoured.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">RBI data localization</div>
+            <p class="card-desc">India BFSI deployments use on-prem to meet RBI data localization requirements.</p>
+          </div>
+        </div>
+
+        <h2>Encryption</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>State</th><th>Control</th></tr></thead>
+            <tbody>
+              <tr><td>In transit</td><td>TLS 1.3 with strong ciphers. HSTS enabled. No TLS 1.0/1.1.</td></tr>
+              <tr><td>At rest</td><td>AES-256-GCM. Envelope encryption with AWS KMS (or HSM for on-prem) for data keys.</td></tr>
+              <tr><td>In processing</td><td>Audio is encrypted in memory between service tiers; deleted after transcription completes.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Data retention</h2>
+        <ul>
+          <li><strong>Audio:</strong> encrypted during processing, <em>deleted on transcription completion</em>. No permanent storage of audio.</li>
+          <li><strong>Temp files:</strong> purged within 24 hours.</li>
+          <li><strong>Transcripts:</strong> returned to your request and not retained by Shunya in the default configuration.</li>
+          <li><strong>Usage stats:</strong> anonymized, non-identifiable. Retained for billing and capacity planning.</li>
+          <li><strong>User deletion:</strong> honoured on request. No soft-delete beyond the legal minimum.</li>
+        </ul>
+
+        <div class="callout callout-info">
+          <div class="callout-title">Training data</div>
+          Customer audio and customer transcripts are <strong>not</strong> used to train Shunya's models. Model training uses licensed and publicly available corpora — see each model card on Hugging Face for dataset details.
+        </div>
+
+        <h2>Access control</h2>
+        <ul>
+          <li><strong>RBAC</strong> on the management plane. Least-privilege defaults.</li>
+          <li><strong>MFA enforced</strong> for admin and support personnel.</li>
+          <li><strong>Audit logging</strong> on every privileged action; logs shipped to an immutable store.</li>
+          <li><strong>Privilege reviews</strong> performed regularly; access revoked on role change or departure.</li>
+          <li><strong>24/7 monitoring</strong> via SIEM with alerting on anomalous patterns.</li>
+        </ul>
+
+        <h2>API key hygiene</h2>
+        <ul>
+          <li>Keys are hashed at rest — Shunya can't recover a forgotten key.</li>
+          <li>Create separate keys per environment (dev/staging/prod).</li>
+          <li>Rotate on a quarterly schedule or immediately on suspected compromise.</li>
+          <li>Revocation takes effect in under 60 seconds globally.</li>
+          <li>Enterprise customers can use SCIM / SSO for key lifecycle automation.</li>
+        </ul>
+
+        <h2>Redaction &amp; masking features</h2>
+        <p>Two built-in redaction primitives reduce the blast radius of any transcript leak:</p>
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-title"><code>enable_profanity_hashing</code></div>
+            <p class="card-desc">Gemini-based profanity detection. Masks offensive language with <code>****</code>. Works across languages.</p>
+          </div>
+          <div class="card">
+            <div class="card-title"><code>hash_keywords</code></div>
+            <p class="card-desc">Deterministic regex-based masking. Pass a JSON list — <code>["account number","card number","OTP","aadhaar"]</code> — and matches are replaced with <code>****</code> in-place.</p>
+          </div>
+        </div>
+
+        <h2>Incident response</h2>
+        <ul>
+          <li>Dedicated security team on 24/7 on-call rotation.</li>
+          <li>Notifiable incidents reported to customers within 72 hours (GDPR) or 24 hours (HIPAA), whichever is stricter.</li>
+          <li>Post-incident reports shared within 30 days.</li>
+          <li>Public status page: <a href="https://status.shunyalabs.ai" target="_blank" rel="noopener">status.shunyalabs.ai</a>.</li>
+        </ul>
+
+        <h2>Subprocessors</h2>
+        <p>Shunya uses a minimal set of subprocessors for hosting, payments, and observability. The full list is part of the DPA (Data Processing Agreement) supplied to Enterprise customers. Any change to subprocessors is notified in advance.</p>
+
+        <h2>Asking for specific assurances</h2>
+        <ul>
+          <li><strong>SOC 2 Type II report</strong> — available under NDA. Request via Enterprise sales.</li>
+          <li><strong>ISO 27001 certificate</strong> — public; available on the dashboard.</li>
+          <li><strong>HIPAA BAA</strong> — standard template, Shunya-initiated; your counsel can redline.</li>
+          <li><strong>Penetration test summary</strong> — annual third-party test; summary under NDA.</li>
+          <li><strong>Data Processing Agreement</strong> — standard GDPR-aligned template.</li>
+          <li><strong>Sub-processor list</strong> — shared with every DPA.</li>
+        </ul>
+
+        <div class="callout callout-success">
+          <div class="callout-title">Security contact</div>
+          Report a vulnerability or ask a security question: <a href="mailto:security@shunyalabs.ai">security@shunyalabs.ai</a>. Responsible disclosure appreciated — we'll acknowledge within 48 hours.
+        </div>
+
+        <div class="pager">
+          <a class="pager-link" href="/deployment/overview.html">
+            <div class="pager-label">← Previous</div>
+            <div class="pager-title">Deployment</div>
+          </a>
+          <a class="pager-link pager-right" href="/index.html">
+            <div class="pager-label">Back to</div>
+            <div class="pager-title">Docs home</div>
+          </a>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/nav.js"></script>
+</body>
+</html>

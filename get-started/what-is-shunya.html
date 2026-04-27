@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>What is Shunya? — Shunya Labs Docs</title>
+  <meta name="description" content="A 2-minute intro to Shunya Labs: Indic-first voice AI, CPU-compatible architecture, and sovereign deployment.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <script src="/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/index.html">Docs</a><span class="sep">/</span><span>Get Started</span><span class="sep">/</span><span>What is Shunya?</span>
+        </div>
+        <h1>What is Shunya?</h1>
+        <p class="lead">Shunya Labs is a voice AI platform built for languages and deployments that most speech stacks ignore. One API covers speech-to-text, text-to-speech, translation, and voice agents — and you can run it in the cloud, on your own servers, or on a commodity CPU.</p>
+
+        <h2>Three things that make Shunya different</h2>
+
+        <div class="grid grid-3" style="margin-bottom: 1.5rem;">
+          <div class="card">
+            <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10"/></svg></div>
+            <div class="card-title">Indic-first</div>
+            <p class="card-desc">Trained on Indian speech patterns, accents, and code-switching. Not English models with Indic fine-tuning bolted on.</p>
+          </div>
+          <div class="card">
+            <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg></div>
+            <div class="card-title">CPU-compatible</div>
+            <p class="card-desc">Runs on x86 commodity hardware. No GPU required for inference in many configurations — lowers infra cost and enables air-gapped deploys.</p>
+          </div>
+          <div class="card">
+            <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <div class="card-title">Sovereign by default</div>
+            <p class="card-desc">Cloud, on-prem, or fully air-gapped. SOC 2 · ISO 27001 · HIPAA. Your audio is deleted on completion.</p>
+          </div>
+        </div>
+
+        <h2>The stack, end to end</h2>
+        <p>You compose a voice product by picking the pieces you need:</p>
+
+        <div class="mermaid" data-src='graph LR
+  A[Audio in] --> B[Zero STT]
+  B --> C[Intelligence layer]
+  C -->|intent · emotion · summary| D[Your app / CRM]
+  D --> E[LLM]
+  E --> F[Zero TTS]
+  F --> G[Audio out]
+  B -.->|translate| H[Vāķ]
+  H -.-> F
+  style B fill:#eef2ff,stroke:#6366f1
+  style F fill:#eef2ff,stroke:#6366f1
+  style H fill:#eef2ff,stroke:#6366f1'>graph LR
+  A[Audio in] --> B[Zero STT]
+  B --> C[Intelligence layer]
+  C -->|intent · emotion · summary| D[Your app / CRM]
+  D --> E[LLM]
+  E --> F[Zero TTS]
+  F --> G[Audio out]
+  B -.->|translate| H[Vāķ]
+  H -.-> F
+  style B fill:#eef2ff,stroke:#6366f1
+  style F fill:#eef2ff,stroke:#6366f1
+  style H fill:#eef2ff,stroke:#6366f1</div>
+
+        <h3>What each piece does</h3>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Component</th><th>Does</th><th>Best for</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Zero STT</strong></td><td>Transcribes audio to text. 204 languages. Streaming or batch.</td><td>Call centres, meeting notes, media captions, medical scribe.</td></tr>
+              <tr><td><strong>Zero TTS</strong></td><td>Generates natural speech in 23 Indic languages and English. 46 voices, 11 styles.</td><td>IVR, notifications, voice agents, audiobooks.</td></tr>
+              <tr><td><strong>Vāķ Translate</strong></td><td>Translates between any two Indian languages. 2,970 pairs.</td><td>Live conversation translation, multilingual content.</td></tr>
+              <tr><td><strong>Intelligence layer</strong></td><td>Intent, entity, sentiment, diarization, summarization — on top of transcripts.</td><td>Agent assist, analytics, compliance monitoring.</td></tr>
+              <tr><td><strong>Voice agents</strong></td><td>Composes the above into conversational workflows.</td><td>Automated support, debt collection, appointment booking.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>How it runs</h2>
+        <p>Same API, three deployment shapes. Pick what fits your compliance story:</p>
+
+        <div class="grid grid-3">
+          <div class="card">
+            <div class="card-title"><span class="pill pill-green">Managed</span></div>
+            <p class="card-desc"><strong>Cloud API</strong> — fastest to try. Global endpoint, bearer-token auth, streaming over WebSocket. You pay per minute.</p>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="pill pill-amber">Self-hosted</span></div>
+            <p class="card-desc"><strong>On-prem</strong> — the same Triton containers inside your VPC. Data never leaves your network.</p>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="pill pill-zinc">Offline</span></div>
+            <p class="card-desc"><strong>Air-gapped</strong> — pull the open weights from Hugging Face, run on commodity x86. No internet required.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-title">Why "Shunya"?</div>
+          Shunya (शून्य) is the Sanskrit origin of the modern concept of zero — a South Asian mathematical contribution that rewired the world. The voice stack carries the same spirit: one primitive that lets a lot of things exist.
+        </div>
+
+        <h2>Where to go next</h2>
+        <div class="grid grid-2">
+          <a href="/get-started/quickstart.html" class="card-link"><div class="card">
+            <div class="card-title">Quickstart →</div>
+            <p class="card-desc">Your first transcription and first synthesis, in under five minutes.</p>
+          </div></a>
+          <a href="/get-started/capability-matrix.html" class="card-link"><div class="card">
+            <div class="card-title">Capability matrix →</div>
+            <p class="card-desc">Languages, accuracy, latency, and pricing side by side.</p>
+          </div></a>
+        </div>
+
+        <div class="pager">
+          <a class="pager-link" href="/index.html">
+            <div class="pager-label">← Back</div>
+            <div class="pager-title">Docs home</div>
+          </a>
+          <a class="pager-link pager-right" href="/get-started/quickstart.html">
+            <div class="pager-label">Next →</div>
+            <div class="pager-title">Quickstart</div>
+          </a>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/nav.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: document.documentElement.classList.contains('dark') ? 'dark' : 'neutral', securityLevel: 'loose' });
+  </script>
+</body>
+</html>

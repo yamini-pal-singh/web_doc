@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Enterprise journey — Shunya Labs Docs</title>
+  <meta name="description" content="Solution blueprints, compliance, integrations, and deployment guides for decision makers.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <script src="/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/index.html">Docs</a><span class="sep">/</span><span>Personas</span><span class="sep">/</span><span>Enterprise</span>
+        </div>
+        <div class="persona-label" style="margin-bottom: 0.5rem;">For enterprise & channel partners</div>
+        <h1>Evaluate Shunya for production</h1>
+        <p class="lead">You're responsible for ROI, security, and how this fits your existing stack. This page gives you solution blueprints, compliance posture, and the pilot-to-production path.</p>
+
+        <h2>Your journey</h2>
+        <div class="mermaid">graph LR
+  A[1. Map use case] --> B[2. Review blueprint]
+  B --> C[3. Validate compliance]
+  C --> D[4. Pilot]
+  D --> E[5. Integrate<br/>with CRM/CCaaS]
+  E --> F[6. Production]
+  style A fill:#eef2ff,stroke:#6366f1
+  style F fill:#eef2ff,stroke:#6366f1</div>
+
+        <h2>Solution blueprints</h2>
+        <p>Pre-designed flows, ready to adapt. Each links to the full implementation guide.</p>
+
+        <div class="grid grid-2">
+          <a href="/solutions/bfsi.html" class="card-link"><div class="card">
+            <div class="card-title">BFSI — automated collections & onboarding</div>
+            <p class="card-desc">Regional-dialect debt-collection calls, EMI reminders, KYC voice verification. Zero STT Numerical for amounts; voice cloning for consistent brand voice; diarization + sentiment for compliance review.</p>
+          </div></a>
+          <a href="/solutions/healthcare.html" class="card-link"><div class="card">
+            <div class="card-title">Healthcare — real-time medical scribe</div>
+            <p class="card-desc">Zero STT Med converts consultation audio into structured FHIR / HL7 for EHR ingestion. HIPAA + BAA. Deployable on-prem for full data residency.</p>
+          </div></a>
+          <a href="/solutions/contact-centers.html" class="card-link"><div class="card">
+            <div class="card-title">Contact centres — live agent assist</div>
+            <p class="card-desc">Real-time transcription with &lt; 100 ms latency, intent + sentiment, suggested replies, automated QA scoring. Plugs into Genesys, NICE, Five9, Avaya via standard SIPREC or WebRTC.</p>
+          </div></a>
+          <a href="/solutions/media.html" class="card-link"><div class="card">
+            <div class="card-title">Media & entertainment — post-production</div>
+            <p class="card-desc">Batch transcription with word-level timestamps for subtitle generation; diarization for interview formats; transliteration for multi-script delivery.</p>
+          </div></a>
+        </div>
+
+        <h2>Integration surface</h2>
+        <p>Shunya plugs into the systems you already run. Everything exposes either REST or a WebSocket, and the integrations below are customer-built patterns we've seen ship.</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>System</th><th>Shunya side</th><th>Pattern</th></tr></thead>
+            <tbody>
+              <tr><td>Salesforce Service Cloud</td><td>Batch ASR + intelligence layer</td><td>Omni-Channel event → Shunya transcription → case note with sentiment & intent back to Salesforce via REST.</td></tr>
+              <tr><td>Genesys Cloud CX</td><td>Streaming ASR</td><td>AudioHook WebSocket → Shunya WSS → live agent-assist widget via CX Messaging.</td></tr>
+              <tr><td>Twilio Voice / Media Streams</td><td>Streaming ASR + TTS (μ-law)</td><td>Twilio Media Stream → Shunya ASR WSS; Shunya TTS (mulaw 8 kHz) → Twilio <code>&lt;Play&gt;</code> or <code>&lt;Stream&gt;</code>.</td></tr>
+              <tr><td>WhatsApp Business (Cloud API)</td><td>Batch ASR, TTS for voice notes</td><td>Incoming voice note → download → Shunya batch ASR → LLM reply → Shunya TTS → reply as voice note.</td></tr>
+              <tr><td>NICE CXone / Five9 / Avaya</td><td>Streaming ASR</td><td>SIPREC fork or call-recording webhook → Shunya WSS → live transcript in agent desktop.</td></tr>
+              <tr><td>Epic / Cerner (healthcare)</td><td>Zero STT Med + FHIR serializer</td><td>On-prem deploy in hospital VPC → transcripts mapped to FHIR Observation resources → EHR integration.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-title">Partner enablement</div>
+          Integration guides for each system are in active development. If you need a specific pattern before we publish it, email <a href="mailto:0@shunyalabs.ai">0@shunyalabs.ai</a>.
+        </div>
+
+        <h2>Compliance & privacy posture</h2>
+
+        <div class="grid grid-3">
+          <div class="card">
+            <div class="card-title">SOC 2 Type II</div>
+            <p class="card-desc">Third-party audited controls over a 6–12 month window. Report available under NDA.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">ISO 27001:2022</div>
+            <p class="card-desc">Information Security Management System accredited to the 2022 standard.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">HIPAA + BAA</div>
+            <p class="card-desc">Business Associate Agreement executed for covered entities. Zero STT Med is cleared for PHI.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">GDPR / CCPA</div>
+            <p class="card-desc">Data subject rights honoured. EU deployment options available.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">Encryption</div>
+            <p class="card-desc">TLS 1.3 in transit · AES-256 at rest · audio deleted on completion. Temp files purged within 24h.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">Access control</div>
+            <p class="card-desc">RBAC · MFA for admin · audit logging · 24/7 monitoring · regular privilege reviews.</p>
+          </div>
+        </div>
+
+        <h2>Pilot to production path</h2>
+
+        <h3>Week 1–2 — Proof of concept</h3>
+        <ul>
+          <li>Spin up cloud API credentials (free $200 credit covers ~50 hours of audio).</li>
+          <li>Pick one use case with a clear metric (agent handle time, scribe time saved, conversion lift).</li>
+          <li>Benchmark on 50–200 of your own audio samples to validate accuracy in-domain.</li>
+        </ul>
+
+        <h3>Week 3–4 — Integration pilot</h3>
+        <ul>
+          <li>Wire into one production system (CRM, telephony, or EHR) for a 5–10% traffic slice.</li>
+          <li>Instrument end-to-end latency, WER drift, and failure modes.</li>
+          <li>Review with security: SOC 2 report, ISO certificate, BAA if needed.</li>
+        </ul>
+
+        <h3>Week 5+ — Scale out</h3>
+        <ul>
+          <li>Decide cloud vs on-prem based on pilot findings.</li>
+          <li>Negotiate enterprise agreement: committed volume, SLAs, support tier.</li>
+          <li>If on-prem: Triton containers deployed into your VPC or datacenter.</li>
+          <li>Route production traffic with canary → ramp.</li>
+        </ul>
+
+        <h2>ROI framing we've seen work</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Use case</th><th>Savings lever</th><th>Typical improvement</th></tr></thead>
+            <tbody>
+              <tr><td>Agent assist (contact centre)</td><td>AHT reduction · QA automation</td><td>15–25% AHT · 80% QA coverage</td></tr>
+              <tr><td>Medical scribe</td><td>Physician documentation time</td><td>1–2 hours / day / clinician</td></tr>
+              <tr><td>IVR containment</td><td>Deflection from human agents</td><td>30–60% containment rate</td></tr>
+              <tr><td>Debt collections</td><td>Bot coverage of top-of-funnel</td><td>70%+ automated first contact</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-success">
+          <div class="callout-title">Next step</div>
+          Pick a blueprint above that matches your use case, then go to <a href="/deployment/overview.html">Deployment overview</a> for architecture decisions. For a bespoke evaluation, email <a href="mailto:0@shunyalabs.ai">0@shunyalabs.ai</a>.
+        </div>
+
+        <div class="pager">
+          <a class="pager-link" href="/personas/researcher.html">
+            <div class="pager-label">← Previous</div>
+            <div class="pager-title">Researcher journey</div>
+          </a>
+          <a class="pager-link pager-right" href="/personas/operator.html">
+            <div class="pager-label">Next →</div>
+            <div class="pager-title">Operator journey</div>
+          </a>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/nav.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: document.documentElement.classList.contains('dark') ? 'dark' : 'neutral', securityLevel: 'loose' });
+  </script>
+</body>
+</html>

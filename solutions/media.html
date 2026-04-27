@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Media & entertainment — Shunya Labs Docs</title>
+  <meta name="description" content="Batch transcription, subtitle generation, multi-language dubbing for media production workflows.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <script src="/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/index.html">Docs</a><span class="sep">/</span><span>Solutions</span><span class="sep">/</span><span>Media &amp; entertainment</span>
+        </div>
+        <h1>Media &amp; entertainment</h1>
+        <p class="lead">Subtitle generation, interview transcription, multi-language dubbing, content moderation, and post-production search — all powered by Zero STT, Vāķ, and Zero TTS.</p>
+
+        <h2>Reference architecture</h2>
+        <div class="mermaid">graph LR
+  A[Source media<br/>video · podcast · interview] --> B[Zero STT<br/>batch · word timestamps]
+  B --> C[Transcript + timing]
+  C --> D[SRT / VTT<br/>subtitle generation]
+  C --> E[Vāķ Translate<br/>multi-language captions]
+  E --> F[Zero TTS<br/>dubbed audio · voice cloning]
+  C --> G[Search index<br/>scene-level retrieval]
+  style B fill:#eef2ff,stroke:#6366f1
+  style E fill:#f3e8ff,stroke:#a855f7
+  style F fill:#eef2ff,stroke:#6366f1</div>
+
+        <h2>Common workflows</h2>
+
+        <h3>Subtitle generation</h3>
+        <ul>
+          <li>Upload video or extracted audio to batch ASR with <code>word_timestamps=true</code>.</li>
+          <li>Export directly as SRT or VTT — timestamps from the transcript map cleanly to subtitle cue timing.</li>
+          <li>For multi-language subtitles, run the English transcript through Vāķ for each target language; re-serialize to SRT.</li>
+        </ul>
+
+        <h3>Interview &amp; podcast transcription</h3>
+        <ul>
+          <li>Batch transcribe with diarization on — clean speaker-tagged transcripts for editorial review.</li>
+          <li>Use <code>enable_summarization</code> for episode summaries.</li>
+          <li>Use <code>enable_keyterm_normalization</code> with your house glossary (brand names, unusual spellings).</li>
+        </ul>
+
+        <h3>Dubbing &amp; voice-over localization</h3>
+        <ul>
+          <li>Transcribe source audio.</li>
+          <li>Translate script via Vāķ into target language.</li>
+          <li>Either:
+            <ol>
+              <li>Use a preset voice from the 46-voice library that matches the source character, or</li>
+              <li>Clone the original actor's voice from a 3–6 s reference clip, then speak the translated script in the same voice across 23 languages.</li>
+            </ol>
+          </li>
+          <li>Post-mix to the video. For lip-sync, edit translated script length to match source timing (word timestamps help).</li>
+        </ul>
+
+        <h3>Content moderation &amp; scene search</h3>
+        <ul>
+          <li>Transcribe library with word timestamps.</li>
+          <li>Index transcripts in your search system (Elastic, Typesense, Weaviate for semantic).</li>
+          <li>Queries like "find every time the CEO said 'sustainable growth'" become tractable.</li>
+          <li>For moderation, use <code>enable_profanity_hashing</code> and <code>hash_keywords</code> for banned phrases; flagged clips get human review.</li>
+        </ul>
+
+        <h2>Recommended stack</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Layer</th><th>Shunya component</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td>Transcription</td><td>Batch <code>zero-universal</code> or <code>zero-indic</code></td><td><code>word_timestamps=true</code> always for media work</td></tr>
+              <tr><td>Speaker labels</td><td><code>enable_diarization</code></td><td>Register host voices with speaker identification for auto-named transcripts</td></tr>
+              <tr><td>Translation</td><td>Vāķ Translate</td><td>Indic ↔ Indic ↔ English; 2,970 pairs</td></tr>
+              <tr><td>Voice cloning</td><td>Zero TTS with <code>reference_wav</code></td><td>3–6 s clean reference clip per voice</td></tr>
+              <tr><td>Dub output format</td><td><code>wav</code> or <code>flac</code></td><td>Uncompressed for post-mix</td></tr>
+              <tr><td>Subtitle output</td><td>SRT / VTT</td><td>Generated from word timestamps</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Example — generate SRT from a transcript</h2>
+<pre><code>from datetime import timedelta
+
+def to_srt_time(s: float) -> str:
+    td = timedelta(seconds=s)
+    hh, rem = divmod(td.total_seconds(), 3600)
+    mm, ss = divmod(rem, 60)
+    ms = int((ss - int(ss)) * 1000)
+    return f"{int(hh):02d}:{int(mm):02d}:{int(ss):02d},{ms:03d}"
+
+with open("captions.srt", "w") as f:
+    for i, seg in enumerate(transcript["segments"], start=1):
+        f.write(f"{i}\n{to_srt_time(seg['start'])} --&gt; {to_srt_time(seg['end'])}\n{seg['text']}\n\n")</code></pre>
+
+        <h2>Rights &amp; ethics</h2>
+        <div class="callout callout-warn">
+          <div class="callout-title">Voice cloning consent</div>
+          When dubbing with a cloned voice, confirm you have rights — both the original recording's rights and written consent from the voice owner to synthesize. This is both a legal and reputational bar.
+        </div>
+
+        <div class="pager">
+          <a class="pager-link" href="/solutions/contact-centers.html">
+            <div class="pager-label">← Previous</div>
+            <div class="pager-title">Contact centres</div>
+          </a>
+          <a class="pager-link pager-right" href="/deployment/overview.html">
+            <div class="pager-label">Next →</div>
+            <div class="pager-title">Deployment</div>
+          </a>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/nav.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: document.documentElement.classList.contains('dark') ? 'dark' : 'neutral', securityLevel: 'loose' });
+  </script>
+</body>
+</html>

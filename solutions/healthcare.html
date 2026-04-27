@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Healthcare blueprint — Shunya Labs Docs</title>
+  <meta name="description" content="Real-time medical scribing, clinical documentation, FHIR integration. HIPAA compliant.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <script src="/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/index.html">Docs</a><span class="sep">/</span><span>Solutions</span><span class="sep">/</span><span>Healthcare</span>
+        </div>
+        <h1>Healthcare — real-time medical scribe</h1>
+        <p class="lead">Turn consultation audio into structured, FHIR-shaped clinical notes ready for the EHR. Zero STT Med handles drug names, procedures, and diagnoses with clinical-grade accuracy. HIPAA with BAA. Deployable inside your hospital network.</p>
+
+        <h2>Reference architecture</h2>
+        <div class="mermaid">graph LR
+  A[Microphone<br/>consultation room] --> B[Streaming ASR<br/>zero-med]
+  B --> C[Medical terminology<br/>correction · MedGemma]
+  C --> D[Structuring<br/>SOAP / FHIR mapper]
+  D --> E[EHR<br/>Epic · Cerner · Allscripts]
+  B --> F[Live transcript display<br/>for physician review]
+  style B fill:#eef2ff,stroke:#6366f1
+  style C fill:#f3e8ff,stroke:#a855f7</div>
+
+        <h2>Common workflows</h2>
+
+        <h3>Real-time consultation scribe</h3>
+        <ul>
+          <li>Microphone in the consultation room streams to Shunya ASR over WebSocket.</li>
+          <li><code>zero-med</code> transcribes with clinical vocabulary; live transcript shows on the physician's screen for review and correction.</li>
+          <li>On visit close, the structuring layer maps the transcript to SOAP (Subjective, Objective, Assessment, Plan) sections and emits FHIR resources: <code>Encounter</code>, <code>Observation</code>, <code>MedicationRequest</code>, <code>Condition</code>.</li>
+          <li>The physician reviews and signs. Data goes to the EHR.</li>
+        </ul>
+
+        <h3>Hospital call-centre triage</h3>
+        <ul>
+          <li>Patient calls the hospital hotline. Shunya identifies the caller's language automatically.</li>
+          <li>Intent detection routes: <em>appointment_booking</em>, <em>test_result_enquiry</em>, <em>emergency</em>, <em>insurance</em>.</li>
+          <li>Emergency intents trigger immediate human transfer with auto-transcribed symptom notes for the paramedic.</li>
+        </ul>
+
+        <h3>Post-surgery debrief capture</h3>
+        <ul>
+          <li>Surgeon dictates a debrief immediately after surgery (iPad or mic).</li>
+          <li>Batch transcription with <code>zero-med</code>; keyterm normalization against hospital formulary and procedure list.</li>
+          <li>Auto-generated operative note pre-populates the EHR for physician signoff.</li>
+        </ul>
+
+        <h2>Recommended stack</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Layer</th><th>Shunya component</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td>Real-time transcription</td><td>Streaming <code>zero-med</code></td><td>WebSocket · PCM 16 kHz · diarization for doctor/patient separation</td></tr>
+              <tr><td>Terminology correction</td><td>Auto (MedGemma)</td><td>Enabled by default with <code>zero-med</code></td></tr>
+              <tr><td>Structuring</td><td>Keyterm normalization + your SOAP mapper</td><td>Use hospital's drug & procedure list as <code>keyterm_keywords</code></td></tr>
+              <tr><td>Redaction</td><td><code>hash_keywords</code> for sensitive identifiers</td><td>Aadhaar, phone, address — masked in transcripts sent outside the clinical zone</td></tr>
+              <tr><td>Language</td><td>English + regional Indic as needed</td><td><code>zero-indic</code> fallback for non-English consultations</td></tr>
+              <tr><td>Deployment</td><td>On-prem (strongly recommended)</td><td>Triton containers inside hospital VPC · no PHI leaves the network</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>HIPAA posture</h2>
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-title">BAA executed</div>
+            <p class="card-desc">Business Associate Agreement signed for covered entities. Shunya accepts PHI processing under standard HIPAA terms.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">Zero STT Med cleared for PHI</div>
+            <p class="card-desc">The <code>zero-med</code> endpoint is the model path cleared for PHI. Non-PHI workloads can use <code>zero-universal</code>.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">Audio retention</div>
+            <p class="card-desc">Audio is encrypted in transit (TLS 1.3) and at rest (AES-256), deleted on transcription completion. Temp files purged within 24h.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">On-prem data residency</div>
+            <p class="card-desc">For the strongest data-residency story, deploy on-prem. PHI never leaves the hospital network.</p>
+          </div>
+        </div>
+
+        <h2>FHIR / HL7 output shape</h2>
+        <p>After structuring, a typical consultation produces resources like:</p>
+<pre><code>{
+  "resourceType": "Encounter",
+  "status": "finished",
+  "subject": { "reference": "Patient/12345" },
+  "participant": [{ "individual": { "reference": "Practitioner/abc" } }],
+  "period": { "start": "2026-04-23T10:00:00+05:30", "end": "2026-04-23T10:18:00+05:30" }
+}
+
+{
+  "resourceType": "Observation",
+  "code": { "coding": [{ "system": "http://snomed.info/sct", "code": "271807003", "display": "Eruption of skin" }] },
+  "subject": { "reference": "Patient/12345" },
+  "valueString": "Itchy rash on forearms for 3 days, worse at night"
+}
+
+{
+  "resourceType": "MedicationRequest",
+  "status": "active",
+  "intent": "order",
+  "medicationCodeableConcept": { "text": "Cetirizine 10mg" },
+  "subject": { "reference": "Patient/12345" },
+  "dosageInstruction": [{ "text": "1 tab at bedtime for 7 days" }]
+}</code></pre>
+
+        <h2>ROI levers we've seen</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Metric</th><th>Before</th><th>With scribe</th></tr></thead>
+            <tbody>
+              <tr><td>Documentation time per visit</td><td>8–12 min</td><td>1–2 min (review only)</td></tr>
+              <tr><td>Physician admin hours / day</td><td>2–3 hours</td><td>30–60 min</td></tr>
+              <tr><td>Charting backlog</td><td>Common</td><td>Rare — notes ready by end of visit</td></tr>
+              <tr><td>Patient-facing eye contact</td><td>Fractured</td><td>Continuous</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pager">
+          <a class="pager-link" href="/solutions/bfsi.html">
+            <div class="pager-label">← Previous</div>
+            <div class="pager-title">BFSI</div>
+          </a>
+          <a class="pager-link pager-right" href="/solutions/contact-centers.html">
+            <div class="pager-label">Next →</div>
+            <div class="pager-title">Contact centres</div>
+          </a>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/nav.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: document.documentElement.classList.contains('dark') ? 'dark' : 'neutral', securityLevel: 'loose' });
+  </script>
+</body>
+</html>

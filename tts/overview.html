@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TTS overview — Shunya Labs Docs</title>
+  <meta name="description" content="Zero TTS overview: 46 voices, 23 Indic languages, 11 expression styles, voice cloning.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <script src="/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/index.html">Docs</a><span class="sep">/</span><span>Text-to-Speech</span><span class="sep">/</span><span>Overview</span>
+        </div>
+        <h1>Text-to-Speech (TTS)</h1>
+        <p class="lead">Zero TTS is Shunya's speech synthesis family. 46 speaker voices across 23 Indic languages and English. Every voice can speak every language. 11 expression styles. Voice cloning from a 3–6 second reference clip.</p>
+
+        <h2>How it fits together</h2>
+        <div class="mermaid">graph LR
+  A[Text] --> B{Mode}
+  B -->|Batch| C[POST /v1/audio/speech]
+  B -->|Streaming| D[WSS /ws/v1/audio/speech]
+  C --> E[Audio file<br/>mp3 · wav · pcm · ...]
+  D --> F[Audio chunks<br/>played incrementally]
+  G[Voice + Style + Speed] -.-> C
+  G -.-> D
+  style C fill:#eef2ff,stroke:#6366f1
+  style D fill:#eef2ff,stroke:#6366f1</div>
+
+        <h2>Two modes</h2>
+
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-title">Batch</div>
+            <p class="card-desc"><code>POST /v1/audio/speech</code> — you send text, wait, get back an audio file. Best for pre-rendered IVR prompts, notifications, audiobooks, offline pipelines.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">Streaming</div>
+            <p class="card-desc"><code>WSS /ws/v1/audio/speech</code> — open a WebSocket and audio chunks arrive as they're synthesized. Best for voice agents and real-time playback where you can't wait for the full file.</p>
+          </div>
+        </div>
+
+        <h2>Endpoints</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Mode</th><th>Endpoint</th><th>Default format</th></tr></thead>
+            <tbody>
+              <tr><td>Batch</td><td><code>POST https://tts.shunyalabs.ai/v1/audio/speech</code></td><td>mp3</td></tr>
+              <tr><td>Streaming</td><td><code>wss://tts.shunyalabs.ai/ws/v1/audio/speech</code></td><td>mp3 (pcm recommended)</td></tr>
+              <tr><td>Health</td><td><code>GET https://tts.shunyalabs.ai/health</code></td><td>—</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Your first synthesis</h2>
+
+        <div class="code-group">
+          <div class="code-tabs">
+            <button class="code-tab active">cURL</button>
+            <button class="code-tab">Python SDK</button>
+            <button class="code-tab">OpenAI SDK</button>
+          </div>
+          <div class="code-panel active">
+<pre><code>curl -X POST https://tts.shunyalabs.ai/v1/audio/speech \
+  -H "Authorization: Bearer $SHUNYALABS_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"model":"zero-indic","input":"Hello, how are you today?","voice":"Varun"}' \
+  --output hello.mp3</code></pre>
+          </div>
+          <div class="code-panel">
+<pre><code>import asyncio
+from shunyalabs import AsyncShunyaClient
+from shunyalabs.tts import TTSConfig
+
+async def main():
+    async with AsyncShunyaClient() as client:
+        result = await client.tts.synthesize(
+            "Hello, how are you today?",
+            config=TTSConfig(model="zero-indic", voice="Varun"),
+        )
+        result.save("hello.mp3")
+
+asyncio.run(main())</code></pre>
+          </div>
+          <div class="code-panel">
+<pre><code>from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://tts.shunyalabs.ai/v1",
+)
+response = client.audio.speech.create(
+    model="zero-indic",
+    input="Hello, how are you today?",
+    voice="Varun",
+    response_format="mp3",
+)
+response.stream_to_file("output.mp3")</code></pre>
+          </div>
+        </div>
+
+        <h2>Key features</h2>
+
+        <div class="grid grid-3">
+          <a href="/tts/voices.html" class="card-link"><div class="card">
+            <div class="card-title">46 voices</div>
+            <p class="card-desc">Male & female speakers per language. Any voice, any language — cross-lingual synthesis is built in.</p>
+          </div></a>
+          <a href="/tts/audio-formats.html" class="card-link"><div class="card">
+            <div class="card-title">7 audio formats</div>
+            <p class="card-desc">PCM, WAV, MP3, OGG Opus, FLAC, mulaw, alaw. Pick by use case — telephony, web, archival.</p>
+          </div></a>
+          <a href="/tts/expression-styles.html" class="card-link"><div class="card">
+            <div class="card-title">11 expression styles</div>
+            <p class="card-desc">Happy, Sad, News, Narrative, Conversational, Enthusiastic, and more — prepended as tags to your text.</p>
+          </div></a>
+          <a href="/tts/voice-cloning.html" class="card-link"><div class="card">
+            <div class="card-title">Voice cloning</div>
+            <p class="card-desc">Clone a voice from 3–6 seconds of reference audio. Works across all 23 supported languages.</p>
+          </div></a>
+          <a href="/tts/streaming.html" class="card-link"><div class="card">
+            <div class="card-title">Streaming</div>
+            <p class="card-desc">First audio in under 350 ms. Critical for voice agents.</p>
+          </div></a>
+          <a href="/tts/llm-to-tts.html" class="card-link"><div class="card">
+            <div class="card-title">LLM → TTS pipeline</div>
+            <p class="card-desc">Pipe OpenAI / Anthropic / Gemini tokens to TTS at sentence boundaries — the core pattern for low-latency voice agents.</p>
+          </div></a>
+        </div>
+
+        <h2>Required fields, at a glance</h2>
+<pre><code>{
+  "model": "zero-indic",      // required — only "zero-indic" today
+  "input": "Your text here",  // required — up to 10,000 chars
+  "voice": "Varun",           // required — see Voices page for full list
+  "response_format": "mp3",   // optional — default mp3
+  "speed": 1.0,               // optional — 0.25 to 4.0
+  "language": "en",           // optional — ISO code for preprocessing
+  "trim_silence": false,      // optional — tight audio when true
+  "reference_wav": "...",     // optional — base64 for voice cloning
+  "reference_text": "..."     // optional — transcript for voice cloning
+}</code></pre>
+
+        <h2>Where to go next</h2>
+        <div class="grid grid-3">
+          <a href="/tts/quickstart.html" class="card-link"><div class="card">
+            <div class="card-title">Quickstart →</div>
+            <p class="card-desc">Full end-to-end walkthrough.</p>
+          </div></a>
+          <a href="/tts/voices.html" class="card-link"><div class="card">
+            <div class="card-title">Voices & languages →</div>
+            <p class="card-desc">Pick a voice for your use case.</p>
+          </div></a>
+          <a href="/tts/api-reference.html" class="card-link"><div class="card">
+            <div class="card-title">API reference →</div>
+            <p class="card-desc">Every field, every error code.</p>
+          </div></a>
+        </div>
+
+        <div class="pager">
+          <a class="pager-link" href="/asr/api-reference.html">
+            <div class="pager-label">← Previous</div>
+            <div class="pager-title">ASR API reference</div>
+          </a>
+          <a class="pager-link pager-right" href="/tts/quickstart.html">
+            <div class="pager-label">Next →</div>
+            <div class="pager-title">TTS quickstart</div>
+          </a>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/nav.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: document.documentElement.classList.contains('dark') ? 'dark' : 'neutral', securityLevel: 'loose' });
+  </script>
+</body>
+</html>

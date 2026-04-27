@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ASR models — Shunya Labs Docs</title>
+  <meta name="description" content="Zero STT models: zero-indic, zero-universal, zero-med, zero-codeswitch. When to use each.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <script src="/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/index.html">Docs</a><span class="sep">/</span><span>Speech-to-Text</span><span class="sep">/</span><span>Models</span>
+        </div>
+        <h1>ASR models</h1>
+        <p class="lead">Four speech recognition models tuned for different domains. Pass the name in the <code>model</code> field. You can't mix models within a single request, but you can switch between requests freely.</p>
+
+        <h2>Side-by-side</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Model</th><th>Languages</th><th>Special behaviour</th><th>Price ($/min)</th></tr></thead>
+            <tbody>
+              <tr><td><code>zero-indic</code></td><td>55+ Indian languages</td><td>Standard transcription</td><td>$0.0045</td></tr>
+              <tr><td><code>zero-universal</code></td><td>204 languages</td><td>Standard transcription, strongest on English</td><td>$0.0039</td></tr>
+              <tr><td><code>zero-med</code></td><td>English + Indic</td><td>Auto medical-terminology correction (MedGemma)</td><td>$0.0050</td></tr>
+              <tr><td><code>zero-codeswitch</code></td><td>Hinglish, Tanglish, etc.</td><td>Auto English-token restoration to Latin script</td><td>$0.0050</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 id="zero-indic"><code>zero-indic</code></h2>
+        <p>The default for Indian languages. Native handling of Hindi, Tamil, Telugu, Kannada, Marathi, Bengali, Gujarati, Punjabi, Malayalam, Odia, Urdu, Assamese, Maithili, and more.</p>
+
+        <h3>When to use</h3>
+        <ul>
+          <li>Single-language Indic audio where you know (or can detect) the language</li>
+          <li>Call-centre audio for Indian customers in their native tongue</li>
+          <li>Meetings, interviews, dictation, media transcription</li>
+        </ul>
+
+        <h3>Example</h3>
+<pre><code>curl -X POST https://asr.shunyalabs.ai/v1/audio/transcriptions \
+  -H "Authorization: Bearer $SHUNYALABS_API_KEY" \
+  -F "file=@call.wav" \
+  -F "model=zero-indic" \
+  -F "language_code=hi"</code></pre>
+
+        <h2 id="zero-universal"><code>zero-universal</code></h2>
+        <p>99-language Whisper-class foundation model (docs say 204; the published leaderboard number varies by evaluation set). Strongest on English and European languages. Use when the input could be anything.</p>
+
+        <h3>When to use</h3>
+        <ul>
+          <li>English or non-Indian-language content</li>
+          <li>Audio where you don't know the language in advance — set <code>language_code=auto</code></li>
+          <li>International meetings with mixed English and other languages</li>
+        </ul>
+
+        <h3>Benchmarks</h3>
+        <p>Composite WER on the HuggingFace Open ASR leaderboard: <strong>3.10%</strong> — claimed 48% fewer errors than the next-best model.</p>
+        <a href="/get-started/capability-matrix.html#asr-accuracy--openasr-composite" class="persona-link">See per-dataset numbers →</a>
+
+        <h3>Example</h3>
+<pre><code>curl -X POST https://asr.shunyalabs.ai/v1/audio/transcriptions \
+  -H "Authorization: Bearer $SHUNYALABS_API_KEY" \
+  -F "file=@podcast.wav" \
+  -F "model=zero-universal"</code></pre>
+
+        <h2 id="zero-med"><code>zero-med</code></h2>
+        <p>Clinical-grade. Trained to recognise drug names, procedures, anatomy, dosages, and diagnostic terms. Auto-applies medical terminology correction via MedGemma (no extra flag needed).</p>
+
+        <h3>When to use</h3>
+        <ul>
+          <li>Doctor-patient consultations</li>
+          <li>OT / surgical notes dictation</li>
+          <li>Case note transcription for EHR ingest</li>
+        </ul>
+
+        <h3>Compliance</h3>
+        <div class="callout callout-info">
+          <div class="callout-title">HIPAA path</div>
+          Zero STT Med is the model cleared for PHI handling under the Shunya BAA. Route PHI only through this model, and prefer on-prem deployment for the strongest data-residency story.
+        </div>
+
+        <h3>Example</h3>
+<pre><code>curl -X POST https://asr.shunyalabs.ai/v1/audio/transcriptions \
+  -H "Authorization: Bearer $SHUNYALABS_API_KEY" \
+  -F "file=@consult.wav" \
+  -F "model=zero-med" \
+  -F "language_code=en"</code></pre>
+
+        <h3>Output shape</h3>
+        <p>Same response schema as other models; the value-add is in the text itself — drug names in correct spelling, procedure names in standard terminology. Pair with <code>enable_keyterm_normalization</code> for further normalization against your own glossary.</p>
+
+        <h2 id="zero-codeswitch"><code>zero-codeswitch</code></h2>
+        <p>Tuned for speech that mixes two languages within a single utterance — Hinglish ("<em>mujhe yeh passbook update karna hai</em>"), Tanglish, Banglish, etc. Automatically restores English words to Latin script so the final transcript reads cleanly.</p>
+
+        <h3>When to use</h3>
+        <ul>
+          <li>Urban Indian call-centre conversations (customers routinely switch mid-sentence)</li>
+          <li>Social-media, podcast, or creator content with code-mixed speech</li>
+          <li>Any conversation where separating languages would force unnatural phrasing</li>
+        </ul>
+
+        <h3>Example</h3>
+<pre><code>curl -X POST https://asr.shunyalabs.ai/v1/audio/transcriptions \
+  -H "Authorization: Bearer $SHUNYALABS_API_KEY" \
+  -F "file=@hinglish.wav" \
+  -F "model=zero-codeswitch"</code></pre>
+
+        <h3>What the output looks like</h3>
+<pre><code>{
+  "text": "मुझे अपना EMI details check करना है",
+  "detected_language": "Hinglish",
+  "segments": [
+    { "start": 0.3, "end": 3.1, "text": "मुझे अपना EMI details check करना है" }
+  ]
+}</code></pre>
+
+        <h2>Picking the right model, decision flow</h2>
+        <div class="mermaid">graph TD
+  Q{What's in the audio?}
+  Q --> A[Clinical content]
+  Q --> B[Mixed Indic + English]
+  Q --> C[Single Indic language]
+  Q --> D[English or international]
+  A --> MED[<code>zero-med</code>]
+  B --> CS[<code>zero-codeswitch</code>]
+  C --> IND[<code>zero-indic</code>]
+  D --> UNI[<code>zero-universal</code>]
+  style MED fill:#eef2ff,stroke:#6366f1
+  style CS fill:#eef2ff,stroke:#6366f1
+  style IND fill:#eef2ff,stroke:#6366f1
+  style UNI fill:#eef2ff,stroke:#6366f1</div>
+
+        <div class="callout callout-info">
+          <div class="callout-title">Not sure which?</div>
+          Start with <code>zero-indic</code> if the speakers are Indian; <code>zero-universal</code> otherwise. Swap to <code>zero-codeswitch</code> if you see English words coming through phonetically in the Indic transcript, or <code>zero-med</code> if drug/procedure terms are being butchered.
+        </div>
+
+        <div class="pager">
+          <a class="pager-link" href="/asr/overview.html">
+            <div class="pager-label">← Previous</div>
+            <div class="pager-title">ASR overview</div>
+          </a>
+          <a class="pager-link pager-right" href="/asr/configuration.html">
+            <div class="pager-label">Next →</div>
+            <div class="pager-title">Configuration</div>
+          </a>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/nav.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: document.documentElement.classList.contains('dark') ? 'dark' : 'neutral', securityLevel: 'loose' });
+  </script>
+</body>
+</html>

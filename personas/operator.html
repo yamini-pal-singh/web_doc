@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Operator journey — Shunya Labs Docs</title>
+  <meta name="description" content="Upload audio, transcribe, edit, and export — no code required.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <script src="/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/index.html">Docs</a><span class="sep">/</span><span>Personas</span><span class="sep">/</span><span>Operator</span>
+        </div>
+        <div class="persona-label" style="margin-bottom: 0.5rem;">For day-to-day users</div>
+        <h1>Use Shunya without writing code</h1>
+        <p class="lead">You have audio. You need a clean transcript, a translation, or a voiceover. This page walks you through the dashboard — no programming required.</p>
+
+        <h2>What you can do from the dashboard</h2>
+        <div class="grid grid-3">
+          <div class="card">
+            <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+            <div class="card-title">Upload & transcribe</div>
+            <p class="card-desc">Drag an MP3 or WAV in, choose a language, get a timestamped transcript.</p>
+          </div>
+          <div class="card">
+            <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+            <div class="card-title">Edit & correct</div>
+            <p class="card-desc">Click any word to fix errors. Speaker labels are editable too.</p>
+          </div>
+          <div class="card">
+            <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <div class="card-title">Export</div>
+            <p class="card-desc">Download as PDF, DOCX, SRT (subtitles), or plain text.</p>
+          </div>
+          <div class="card">
+            <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10"/></svg></div>
+            <div class="card-title">Live translate (Vāķ)</div>
+            <p class="card-desc">Open your mic and speak — the other side hears your words in their language.</p>
+          </div>
+          <div class="card">
+            <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></div>
+            <div class="card-title">Generate voiceover</div>
+            <p class="card-desc">Paste text, pick a voice and style, download an audio file.</p>
+          </div>
+          <div class="card">
+            <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+            <div class="card-title">Team sharing</div>
+            <p class="card-desc">Share transcripts by link, set read/edit permissions, track changes.</p>
+          </div>
+        </div>
+
+        <h2>Dashboard walkthrough</h2>
+
+        <h3>1. Upload audio</h3>
+        <p>From <strong>Transcriptions → New</strong>, drag a file into the drop zone (or click to browse). Supported formats: MP3, WAV, M4A, OGG, FLAC, WebM. Maximum file size: 500 MB.</p>
+        <div class="callout callout-info">
+          <div class="callout-title">Tip for best accuracy</div>
+          Clear audio beats clever settings. 16 kHz or higher, single channel per speaker, minimal background noise. If your audio is noisy, toggle <strong>Enhance → Denoise</strong> before transcribing.
+        </div>
+
+        <h3>2. Choose model & language</h3>
+        <ul>
+          <li><strong>Language:</strong> set to "Auto" unless you know the clip is a single language — locking the language improves accuracy on short clips.</li>
+          <li><strong>Model:</strong>
+            <ul>
+              <li><em>Indic</em> — for Hindi, Tamil, Telugu, Bengali, and other Indian languages.</li>
+              <li><em>Universal</em> — for English or non-Indian languages.</li>
+              <li><em>Code-switch</em> — when speakers mix languages (Hinglish, Tanglish).</li>
+              <li><em>Medical</em> — for clinical recordings with drug names, procedures, diagnoses.</li>
+            </ul>
+          </li>
+          <li><strong>Diarization:</strong> toggle on if you have more than one speaker.</li>
+        </ul>
+
+        <h3>3. Review & edit</h3>
+        <p>Once the job finishes, you'll see a split view: waveform at the top, transcript below. Clicking any word jumps the player to that timestamp. Double-click to edit. Hover a speaker label to rename (if you've registered voices, they appear automatically as "Priya", "Rahul", etc.).</p>
+
+        <h3>4. Export</h3>
+        <p>From the <strong>Export</strong> button, pick:</p>
+        <ul>
+          <li><strong>PDF</strong> — formatted transcript with timestamps and speaker labels</li>
+          <li><strong>DOCX</strong> — Microsoft Word format for further editing</li>
+          <li><strong>SRT / VTT</strong> — for video subtitles</li>
+          <li><strong>TXT</strong> — plain text</li>
+          <li><strong>JSON</strong> — machine-readable output with timestamps</li>
+        </ul>
+
+        <h2>Vāķ — live 2-way translation</h2>
+        <p>For meetings or conversations across languages:</p>
+        <ol>
+          <li>Open <strong>Vāķ</strong> from the left nav.</li>
+          <li>Pick <strong>your language</strong> and <strong>the other person's language</strong>.</li>
+          <li>Tap the microphone — when you speak, the other side hears a voice translation in real time. When they reply, you hear theirs.</li>
+          <li>A running transcript of both sides appears in the middle for reference.</li>
+        </ol>
+
+        <div class="callout callout-warn">
+          <div class="callout-title">If the translation feels choppy</div>
+          Move to a quieter room, and use a wired headset if you have one. Bluetooth can introduce 150–300 ms of lag that compounds with translation latency.
+        </div>
+
+        <h2>Generate a voiceover</h2>
+        <ol>
+          <li>Open <strong>Voices → New synthesis</strong>.</li>
+          <li>Paste your script (up to ~2,000 words at a time).</li>
+          <li>Pick a voice: filter by language and gender, click to preview a sample.</li>
+          <li>Pick a style: Neutral for professional, Conversational for friendly, News for formal announcements, Narrative for storytelling.</li>
+          <li>Adjust speed if needed (1.0 = natural, 1.3 = quick notification, 0.8 = slow/clear).</li>
+          <li>Click <strong>Generate</strong>. Preview, then download as MP3 or WAV.</li>
+        </ol>
+
+        <h2>Common questions</h2>
+
+        <h3>Why is there a weird word in my transcript?</h3>
+        <p>Domain-specific terms (drug names, finance acronyms, brand names) sometimes get spelled out phonetically. Use <strong>Normalize key terms</strong> in the upload panel to list terms you expect, or fix them inline and save a <strong>glossary</strong> to auto-apply next time.</p>
+
+        <h3>Why doesn't the speaker label match the person's name?</h3>
+        <p>Without registered voices, Shunya labels speakers as <em>SPEAKER_00</em>, <em>SPEAKER_01</em>, etc. Rename them by clicking the label. To have Shunya name them automatically, go to <strong>Speakers → Register</strong> and upload a short clip of each person speaking alone.</p>
+
+        <h3>How do I hide sensitive information?</h3>
+        <p>In the upload panel, switch on <strong>Redact</strong>. You can:</p>
+        <ul>
+          <li>Auto-detect & hash profanity</li>
+          <li>Mask specific phrases (e.g. "account number", "OTP") with <strong>****</strong></li>
+        </ul>
+
+        <h3>How do I share a transcript with a colleague?</h3>
+        <p>Click <strong>Share</strong> in the top-right of any transcript. Pick <em>view-only</em> or <em>can edit</em>. The link is signed and expires in 30 days by default.</p>
+
+        <div class="callout callout-info">
+          <div class="callout-title">No dashboard yet?</div>
+          If your organization deployed Shunya on-premises, your admin should have a custom dashboard URL (often <code>voice.yourcompany.internal</code>). Ask them for the link and credentials.
+        </div>
+
+        <div class="pager">
+          <a class="pager-link" href="/personas/enterprise.html">
+            <div class="pager-label">← Previous</div>
+            <div class="pager-title">Enterprise journey</div>
+          </a>
+          <a class="pager-link pager-right" href="/asr/overview.html">
+            <div class="pager-label">Next →</div>
+            <div class="pager-title">Speech-to-Text overview</div>
+          </a>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/nav.js"></script>
+</body>
+</html>

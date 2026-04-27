@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ASR overview — Shunya Labs Docs</title>
+  <meta name="description" content="Speech-to-text overview: models, endpoints, and when to use each.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <script src="/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/index.html">Docs</a><span class="sep">/</span><span>Speech-to-Text</span><span class="sep">/</span><span>Overview</span>
+        </div>
+        <h1>Speech-to-Text (ASR)</h1>
+        <p class="lead">Zero STT is Shunya's speech recognition family. One API surface for batch and streaming, a choice of four models tuned for different domains, and an intelligence layer that adds diarization, emotion, intent, and more on top of the transcript.</p>
+
+        <h2>How it fits together</h2>
+        <div class="mermaid">graph LR
+  A[Audio<br/>file or stream] --> B[Zero STT]
+  B --> C[Transcript<br/>text + segments]
+  C --> D[Optional: intelligence layer]
+  D --> E1[Diarization]
+  D --> E2[Emotion]
+  D --> E3[Intent · Sentiment]
+  D --> E4[Summary · Redaction]
+  D --> E5[Translation]
+  style B fill:#eef2ff,stroke:#6366f1
+  style D fill:#f3e8ff,stroke:#a855f7</div>
+
+        <h2>Endpoints</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Mode</th><th>Endpoint</th><th>Use for</th></tr></thead>
+            <tbody>
+              <tr><td>Batch</td><td><code>POST https://asr.shunyalabs.ai/v1/audio/transcriptions</code></td><td>Uploaded files, post-processing, async jobs.</td></tr>
+              <tr><td>Streaming</td><td><code>wss://asr.shunyalabs.ai/ws</code></td><td>Live transcription, voice agents, IVR.</td></tr>
+              <tr><td>Health</td><td><code>GET https://asr.shunyalabs.ai/health</code></td><td>Liveness checks. No auth.</td></tr>
+              <tr><td>Languages</td><td><code>GET https://asr.shunyalabs.ai/languages</code></td><td>Returns supported language names, ISO codes, and scripts.</td></tr>
+              <tr><td>Speakers</td><td><code>/v1/speakers/*</code></td><td>Register, list, identify, delete voice profiles for speaker identification.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Pick a model</h2>
+        <p>Every request takes a <code>model</code> field. There are four to choose from:</p>
+
+        <div class="grid grid-2">
+          <a href="/asr/models.html#zero-indic" class="card-link"><div class="card">
+            <div class="card-title"><code>zero-indic</code></div>
+            <p class="card-desc">Hindi, Tamil, Telugu, Kannada, Marathi, Bengali and 50+ Indian languages. The default for Indic content.</p>
+          </div></a>
+          <a href="/asr/models.html#zero-universal" class="card-link"><div class="card">
+            <div class="card-title"><code>zero-universal</code></div>
+            <p class="card-desc">204-language Whisper-class model. English, European, Asian, African. Auto-detects language when you don't know it.</p>
+          </div></a>
+          <a href="/asr/models.html#zero-med" class="card-link"><div class="card">
+            <div class="card-title"><code>zero-med</code></div>
+            <p class="card-desc">Clinical / medical speech with drug, procedure, and diagnosis vocabulary. HIPAA-cleared. Auto-applies medical terminology correction.</p>
+          </div></a>
+          <a href="/asr/models.html#zero-codeswitch" class="card-link"><div class="card">
+            <div class="card-title"><code>zero-codeswitch</code></div>
+            <p class="card-desc">Native handling of mixed Hindi-English (Hinglish), Tamil-English (Tanglish) and similar blends. Gemini-backed code-switch restoration.</p>
+          </div></a>
+        </div>
+
+        <h2>Your first request</h2>
+        <p>Minimum viable: file, model, bearer token.</p>
+<pre><code>curl -X POST https://asr.shunyalabs.ai/v1/audio/transcriptions \
+  -H "Authorization: Bearer $SHUNYALABS_API_KEY" \
+  -F "file=@meeting.wav" \
+  -F "model=zero-indic"</code></pre>
+
+        <p>Or pass a URL instead of uploading a file:</p>
+<pre><code>curl -X POST https://asr.shunyalabs.ai/v1/audio/transcriptions \
+  -H "Authorization: Bearer $SHUNYALABS_API_KEY" \
+  -F "url=https://example.com/call.wav" \
+  -F "model=zero-indic"</code></pre>
+
+        <h2>Where to go next</h2>
+        <div class="grid grid-3">
+          <a href="/asr/models.html" class="card-link"><div class="card">
+            <div class="card-title">Models →</div>
+            <p class="card-desc">Decide between indic, universal, med, and code-switch.</p>
+          </div></a>
+          <a href="/asr/configuration.html" class="card-link"><div class="card">
+            <div class="card-title">Configuration →</div>
+            <p class="card-desc">Every parameter, with defaults and when to change them.</p>
+          </div></a>
+          <a href="/asr/features.html" class="card-link"><div class="card">
+            <div class="card-title">Features →</div>
+            <p class="card-desc">Diarization, emotion, intent, redaction, translation.</p>
+          </div></a>
+          <a href="/asr/streaming.html" class="card-link"><div class="card">
+            <div class="card-title">Streaming →</div>
+            <p class="card-desc">WebSocket for real-time pipelines.</p>
+          </div></a>
+          <a href="/asr/dashboard.html" class="card-link"><div class="card">
+            <div class="card-title">Dashboard →</div>
+            <p class="card-desc">The no-code upload & edit UI.</p>
+          </div></a>
+          <a href="/asr/api-reference.html" class="card-link"><div class="card">
+            <div class="card-title">API reference →</div>
+            <p class="card-desc">Every endpoint, field, and error code.</p>
+          </div></a>
+        </div>
+
+        <div class="pager">
+          <a class="pager-link" href="/personas/operator.html">
+            <div class="pager-label">← Previous</div>
+            <div class="pager-title">Operator journey</div>
+          </a>
+          <a class="pager-link pager-right" href="/asr/models.html">
+            <div class="pager-label">Next →</div>
+            <div class="pager-title">ASR models</div>
+          </a>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/nav.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: document.documentElement.classList.contains('dark') ? 'dark' : 'neutral', securityLevel: 'loose' });
+  </script>
+</body>
+</html>
