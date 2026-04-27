@@ -31,18 +31,99 @@
   style C fill:#eef2ff,stroke:#6366f1
   style D fill:#eef2ff,stroke:#6366f1</div>
 
-        <h2>Two modes</h2>
+        <h2>Batch vs Streaming</h2>
+        <p>Two synthesis modes are available. Same model, same voices — different transport and different "when does the first byte of audio leave the server."</p>
 
-        <div class="grid grid-2">
-          <div class="card">
-            <div class="card-title">Batch</div>
-            <p class="card-desc"><code>POST /v1/audio/speech</code> — you send text, wait, get back an audio file. Best for pre-rendered IVR prompts, notifications, audiobooks, offline pipelines.</p>
+        <div class="bs-compare">
+          <div class="bs-vs">VS</div>
+
+          <!-- BATCH -->
+          <div class="bs-card bs-card-batch">
+            <div class="bs-head">
+              <div class="bs-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              </div>
+              <div>
+                <div class="bs-title">Batch</div>
+                <div class="bs-subtitle">HTTP POST · returns a complete file</div>
+              </div>
+            </div>
+
+            <p style="margin: 0; font-size: 0.95rem; line-height: 1.55;">
+              Send text via HTTP POST and receive a complete audio file in a single response.
+            </p>
+
+            <div class="bs-section-label">Best for</div>
+            <ul class="bs-best">
+              <li>Pre-rendered voice prompts for IVR and telephony systems.</li>
+              <li>Notification audio — order updates, alerts, reminders.</li>
+              <li>Podcast, audiobook, and long-form content generation.</li>
+              <li>Any use case where audio does not need to start playing before synthesis is complete.</li>
+            </ul>
+
+            <div class="bs-section-label">Properties</div>
+            <dl class="bs-props">
+              <dt>Transport</dt><dd>HTTP POST</dd>
+              <dt>Endpoint</dt><dd>https://tts.shunyalabs.ai/v1/audio/speech</dd>
+              <dt>Auth</dt><dd>Authorization: Bearer &lt;API_KEY&gt;</dd>
+              <dt>Required fields</dt><dd>text, model, voice</dd>
+              <dt>Default format</dt><dd>mp3</dd>
+            </dl>
+
+            <div class="bs-section-label">Flow</div>
+            <div class="bs-flow">
+              <span class="bs-step"><span class="bs-step-num">1</span>POST text</span>
+              <span class="bs-arrow">→</span>
+              <span class="bs-step"><span class="bs-step-num">2</span>Server synthesizes</span>
+              <span class="bs-arrow">→</span>
+              <span class="bs-step"><span class="bs-step-num">3</span>Receive audio</span>
+            </div>
           </div>
-          <div class="card">
-            <div class="card-title">Streaming</div>
-            <p class="card-desc"><code>WSS /ws/v1/audio/speech</code> — open a WebSocket and audio chunks arrive as they're synthesized. Best for voice agents and real-time playback where you can't wait for the full file.</p>
+
+          <!-- STREAMING -->
+          <div class="bs-card bs-card-stream">
+            <div class="bs-head">
+              <div class="bs-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              </div>
+              <div>
+                <div class="bs-title">Streaming</div>
+                <div class="bs-subtitle">WebSocket · chunks arrive in real time</div>
+              </div>
+            </div>
+
+            <p style="margin: 0; font-size: 0.95rem; line-height: 1.55;">
+              Open a persistent WebSocket connection and receive audio chunks in real time as synthesis happens.
+            </p>
+
+            <div class="bs-section-label">Best for</div>
+            <ul class="bs-best">
+              <li>Voice agents and conversational AI requiring sub-second audio start.</li>
+              <li>IVR and telephony pipelines.</li>
+              <li>Real-time audio playback in applications.</li>
+              <li>Any use case where audio must begin playing before synthesis of the full text is complete.</li>
+            </ul>
+
+            <div class="bs-section-label">Properties</div>
+            <dl class="bs-props">
+              <dt>Transport</dt><dd>WebSocket</dd>
+              <dt>Endpoint</dt><dd>wss://tts.shunyalabs.ai/ws/v1/audio/speech<br/><span style="color: var(--text-subtle);">also: /ws/tts, /ws</span></dd>
+              <dt>Config object</dt><dd>TTSConfig</dd>
+              <dt>Default format</dt><dd>mp3</dd>
+            </dl>
+
+            <div class="bs-section-label">Lifecycle</div>
+            <div class="bs-flow">
+              <span class="bs-step"><span class="bs-step-num">1</span>Connect</span>
+              <span class="bs-arrow">→</span>
+              <span class="bs-step"><span class="bs-step-num">2</span>Receive chunks</span>
+              <span class="bs-arrow">→</span>
+              <span class="bs-step"><span class="bs-step-num">3</span>Done</span>
+            </div>
           </div>
         </div>
+
+        <p class="bs-source">Source: Shunyalabs TTS Developer Documentation v1.0 (March 2026), §2.1 Batch overview and §3.1 Streaming overview — text reproduced verbatim.</p>
 
         <h2>Endpoints</h2>
         <div class="table-wrap">
