@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Set up SSO — Shunya Labs Docs</title>
+  <meta name="description" content="SAML 2.0 single-sign on for Shunya Labs accounts on Enterprise plans.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css?v=15">
+  <script src="/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/index.html">Docs</a><span class="sep">/</span><span>Enterprise</span><span class="sep">/</span><span>Set up SSO</span>
+        </div>
+        <div class="persona-label" style="margin-bottom: 0.5rem;">Enterprise</div>
+        <h1>Set up SSO <span class="pill pill-illustrative">Illustrative</span></h1>
+        <p class="lead">Single Sign-On (SSO) over SAML 2.0 for Shunya Labs accounts. Designed for Enterprise customers who run their own identity provider (Okta, Microsoft Entra ID / Azure AD, Google Workspace, OneLogin, JumpCloud) and want every employee to sign in to Shunya with their existing corporate credentials.</p>
+
+        <div class="callout callout-illustrative">
+          <div class="callout-title">Illustrative — confirm the exact flow with your account team</div>
+          The setup steps and identity-provider list below are an <strong>example flow</strong> based on how Enterprise SSO setups typically work. Shunya Labs does not currently publish a public SSO setup guide — the actual handshake (who sends what, in which order, and which identity-provider details Shunya needs) should be confirmed with your account team before you brief your IdP admin. Use this page as a checklist of what to gather, not as Shunya-prescribed instructions.
+        </div>
+
+        <h2>Before you start</h2>
+        <ul>
+          <li>You must be on an <strong>Enterprise plan</strong> — SSO is not available on Pay-as-you-go or Volume tiers.</li>
+          <li>You'll need an admin on your identity provider who can create a new SAML application and share metadata with Shunya.</li>
+          <li>Decide on the email domain users will use to sign in (e.g. <code>@yourcompany.com</code>). All accounts on that domain will be routed through SSO once it's enabled.</li>
+        </ul>
+
+        <h2>Set up SSO — step by step</h2>
+
+        <div class="wt-step">
+          <div class="wt-step-num">1</div>
+          <div class="wt-step-body">
+            <div class="wt-step-title">Send Shunya your SSO domain</div>
+            <p>Reach out to your account team with the email domain users will sign in with (e.g. <code>yourcompany.com</code>). If you have multiple domains, send all of them.</p>
+            <p style="margin-top: 0.5rem;">Don't have an account team yet? <a href="https://www.shunyalabs.ai/contact" target="_blank" rel="noopener">Contact Shunya Labs ↗</a> and ask to be routed to Enterprise sales.</p>
+          </div>
+        </div>
+
+        <div class="wt-step">
+          <div class="wt-step-num">2</div>
+          <div class="wt-step-body">
+            <div class="wt-step-title">Receive Shunya's Service Provider configuration</div>
+            <p>Shunya will reply with the details your identity provider needs to configure the SAML application:</p>
+            <ul>
+              <li><strong>Single sign-on URL</strong> — the ACS endpoint that your IdP will POST the SAML response to.</li>
+              <li><strong>Audience URI / SP Entity ID</strong> — identifies Shunya as the service provider in your IdP's configuration.</li>
+              <li><strong>NameID format</strong> — typically <code>EmailAddress</code>.</li>
+              <li><strong>Required attributes</strong> — usually <code>email</code>, <code>firstName</code>, <code>lastName</code>.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="wt-step">
+          <div class="wt-step-num">3</div>
+          <div class="wt-step-body">
+            <div class="wt-step-title">Configure your identity provider</div>
+            <p>In your IdP admin console, create a new SAML 2.0 application. Paste in Shunya's Service Provider details from step 2, and assign the relevant users / groups so they can sign in. Each provider's UI differs slightly; the principles are the same:</p>
+            <ul>
+              <li><strong>Okta</strong> — Applications → Create App Integration → SAML 2.0.</li>
+              <li><strong>Microsoft Entra ID</strong> — Enterprise applications → New application → Create your own application → Non-gallery, then SAML.</li>
+              <li><strong>Google Workspace</strong> — Apps → Web and mobile apps → Add custom SAML app.</li>
+              <li><strong>OneLogin</strong> — Applications → Add App → "SAML Custom Connector".</li>
+            </ul>
+            <p style="margin-top: 0.5rem;">When you save, your IdP will produce a <strong>metadata URL</strong> (or downloadable XML). Send that to Shunya.</p>
+          </div>
+        </div>
+
+        <div class="wt-step">
+          <div class="wt-step-num">4</div>
+          <div class="wt-step-body">
+            <div class="wt-step-title">Shunya completes the integration</div>
+            <p>Shunya ingests your IdP metadata, wires it up on the Shunya side, and enables SSO for your domain. You'll get a confirmation when SSO is live for your organisation.</p>
+          </div>
+        </div>
+
+        <h2>After SSO is enabled</h2>
+        <ul>
+          <li>Users on your SSO domain will see a <strong>"Sign in with SSO"</strong> option (or be redirected automatically) on the Shunya login page.</li>
+          <li>Existing accounts on that email domain will be linked to their SSO identity on next login. No data is lost.</li>
+          <li>You can <strong>require</strong> SSO for the domain — i.e. reject password-based logins for matching emails — once you've confirmed the flow works for everyone.</li>
+        </ul>
+
+        <h2>Common questions</h2>
+        <h3>Do all my users go through SSO automatically?</h3>
+        <p>Anyone whose email matches an SSO-claimed domain will be routed through SSO. Users on other email domains continue with the regular sign-in flow.</p>
+
+        <h3>What about service accounts and API keys?</h3>
+        <p>API keys are issued at the workspace level and are independent of SSO. SSO controls human sign-in to the dashboard and Playground; programmatic API access continues to use bearer tokens regardless of SSO status.</p>
+
+        <h3>Can I enforce SCIM provisioning?</h3>
+        <p>SCIM (automatic user provisioning / deprovisioning from your IdP) is typically available alongside SSO on Enterprise plans. Confirm with your account team whether your contract includes it.</p>
+
+        <div class="pager">
+          <a class="pager-link" href="/personas/enterprise.html">
+            <div class="pager-label">← Previous</div>
+            <div class="pager-title">Enterprise journey</div>
+          </a>
+          <a class="pager-link pager-right" href="/enterprise/hands-on-evaluation.html">
+            <div class="pager-label">Next →</div>
+            <div class="pager-title">Hands-on evaluation</div>
+          </a>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/nav.js"></script>
+</body>
+</html>
