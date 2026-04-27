@@ -6,7 +6,7 @@
   <title>Non-technical user — Shunya Labs Docs</title>
   <meta name="description" content="Upload audio, transcribe, edit, and export — no code required.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=9">
+  <link rel="stylesheet" href="/assets/css/main.css?v=10">
   <script src="/assets/js/theme.js"></script>
 </head>
 <body>
@@ -159,52 +159,12 @@
           </div>
         </div>
 
-        <h2>Vāķ — live 2-way translation <span class="pill pill-illustrative">Illustrative</span></h2>
-        <p>For meetings or conversations across languages:</p>
-        <ol>
-          <li>Open <strong>Vāķ</strong> from the left nav.</li>
-          <li>Pick <strong>your language</strong> and <strong>the other person's language</strong>.</li>
-          <li>Tap the microphone — when you speak, the other side hears a voice translation in real time. When they reply, you hear theirs.</li>
-          <li>A running transcript of both sides appears in the middle for reference.</li>
-        </ol>
-
-        <div class="callout callout-warn">
-          <div class="callout-title">If the translation feels choppy</div>
-          Move to a quieter room, and use a wired headset if you have one. Bluetooth can introduce 150–300 ms of lag that compounds with translation latency.
-        </div>
-
-        <h2>Generate a voiceover <span class="pill pill-illustrative">Illustrative</span></h2>
-        <ol>
-          <li>Open <strong>Voices → New synthesis</strong>.</li>
-          <li>Paste your script (up to ~2,000 words at a time).</li>
-          <li>Pick a voice: filter by language and gender, click to preview a sample.</li>
-          <li>Pick a style: Neutral for professional, Conversational for friendly, News for formal announcements, Narrative for storytelling.</li>
-          <li>Adjust speed if needed (1.0 = natural, 1.3 = quick notification, 0.8 = slow/clear).</li>
-          <li>Click <strong>Generate</strong>. Preview, then download as MP3 or WAV.</li>
-        </ol>
-
-        <h2>Common questions <span class="pill pill-illustrative">Illustrative</span></h2>
-
-        <h3>Why is there a weird word in my transcript?</h3>
-        <p>Domain-specific terms (drug names, finance acronyms, brand names) sometimes get spelled out phonetically. Use <strong>Normalize key terms</strong> in the upload panel to list terms you expect, or fix them inline and save a <strong>glossary</strong> to auto-apply next time.</p>
-
-        <h3>Why doesn't the speaker label match the person's name?</h3>
-        <p>Without registered voices, Shunya labels speakers as <em>SPEAKER_00</em>, <em>SPEAKER_01</em>, etc. Rename them by clicking the label. To have Shunya name them automatically, go to <strong>Speakers → Register</strong> and upload a short clip of each person speaking alone.</p>
-
-        <h3>How do I hide sensitive information?</h3>
-        <p>In the upload panel, switch on <strong>Redact</strong>. You can:</p>
+        <h2>Other workflows in the Playground</h2>
+        <p>This walkthrough covers the <strong>Speech to Text</strong> tab. The other two tabs at the top of the Playground let you:</p>
         <ul>
-          <li>Auto-detect & hash profanity</li>
-          <li>Mask specific phrases (e.g. "account number", "OTP") with <strong>****</strong></li>
+          <li><strong>Text to Speech</strong> — type a script, pick one of the 46 voices and an expression style, generate audio. See <a href="/tts/overview.html">TTS overview</a> for the underlying API and the full voice list.</li>
+          <li><strong>Voice Agent</strong> — try a real-time conversational agent in the browser.</li>
         </ul>
-
-        <h3>How do I share a transcript with a colleague?</h3>
-        <p>Click <strong>Share</strong> in the top-right of any transcript. Pick <em>view-only</em> or <em>can edit</em>. The link is signed and expires in 30 days by default.</p>
-
-        <div class="callout callout-info">
-          <div class="callout-title">No dashboard yet?</div>
-          If your organization deployed Shunya on-premises, your admin should have a custom dashboard URL (often <code>voice.yourcompany.internal</code>). Ask them for the link and credentials.
-        </div>
 
         <div class="pager">
           <a class="pager-link" href="/personas/enterprise.html">

@@ -3,125 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ASR dashboard walkthrough — Shunya Labs Docs</title>
-  <meta name="description" content="A tour of the Shunya dashboard — upload, transcribe, edit, export — no code required.">
+  <title>Dashboard / Playground — Shunya Labs Docs</title>
+  <meta name="description" content="The Shunya Labs Playground — sign-in URL plus the no-code walkthrough.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=9">
-  <style>
-    .mock {
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      background: var(--bg-elevated);
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      margin: 1rem 0 2rem;
-    }
-    .mock-chrome {
-      display: flex;
-      align-items: center;
-      gap: 0.375rem;
-      padding: 0.5rem 0.75rem;
-      background: var(--bg-subtle);
-      border-bottom: 1px solid var(--border);
-    }
-    .mock-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--border-strong); }
-    .mock-dot.r { background: #ef4444; }
-    .mock-dot.y { background: #f59e0b; }
-    .mock-dot.g { background: #10b981; }
-    .mock-url {
-      flex: 1;
-      padding: 0.2rem 0.6rem;
-      background: var(--bg-muted);
-      border-radius: 6px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
-    .mock-body {
-      display: grid;
-      grid-template-columns: 200px 1fr;
-      min-height: 360px;
-    }
-    .mock-side {
-      background: var(--bg-subtle);
-      border-right: 1px solid var(--border);
-      padding: 1rem 0.75rem;
-    }
-    .mock-sb-item {
-      padding: 0.4rem 0.6rem;
-      border-radius: 6px;
-      font-size: 0.8125rem;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 2px;
-    }
-    .mock-sb-item.active { background: var(--accent-subtle); color: var(--accent-text); font-weight: 500; }
-    html.dark .mock-sb-item.active { background: rgba(129, 140, 248, 0.12); color: var(--accent-hover); }
-    .mock-main { padding: 1.25rem; }
-    .mock-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.4rem 0.75rem;
-      border-radius: 6px;
-      font-size: 0.8125rem;
-      font-weight: 500;
-      background: var(--accent);
-      color: white;
-      border: none;
-    }
-    .mock-btn.outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
-    .mock-drop {
-      border: 2px dashed var(--border-strong);
-      border-radius: var(--radius);
-      padding: 2.5rem 1rem;
-      text-align: center;
-      color: var(--text-subtle);
-      margin: 1rem 0;
-    }
-    .mock-transcript {
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1rem;
-      font-size: 0.875rem;
-      color: var(--text-muted);
-      background: var(--bg);
-    }
-    .mock-speaker-tag {
-      display: inline-block;
-      padding: 0.1rem 0.45rem;
-      background: var(--accent-subtle);
-      color: var(--accent-text);
-      border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: 500;
-      margin-right: 0.5rem;
-    }
-    html.dark .mock-speaker-tag { background: rgba(129, 140, 248, 0.12); color: var(--accent-hover); }
-    .mock-wave {
-      height: 48px;
-      display: flex;
-      align-items: center;
-      gap: 2px;
-      padding: 0.5rem 0;
-    }
-    .mock-wave span {
-      flex: 1;
-      background: var(--accent);
-      opacity: 0.5;
-      border-radius: 1px;
-    }
-    .screenshot-note {
-      font-size: 0.75rem;
-      color: var(--text-subtle);
-      font-style: italic;
-      text-align: center;
-      margin-top: -1rem;
-      margin-bottom: 1.5rem;
-    }
-  </style>
+  <link rel="stylesheet" href="/assets/css/main.css?v=10">
   <script src="/assets/js/theme.js"></script>
 </head>
 <body>
@@ -131,162 +16,21 @@
         <div class="breadcrumb">
           <a href="/index.html">Docs</a><span class="sep">/</span><span>Speech-to-Text</span><span class="sep">/</span><span>Dashboard</span>
         </div>
-        <h1>Dashboard walkthrough <span class="pill pill-illustrative">Illustrative mock</span></h1>
-        <p class="lead">The Shunya dashboard lets anyone — not just developers — upload audio, transcribe it, clean up the output, and export. This page is a picture tour of the main screens.</p>
+        <h1>Dashboard / Playground</h1>
+        <p class="lead">Shunya Labs runs a sign-in Playground at <a href="https://playground.shunyalabs.ai" target="_blank" rel="noopener">playground.shunyalabs.ai</a>. It's the no-code interface for the whole stack — Speech to Text, Text to Speech, and Voice Agent — and it's where you upload audio, configure parameters, and see results without writing any code.</p>
 
-        <div class="callout callout-illustrative">
-          <div class="callout-title">Illustrative mock — not a screenshot of the real product</div>
-          <p>The mock screens below are <strong>built from HTML/CSS for documentation purposes</strong>. They illustrate a plausible operator workflow consistent with Shunya's API capabilities; they are <strong>not actual screenshots</strong> of <a href="https://playground.shunyalabs.ai" target="_blank" rel="noopener">playground.shunyalabs.ai</a>, which is sign-in-only.</p>
-          <p style="margin-top: 0.5rem;">Real navigation labels, layout, file-size limits, export options, and keyboard shortcuts may differ. We'll replace these mocks with verified screenshots once we have access to the live UI. <strong>Do not use this page to estimate dashboard feature parity</strong> — sign in and confirm.</p>
+        <div class="grid grid-2">
+          <a href="https://playground.shunyalabs.ai" target="_blank" rel="noopener" class="card-link"><div class="card">
+            <div class="card-title">Open the Playground →</div>
+            <p class="card-desc"><code>playground.shunyalabs.ai</code> — sign in with your Shunya account.</p>
+          </div></a>
+          <a href="/personas/non-technical-user.html#using-the-playground" class="card-link"><div class="card">
+            <div class="card-title">Step-by-step walkthrough</div>
+            <p class="card-desc">A six-step guide with real product screenshots, on the Non-technical user page.</p>
+          </div></a>
         </div>
 
-        <h2>1. The workspace</h2>
-        <p>When you first sign in, you land on the Transcriptions workspace — a list of all jobs you've run, with status, duration, and quick actions.</p>
-
-        <div class="mock">
-          <div class="mock-chrome">
-            <span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span>
-            <span class="mock-url">playground.shunyalabs.ai/transcriptions</span>
-          </div>
-          <div class="mock-body">
-            <div class="mock-side">
-              <div class="mock-sb-item active">📋 Transcriptions</div>
-              <div class="mock-sb-item">🌐 Vāķ Translate</div>
-              <div class="mock-sb-item">🔊 Voices</div>
-              <div class="mock-sb-item">👤 Speakers</div>
-              <div class="mock-sb-item">🔑 API Keys</div>
-              <div class="mock-sb-item">⚙ Settings</div>
-            </div>
-            <div class="mock-main">
-              <div class="flex gap-md" style="justify-content: space-between; margin-bottom: 1rem;">
-                <strong>Recent transcriptions</strong>
-                <button class="mock-btn">+ New</button>
-              </div>
-              <div class="mock-transcript">
-                <div style="display: grid; grid-template-columns: 1fr 80px 80px 80px; gap: 0.5rem; padding: 0.25rem 0; border-bottom: 1px dashed var(--border); font-weight: 600; font-size: 0.75rem; color: var(--text-subtle); text-transform: uppercase;">
-                  <div>Name</div><div>Duration</div><div>Status</div><div>Actions</div>
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 80px 80px 80px; gap: 0.5rem; padding: 0.5rem 0; border-bottom: 1px solid var(--border); align-items: center;">
-                  <div>🎧 call_priya_2026-04-23.wav</div><div>5:42</div><div><span class="pill pill-green">Ready</span></div><div><button class="mock-btn outline">Open</button></div>
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 80px 80px 80px; gap: 0.5rem; padding: 0.5rem 0; border-bottom: 1px solid var(--border); align-items: center;">
-                  <div>🎧 meeting_sprint_review.m4a</div><div>47:12</div><div><span class="pill pill-amber">Processing</span></div><div><button class="mock-btn outline" style="opacity: 0.5;">Open</button></div>
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 80px 80px 80px; gap: 0.5rem; padding: 0.5rem 0; align-items: center;">
-                  <div>🎧 consultation_dr_mehta.mp3</div><div>12:08</div><div><span class="pill pill-green">Ready</span></div><div><button class="mock-btn outline">Open</button></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <p class="screenshot-note">Dashboard home — Transcriptions list with status pills and per-row actions.</p>
-
-        <h2>2. New transcription</h2>
-        <p>Clicking <strong>+ New</strong> opens the upload panel. Drop a file into the drop zone, or pick from your local disk. While the file uploads you can already pick the model, language, and features you want.</p>
-
-        <div class="mock">
-          <div class="mock-chrome">
-            <span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span>
-            <span class="mock-url">playground.shunyalabs.ai/transcriptions/new</span>
-          </div>
-          <div class="mock-main" style="padding: 1.5rem;">
-            <strong>New transcription</strong>
-            <div class="mock-drop">
-              ⬆ Drop an audio file here, or click to browse<br>
-              <span class="small">MP3, WAV, M4A, OGG, FLAC, WebM — up to 500 MB</span>
-            </div>
-            <div class="grid grid-2">
-              <div>
-                <div class="small" style="color: var(--text-subtle); font-weight: 600; text-transform: uppercase; margin-bottom: 0.25rem;">Model</div>
-                <div style="border: 1px solid var(--border); border-radius: 6px; padding: 0.5rem; font-size: 0.875rem;">Zero Indic ▾</div>
-              </div>
-              <div>
-                <div class="small" style="color: var(--text-subtle); font-weight: 600; text-transform: uppercase; margin-bottom: 0.25rem;">Language</div>
-                <div style="border: 1px solid var(--border); border-radius: 6px; padding: 0.5rem; font-size: 0.875rem;">Hindi (hi) ▾</div>
-              </div>
-            </div>
-            <div style="margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.5rem;">
-              <span class="pill">✓ Diarization</span>
-              <span class="pill">✓ Word timestamps</span>
-              <span class="pill-zinc pill">Emotion</span>
-              <span class="pill-zinc pill">Summary</span>
-              <span class="pill-zinc pill">Denoise</span>
-              <span class="pill-zinc pill">Redact PII</span>
-            </div>
-            <div style="margin-top: 1.25rem;">
-              <button class="mock-btn">Start transcribing</button>
-            </div>
-          </div>
-        </div>
-        <p class="screenshot-note">Upload panel — pick model, language, and toggle features as chip pills.</p>
-
-        <h2>3. Review &amp; edit</h2>
-        <p>Once a job finishes, you open it to a split view. Waveform on top with speaker colour-coding, transcript below. Click any word to jump the player to that moment. Double-click to edit.</p>
-
-        <div class="mock">
-          <div class="mock-chrome">
-            <span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span>
-            <span class="mock-url">playground.shunyalabs.ai/transcriptions/call_priya</span>
-          </div>
-          <div class="mock-main" style="padding: 1.25rem;">
-            <div class="flex gap-md" style="justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-              <strong>call_priya_2026-04-23.wav</strong>
-              <div class="flex gap-sm">
-                <button class="mock-btn outline">Share</button>
-                <button class="mock-btn outline">Export ▾</button>
-              </div>
-            </div>
-            <div class="mock-wave">
-              <span style="height: 12%"></span><span style="height: 34%"></span><span style="height: 65%"></span><span style="height: 80%"></span><span style="height: 48%"></span><span style="height: 22%"></span><span style="height: 58%"></span><span style="height: 71%"></span><span style="height: 88%"></span><span style="height: 44%"></span><span style="height: 18%"></span><span style="height: 30%"></span><span style="height: 50%"></span><span style="height: 76%"></span><span style="height: 62%"></span><span style="height: 40%"></span><span style="height: 28%"></span><span style="height: 55%"></span><span style="height: 72%"></span><span style="height: 60%"></span><span style="height: 38%"></span><span style="height: 20%"></span><span style="height: 32%"></span><span style="height: 70%"></span>
-            </div>
-            <div class="mock-transcript" style="margin-top: 0.75rem;">
-              <p style="margin: 0 0 0.75rem;"><span class="mock-speaker-tag">Priya · 00:03</span>नमस्ते मोहम्मद जी, मैं प्रिया बोल रही हूँ। क्या आप अभी बात कर सकते हैं?</p>
-              <p style="margin: 0 0 0.75rem;"><span class="mock-speaker-tag">Rahul · 00:11</span>हाँ बिलकुल, बताइए क्या बात है।</p>
-              <p style="margin: 0 0 0.75rem;"><span class="mock-speaker-tag">Priya · 00:15</span>आपके <code>****</code> से एक payment आज सुबह register हुआ है, बस confirm करना था।</p>
-              <p style="margin: 0;"><span class="mock-speaker-tag">Rahul · 00:22</span>जी हाँ, मैंने ही किया था। सब ठीक है।</p>
-            </div>
-            <div style="margin-top: 1rem; font-size: 0.8125rem; color: var(--text-subtle);">
-              <strong style="color: var(--text);">Summary</strong> · Customer Priya confirmed a payment registered from Rahul's account. No issues.
-              <br><strong style="color: var(--text);">Sentiment</strong> · <span class="pill pill-green">Neutral · 0.12</span>
-              <br><strong style="color: var(--text);">Intent</strong> · <span class="pill">service_request</span>
-            </div>
-          </div>
-        </div>
-        <p class="screenshot-note">Transcript editor — speaker tags, redacted tokens, summary and sentiment inline.</p>
-
-        <h2>4. Export</h2>
-        <p>The <strong>Export</strong> menu offers every format you're likely to need:</p>
-        <div class="grid grid-3">
-          <div class="card"><strong>PDF</strong><p class="card-desc">Formatted with timestamps and speaker labels. Good for compliance and sharing with non-technical readers.</p></div>
-          <div class="card"><strong>DOCX</strong><p class="card-desc">Microsoft Word, ready for further editing. Speaker labels become styled paragraphs.</p></div>
-          <div class="card"><strong>SRT / VTT</strong><p class="card-desc">Subtitle files for video tools. Uses word timestamps if enabled, otherwise segment timestamps.</p></div>
-          <div class="card"><strong>TXT</strong><p class="card-desc">Plain text. Minimal, easy to pipe into other tools.</p></div>
-          <div class="card"><strong>JSON</strong><p class="card-desc">Full machine-readable output — every segment, word timestamp, speaker, and intelligence result.</p></div>
-          <div class="card"><strong>CSV</strong><p class="card-desc">One row per segment. Useful for analytics pipelines (Looker, Tableau, BigQuery).</p></div>
-        </div>
-
-        <h2>5. Speaker management</h2>
-        <p>Under <strong>Speakers</strong> you can register voice profiles. After registering, any transcription with <code>enable_speaker_identification</code> on will resolve <code>SPEAKER_00</code> → <code>Priya</code>, <code>SPEAKER_01</code> → <code>Rahul</code>, etc.</p>
-        <ol>
-          <li>Click <strong>+ Register speaker</strong>.</li>
-          <li>Upload a 5–15 s clip of the speaker alone. Clean audio, no music, no overlap.</li>
-          <li>Name the speaker, assign to a project (e.g. <em>support_team</em>), save.</li>
-        </ol>
-
-        <h2>6. API keys</h2>
-        <p>Under <strong>API Keys</strong>, create and rotate keys. Common pattern: one key per environment, plus a shared read-only key for analytics.</p>
-
-        <div class="callout callout-warn">
-          <div class="callout-title">Key rotation hygiene</div>
-          If a developer leaves or a laptop is lost, revoke the key from this screen immediately. Keys have no grace period — revocation is instant.
-        </div>
-
-        <h2>Accessibility</h2>
-        <ul>
-          <li>Keyboard shortcuts: <kbd>Space</kbd> to play/pause, <kbd>J</kbd>/<kbd>L</kbd> to seek, <kbd>S</kbd> to add a speaker change, <kbd>E</kbd> to edit a word.</li>
-          <li>Dashboard supports dark mode, system auto-detect, and full keyboard navigation.</li>
-          <li>Transcripts are WCAG 2.1 AA contrast-compliant.</li>
-        </ul>
+        <p class="text-subtle">If your organisation runs Shunya on-premises, your admin will give you a custom URL instead. The Playground UI is the same in both cases.</p>
 
         <div class="pager">
           <a class="pager-link" href="/asr/streaming.html">

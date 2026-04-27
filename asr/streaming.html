@@ -6,7 +6,7 @@
   <title>ASR streaming — Shunya Labs Docs</title>
   <meta name="description" content="Real-time speech recognition over WebSocket with partial and final transcripts.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=9">
+  <link rel="stylesheet" href="/assets/css/main.css?v=10">
   <script src="/assets/js/theme.js"></script>
 </head>
 <body>
@@ -195,27 +195,12 @@ async def transcribe_stream(audio_iter):
 
         await asyncio.gather(sender(), receiver())</code></pre>
 
-        <h2>Tuning <span class="pill pill-illustrative">Illustrative starting points</span></h2>
-        <div class="callout callout-illustrative">
-          <div class="callout-title">Illustrative — benchmark on your own audio</div>
-          The values below are <strong>reasonable starting points</strong> derived from Shunya's documented parameter defaults — not officially recommended presets published by Shunya Labs. Optimal values depend on codec, room acoustics, speaker pace, and the latency/accuracy trade-off you're willing to make. Always benchmark against a representative sample of your own audio.
-        </div>
-
-        <h3>Telephony</h3>
-        <p>For Twilio or SIP: <code>dtype=ulaw</code>, <code>sample_rate=8000</code>, <code>chunk_size_sec=1.0</code>, <code>silence_threshold_sec=0.6</code>. Aims for fast partials on 8 kHz audio.</p>
-
-        <h3>Dictation</h3>
-        <p>For continuous dictation with long utterances: <code>chunk_size_sec=3.0</code>, <code>silence_threshold_sec=1.2</code>. Reduces churn on partials, produces cleaner final segments.</p>
-
-        <h3>Voice agents</h3>
-        <p>For conversational agents that need to detect the user stopped speaking: <code>silence_threshold_sec=0.5</code>. Lower threshold = more aggressive finalization — good for interruption handling, but can truncate speakers who pause to think.</p>
-
         <div class="pager">
           <a class="pager-link" href="/asr/features.html">
             <div class="pager-label">← Previous</div>
             <div class="pager-title">Features</div>
           </a>
-          <a class="pager-link pager-right" href="/asr/dashboard.html">
+          <a class="pager-link pager-right" href="/asr/api-reference.html">
             <div class="pager-label">Next →</div>
             <div class="pager-title">Dashboard walkthrough</div>
           </a>

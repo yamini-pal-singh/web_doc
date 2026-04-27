@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BFSI blueprint — Shunya Labs Docs</title>
-  <meta name="description" content="Automated debt collection, KYC, and onboarding calls in regional Indian dialects.">
+  <title>BFSI — Shunya Labs Docs</title>
+  <meta name="description" content="Shunya Labs capabilities most often used in banking, financial services, and insurance.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=9">
+  <link rel="stylesheet" href="/assets/css/main.css?v=10">
   <script src="/assets/js/theme.js"></script>
 </head>
 <body>
@@ -17,99 +17,73 @@
           <a href="/index.html">Docs</a><span class="sep">/</span><span>Solutions</span><span class="sep">/</span><span>BFSI</span>
         </div>
         <h1>BFSI — banking, financial services, insurance</h1>
-        <p class="lead">Automate high-volume voice interactions in the language your customer actually speaks. Debt collection, EMI reminders, KYC verification, onboarding confirmation — all with auditable transcripts.</p>
+        <p class="lead">BFSI does not have a dedicated vertical page on Shunya Labs' public site, but several capabilities in the catalog are oriented toward finance use cases — most notably the <code>zero-numerical</code> ASR model. This page lists the Shunya pieces you're most likely to reach for in a BFSI build.</p>
 
-        <div class="callout callout-illustrative">
-          <div class="callout-title">Illustrative blueprint — not a Shunya-published reference architecture</div>
-          The workflows, stack composition, and ROI ranges on this page are <strong>example patterns</strong> showing how Shunya's documented capabilities (Zero STT Indic, Zero TTS, Vāķ, Zero STT Numerical) could be assembled for BFSI use cases. They are <strong>not customer-validated case studies or Shunya-prescribed solution designs</strong>. Validate specifics with <a href="mailto:0@shunyalabs.ai">0@shunyalabs.ai</a> before quoting numbers internally.
-        </div>
-
-        <h2>Reference architecture <span class="pill pill-illustrative">Illustrative</span></h2>
-        <div class="mermaid">graph LR
-  A[Telephony / CPaaS<br/>Twilio · Exotel · Knowlarity] --> B[Streaming ASR<br/>zero-indic]
-  B --> C[Intelligence<br/>intent · sentiment · redaction]
-  C --> D[Your core system<br/>LMS · CRM · Loan origination]
-  D --> E[LLM / rules engine]
-  E --> F[Zero TTS<br/>brand voice · mulaw 8kHz]
-  F --> A
-  D --> G[Analytics<br/>QA · compliance]
-  style B fill:#eef2ff,stroke:#6366f1
-  style F fill:#eef2ff,stroke:#6366f1</div>
-
-        <h2>Common workflows <span class="pill pill-illustrative">Illustrative</span></h2>
-
-        <h3>EMI reminder &amp; collection</h3>
-        <ul>
-          <li><strong>Outbound call</strong> in customer's language via Twilio / Exotel.</li>
-          <li><strong>Zero STT Indic</strong> transcribes the customer response streaming; <code>zero-numerical</code> for precise amount handling.</li>
-          <li><strong>Intent detection</strong> classifies: <em>will_pay</em>, <em>dispute</em>, <em>callback_later</em>, <em>cannot_pay</em>.</li>
-          <li><strong>Sentiment</strong> flags frustration for human escalation.</li>
-          <li><strong>Zero TTS</strong> synthesises the next response in the customer's dialect with a consistent brand voice.</li>
-          <li><strong>Hash keywords</strong> redacts account and card numbers from stored transcripts.</li>
-        </ul>
-
-        <h3>KYC voice verification</h3>
-        <ul>
-          <li>Customer speaks a challenge phrase; <strong>speaker identification</strong> matches it against their registered voiceprint.</li>
-          <li>Zero STT validates the phrase content. Combined score = biometric × semantic.</li>
-          <li>Stored as an immutable voice audit trail, redacted for PII.</li>
-        </ul>
-
-        <h3>Call QA and compliance</h3>
-        <ul>
-          <li>Full-call batch transcription with diarization.</li>
-          <li>Mandatory disclosures detected via keyterm normalization.</li>
-          <li>Automated QA scoring — did the agent follow the script? Did they use prohibited language?</li>
-          <li>Transcripts retained per RBI / SEBI retention guidelines in an on-prem store.</li>
-        </ul>
-
-        <h2>Recommended stack</h2>
+        <h2>Shunya capabilities most often used here</h2>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Layer</th><th>Shunya component</th><th>Notes</th></tr></thead>
+            <thead><tr><th>Capability</th><th>Shunya component</th><th>Source</th></tr></thead>
             <tbody>
-              <tr><td>Inbound ASR</td><td>Streaming <code>zero-indic</code> or <code>zero-codeswitch</code></td><td>WebSocket · μ-law · 8 kHz for telephony</td></tr>
-              <tr><td>Amount-heavy transcripts</td><td><code>zero-numerical</code></td><td>Rs 5 lakh 23 thousand → ₹5,23,000</td></tr>
-              <tr><td>Intelligence</td><td>Intent + sentiment + keyterm normalization</td><td>Configure a BFSI glossary (EMI, NACH, bounce charge, ROI, principal…)</td></tr>
-              <tr><td>Redaction</td><td><code>hash_keywords</code></td><td>["account number", "card number", "CVV", "OTP", "aadhaar", "PAN"]</td></tr>
-              <tr><td>Outbound TTS</td><td><code>zero-indic</code> · voice cloning for brand voice</td><td>μ-law 8 kHz · <code>trim_silence=true</code></td></tr>
-              <tr><td>Deployment</td><td>On-prem preferred</td><td>RBI data localization · audit trail inside your VPC</td></tr>
+              <tr>
+                <td>Digit-heavy ASR (amounts, account numbers, dates)</td>
+                <td><code>zero-numerical</code> — listed on the Shunya pricing page</td>
+                <td>Shunya pricing</td>
+              </tr>
+              <tr>
+                <td>Indian-language ASR for collections / customer calls</td>
+                <td><code>zero-indic</code> for general Indian-language audio; <code>zero-codeswitch</code> for Hinglish / Tanglish</td>
+                <td>ASR API guide</td>
+              </tr>
+              <tr>
+                <td>Telephony I/O</td>
+                <td><code>ulaw</code> / <code>alaw</code> at 8 kHz on both ASR streaming and TTS — Twilio and most Indian PSTN systems use mu-law</td>
+                <td>ASR + TTS docs</td>
+              </tr>
+              <tr>
+                <td>Brand-consistent outbound voice</td>
+                <td>Zero TTS with <code>reference_wav</code> for voice cloning, or one of the 46 preset voices</td>
+                <td>TTS docs §6</td>
+              </tr>
+              <tr>
+                <td>Compliance keyword detection</td>
+                <td><code>enable_keyterm_normalization</code> with mandatory-disclosure phrases in <code>keyterm_keywords</code></td>
+                <td>ASR API guide</td>
+              </tr>
+              <tr>
+                <td>PII / number redaction in stored transcripts</td>
+                <td><code>hash_keywords</code> — replaces matches with <code>****</code> in-place</td>
+                <td>ASR API guide</td>
+              </tr>
+              <tr>
+                <td>Data residency for regulated audio</td>
+                <td>On-prem deployment — same containers in your VPC</td>
+                <td>Deployment options</td>
+              </tr>
             </tbody>
           </table>
         </div>
 
-        <h2>Compliance fit</h2>
+        <h2>Where to go in the docs</h2>
         <div class="grid grid-2">
-          <div class="card">
-            <div class="card-title">RBI data localization</div>
-            <p class="card-desc">On-prem deployment keeps customer PII and audio inside India. Same container parity as the cloud service.</p>
-          </div>
-          <div class="card">
-            <div class="card-title">Audit trail</div>
-            <p class="card-desc">Every transcript carries <code>request_id</code>, timestamp, diarization, and intelligence outputs. Retained per regulator rules.</p>
-          </div>
-          <div class="card">
-            <div class="card-title">SEBI / IRDAI scripts</div>
-            <p class="card-desc">Mandatory disclosure detection ensures required language was spoken in full; failures flagged to supervisors.</p>
-          </div>
-          <div class="card">
-            <div class="card-title">PII redaction</div>
-            <p class="card-desc">Account numbers, cards, OTPs masked in stored text. Reduces blast radius of a data leak.</p>
-          </div>
+          <a href="/asr/streaming.html" class="card-link"><div class="card">
+            <div class="card-title">ASR streaming</div>
+            <p class="card-desc">WebSocket lifecycle, telephony codecs, init parameters.</p>
+          </div></a>
+          <a href="/asr/features.html" class="card-link"><div class="card">
+            <div class="card-title">Intelligence layer</div>
+            <p class="card-desc">Diarization, intent, sentiment, keyterm normalisation, redaction.</p>
+          </div></a>
+          <a href="/tts/voice-cloning.html" class="card-link"><div class="card">
+            <div class="card-title">Voice cloning</div>
+            <p class="card-desc">Preserve a brand voice across all 23 supported Indic languages.</p>
+          </div></a>
+          <a href="/deployment/overview.html" class="card-link"><div class="card">
+            <div class="card-title">On-prem deployment</div>
+            <p class="card-desc">Run the containers inside your VPC for data residency.</p>
+          </div></a>
         </div>
 
-        <h2>ROI levers <span class="pill pill-illustrative">Illustrative</span></h2>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Metric</th><th>Manual baseline</th><th>With Shunya</th></tr></thead>
-            <tbody>
-              <tr><td>Collections calls per day per agent</td><td>~80</td><td>Bot handles top-of-funnel at &gt;1000/day</td></tr>
-              <tr><td>Right-party contact rate</td><td>Variable</td><td>+20–35% via local-language greetings</td></tr>
-              <tr><td>QA coverage</td><td>5–10% sampled</td><td>100% automated scoring</td></tr>
-              <tr><td>Dispute handling time</td><td>Avg 4 min live</td><td>Summary ready in 30 sec post-call</td></tr>
-            </tbody>
-          </table>
-        </div>
+        <p class="text-subtle">Source: Shunya Labs pricing page (model list), Shunya Labs ASR Gateway API Reference, TTS Developer Documentation. Shunya Labs does not publish a dedicated BFSI reference architecture or customer-validated ROI numbers — for example designs see the <a href="/personas/enterprise.html">Enterprise persona</a> page, where they are clearly marked as illustrative.</p>
 
         <div class="pager">
           <a class="pager-link" href="/translation/vak-overview.html">
@@ -128,9 +102,5 @@
 
   <script src="/assets/js/shell.js"></script>
   <script src="/assets/js/nav.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-  <script>
-    mermaid.initialize({ startOnLoad: true, theme: document.documentElement.classList.contains('dark') ? 'dark' : 'neutral', securityLevel: 'loose' });
-  </script>
 </body>
 </html>

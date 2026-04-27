@@ -28,7 +28,6 @@
         { href: '/asr/configuration.html', label: 'Configuration', icon: 'sliders' },
         { href: '/asr/features.html', label: 'Features', icon: 'star' },
         { href: '/asr/streaming.html', label: 'Streaming (WebSocket)', icon: 'wifi' },
-        { href: '/asr/dashboard.html', label: 'Dashboard walkthrough', icon: 'layout' },
         { href: '/asr/api-reference.html', label: 'API reference', icon: 'terminal' },
       ]
     },

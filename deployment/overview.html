@@ -6,7 +6,7 @@
   <title>Deployment — Shunya Labs Docs</title>
   <meta name="description" content="Cloud API, on-prem / VPC, air-gapped CPU — same API surface, different deployment shapes.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=9">
+  <link rel="stylesheet" href="/assets/css/main.css?v=10">
   <script src="/assets/js/theme.js"></script>
 </head>
 <body>
@@ -67,24 +67,8 @@ TTS streaming: wss://tts.shunyalabs.ai/ws/v1/audio/speech</code></pre>
           <li>Update channel — you control the cadence</li>
         </ul>
 
-        <h3>Minimum footprint <span class="pill pill-illustrative">Illustrative</span></h3>
-        <div class="callout callout-illustrative">
-          <div class="callout-title">Illustrative — request a sizing exercise from Shunya</div>
-          The hardware figures below are <strong>reasonable defaults inferred from Shunya's published model sizes</strong> (0.8B ASR · 1.3B Vāķ) and typical inference profiles for similar transformer models. They are <strong>not a Shunya-published sizing matrix</strong>. Actual capacity depends on concurrency, codec, audio length distribution, NLP add-ons, and Triton config — engage <a href="mailto:0@shunyalabs.ai">0@shunyalabs.ai</a> for a sizing exercise before signing hardware POs.
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Component</th><th>Minimum</th><th>Recommended</th></tr></thead>
-            <tbody>
-              <tr><td>ASR batch (low traffic)</td><td>1× A10 GPU (24 GB)</td><td>2× A100 / H100</td></tr>
-              <tr><td>ASR streaming (100 concurrent)</td><td>2× A10</td><td>2× A100</td></tr>
-              <tr><td>TTS streaming (100 concurrent)</td><td>1× A10</td><td>1× A100</td></tr>
-              <tr><td>CPU-only ASR</td><td>16-core x86, 64 GB RAM</td><td>32-core</td></tr>
-              <tr><td>CPU-only TTS</td><td>16-core x86, 32 GB RAM</td><td>32-core</td></tr>
-              <tr><td>Storage</td><td>100 GB SSD</td><td>500 GB NVMe</td></tr>
-            </tbody>
-          </table>
-        </div>
+        <h3>Sizing</h3>
+        <p>Hardware requirements depend on concurrency, codec, audio length, NLP add-ons, and Triton configuration. Shunya doesn't publish a sizing matrix — engage <a href="mailto:0@shunyalabs.ai">0@shunyalabs.ai</a> for a sizing exercise before specifying hardware.</p>
 
         <h3>Network topology</h3>
         <div class="mermaid">graph LR
@@ -138,26 +122,6 @@ segments = tx.transcribe("meeting.wav")</code></pre>
               <tr><td><code>vak-translate-1.3b-ct2</code></td><td>CC-BY-SA-4.0</td><td>Share-alike — derivative works must carry the same license.</td></tr>
             </tbody>
           </table>
-        </div>
-
-        <h2>Hybrid patterns <span class="pill pill-illustrative">Illustrative</span></h2>
-        <div class="grid grid-2">
-          <div class="card">
-            <div class="card-title">Cloud for pilot → on-prem at scale</div>
-            <p class="card-desc">Prove the use case on the cloud API, then migrate to on-prem once volume and compliance demands justify it. SDK URL is the only thing that changes.</p>
-          </div>
-          <div class="card">
-            <div class="card-title">On-prem for PHI, cloud for analytics</div>
-            <p class="card-desc">Route PHI-carrying transcriptions through the hospital on-prem deployment; non-PHI workloads (e.g. marketing voice-over generation) go through cloud.</p>
-          </div>
-          <div class="card">
-            <div class="card-title">Cloud control-plane + air-gapped inference</div>
-            <p class="card-desc">Keys and quotas managed in the cloud console; inference happens on CPUs in the field. Metrics flow back when connectivity allows.</p>
-          </div>
-          <div class="card">
-            <div class="card-title">Multi-region active-active</div>
-            <p class="card-desc">Primary on-prem in your main region; cloud endpoints as failover for when the on-prem cluster is under maintenance.</p>
-          </div>
         </div>
 
         <div class="pager">
