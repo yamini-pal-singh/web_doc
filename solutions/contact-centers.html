@@ -17,9 +17,14 @@
           <a href="/index.html">Docs</a><span class="sep">/</span><span>Solutions</span><span class="sep">/</span><span>Contact centres</span>
         </div>
         <h1>Contact centres — live agent assist + analytics</h1>
-        <p class="lead">Real-time transcription with sub-100 ms latency. Agent-assist suggestions, sentiment tracking, automated QA on every call. Plugs into Genesys, NICE, Five9, Avaya, Twilio via SIPREC or WebRTC.</p>
+        <p class="lead">Real-time transcription, agent-assist suggestions, sentiment tracking, automated QA on every call. Designed to plug into existing CCaaS via SIPREC, WebRTC, or platform-native streaming.</p>
 
-        <h2>Reference architecture</h2>
+        <div class="callout callout-illustrative">
+          <div class="callout-title">Illustrative blueprint — not a Shunya-published reference architecture</div>
+          The reference architecture, CCaaS integration patterns, dashboard metrics, and ROI levers below are <strong>example designs</strong> showing how Shunya's REST + WebSocket APIs can compose with each platform's streaming hooks. They are <strong>not officially published Shunya integration guides</strong>, and named platforms (Genesys, NICE, Five9, Avaya, Twilio) have not been confirmed as partners on Shunya's public site. Validate with <a href="mailto:0@shunyalabs.ai">0@shunyalabs.ai</a> before designing a procurement around these patterns.
+        </div>
+
+        <h2>Reference architecture <span class="pill pill-illustrative">Illustrative</span></h2>
         <div class="mermaid">graph LR
   A[Caller] --> B[CCaaS / PBX<br/>Genesys · NICE · Five9 · Avaya · Twilio]
   B --> C[Streaming ASR<br/>zero-indic / zero-codeswitch]
@@ -30,7 +35,7 @@
   G --> H[CRM<br/>Salesforce · Zendesk]
   style C fill:#eef2ff,stroke:#6366f1</div>
 
-        <h2>Common workflows</h2>
+        <h2>Common workflows <span class="pill pill-illustrative">Illustrative</span></h2>
 
         <h3>Live agent assist</h3>
         <ul>
@@ -69,7 +74,7 @@
           </table>
         </div>
 
-        <h2>CCaaS integration patterns</h2>
+        <h2>CCaaS integration patterns <span class="pill pill-illustrative">Illustrative</span></h2>
         <div class="table-wrap">
           <table>
             <thead><tr><th>Platform</th><th>Audio source</th><th>Integration</th></tr></thead>
@@ -84,14 +89,14 @@
           </table>
         </div>
 
-        <h2>Dashboard metrics we've seen matter</h2>
+        <h2>Dashboard metrics that matter <span class="pill pill-illustrative">Illustrative</span></h2>
         <div class="grid grid-3">
           <div class="card"><div class="card-title">Live</div><p class="card-desc">Current sentiment · detected intent · agent talk ratio · silence streaks</p></div>
           <div class="card"><div class="card-title">Per-call</div><p class="card-desc">Summary · disposition · mandatory disclosure compliance · QA score</p></div>
           <div class="card"><div class="card-title">Queue-level</div><p class="card-desc">Sentiment trend · first-contact resolution · escalation rate · language mix</p></div>
         </div>
 
-        <h2>ROI levers we've seen</h2>
+        <h2>ROI levers <span class="pill pill-illustrative">Illustrative</span></h2>
         <div class="table-wrap">
           <table>
             <thead><tr><th>Metric</th><th>Before</th><th>With agent assist</th></tr></thead>

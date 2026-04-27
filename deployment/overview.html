@@ -67,7 +67,11 @@ TTS streaming: wss://tts.shunyalabs.ai/ws/v1/audio/speech</code></pre>
           <li>Update channel — you control the cadence</li>
         </ul>
 
-        <h3>Minimum footprint</h3>
+        <h3>Minimum footprint <span class="pill pill-illustrative">Illustrative</span></h3>
+        <div class="callout callout-illustrative">
+          <div class="callout-title">Illustrative — request a sizing exercise from Shunya</div>
+          The hardware figures below are <strong>reasonable defaults inferred from Shunya's published model sizes</strong> (0.8B ASR · 1.3B Vāķ) and typical inference profiles for similar transformer models. They are <strong>not a Shunya-published sizing matrix</strong>. Actual capacity depends on concurrency, codec, audio length distribution, NLP add-ons, and Triton config — engage <a href="mailto:0@shunyalabs.ai">0@shunyalabs.ai</a> for a sizing exercise before signing hardware POs.
+        </div>
         <div class="table-wrap">
           <table>
             <thead><tr><th>Component</th><th>Minimum</th><th>Recommended</th></tr></thead>
@@ -136,7 +140,7 @@ segments = tx.transcribe("meeting.wav")</code></pre>
           </table>
         </div>
 
-        <h2>Hybrid patterns we've seen</h2>
+        <h2>Hybrid patterns <span class="pill pill-illustrative">Illustrative</span></h2>
         <div class="grid grid-2">
           <div class="card">
             <div class="card-title">Cloud for pilot → on-prem at scale</div>

@@ -44,7 +44,7 @@
           </div></a>
           <a href="/solutions/contact-centers.html" class="card-link"><div class="card">
             <div class="card-title">Contact centres — live agent assist</div>
-            <p class="card-desc">Real-time transcription with &lt; 100 ms latency, intent + sentiment, suggested replies, automated QA scoring. Plugs into Genesys, NICE, Five9, Avaya via standard SIPREC or WebRTC.</p>
+            <p class="card-desc">Real-time streaming transcription, intent + sentiment, suggested replies, automated QA scoring. Designed to plug into existing CCaaS via standard SIPREC, WebRTC, or platform-native streaming.</p>
           </div></a>
           <a href="/solutions/media.html" class="card-link"><div class="card">
             <div class="card-title">Media & entertainment — post-production</div>
@@ -52,12 +52,16 @@
           </div></a>
         </div>
 
-        <h2>Integration surface</h2>
-        <p>Shunya plugs into the systems you already run. Everything exposes either REST or a WebSocket, and the integrations below are customer-built patterns we've seen ship.</p>
+        <h2>Integration surface <span class="pill pill-illustrative">Illustrative</span></h2>
+
+        <div class="callout callout-illustrative">
+          <div class="callout-title">Illustrative — not an official Shunya specification</div>
+          The patterns below are <strong>example architectures</strong> drawn from how Shunya's REST + WebSocket interfaces typically combine with each platform's streaming API. They are <strong>not endorsed integration guides published by Shunya Labs</strong>. Treat them as starting points to validate with your account team before quoting to internal stakeholders. For confirmed integration patterns, email <a href="mailto:0@shunyalabs.ai">0@shunyalabs.ai</a>.
+        </div>
 
         <div class="table-wrap">
           <table>
-            <thead><tr><th>System</th><th>Shunya side</th><th>Pattern</th></tr></thead>
+            <thead><tr><th>System</th><th>Shunya side</th><th>Example pattern</th></tr></thead>
             <tbody>
               <tr><td>Salesforce Service Cloud</td><td>Batch ASR + intelligence layer</td><td>Omni-Channel event → Shunya transcription → case note with sentiment & intent back to Salesforce via REST.</td></tr>
               <tr><td>Genesys Cloud CX</td><td>Streaming ASR</td><td>AudioHook WebSocket → Shunya WSS → live agent-assist widget via CX Messaging.</td></tr>
@@ -67,11 +71,6 @@
               <tr><td>Epic / Cerner (healthcare)</td><td>Zero STT Med + FHIR serializer</td><td>On-prem deploy in hospital VPC → transcripts mapped to FHIR Observation resources → EHR integration.</td></tr>
             </tbody>
           </table>
-        </div>
-
-        <div class="callout callout-info">
-          <div class="callout-title">Partner enablement</div>
-          Integration guides for each system are in active development. If you need a specific pattern before we publish it, email <a href="mailto:0@shunyalabs.ai">0@shunyalabs.ai</a>.
         </div>
 
         <h2>Compliance & privacy posture</h2>
@@ -103,7 +102,8 @@
           </div>
         </div>
 
-        <h2>Pilot to production path</h2>
+        <h2>Pilot to production path <span class="pill pill-illustrative">Illustrative</span></h2>
+        <p class="text-subtle">A reasonable evaluation framework — not a Shunya-prescribed onboarding plan. Your timeline will depend on procurement, legal review, and the integration depth your stack requires.</p>
 
         <h3>Week 1–2 — Proof of concept</h3>
         <ul>
@@ -127,12 +127,16 @@
           <li>Route production traffic with canary → ramp.</li>
         </ul>
 
-        <h2>ROI framing we've seen work</h2>
+        <h2>ROI framing <span class="pill pill-illustrative">Illustrative</span></h2>
+        <div class="callout callout-illustrative">
+          <div class="callout-title">Illustrative — industry-typical ranges, not Shunya-attributed outcomes</div>
+          The figures below are <strong>broad industry ranges</strong> commonly cited for these use-case categories — not customer outcomes published by Shunya Labs. Use them only as a directional sanity check; replace with your own pilot baseline before sharing internally.
+        </div>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Use case</th><th>Savings lever</th><th>Typical improvement</th></tr></thead>
+            <thead><tr><th>Use case</th><th>Savings lever</th><th>Industry-typical range</th></tr></thead>
             <tbody>
-              <tr><td>Agent assist (contact centre)</td><td>AHT reduction · QA automation</td><td>15–25% AHT · 80% QA coverage</td></tr>
+              <tr><td>Agent assist (contact centre)</td><td>AHT reduction · QA automation</td><td>15–25% AHT · expanded QA coverage</td></tr>
               <tr><td>Medical scribe</td><td>Physician documentation time</td><td>1–2 hours / day / clinician</td></tr>
               <tr><td>IVR containment</td><td>Deflection from human agents</td><td>30–60% containment rate</td></tr>
               <tr><td>Debt collections</td><td>Bot coverage of top-of-funnel</td><td>70%+ automated first contact</td></tr>

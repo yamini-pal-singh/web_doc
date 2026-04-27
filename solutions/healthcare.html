@@ -19,7 +19,12 @@
         <h1>Healthcare — real-time medical scribe</h1>
         <p class="lead">Turn consultation audio into structured, FHIR-shaped clinical notes ready for the EHR. Zero STT Med handles drug names, procedures, and diagnoses with clinical-grade accuracy. HIPAA with BAA. Deployable inside your hospital network.</p>
 
-        <h2>Reference architecture</h2>
+        <div class="callout callout-illustrative">
+          <div class="callout-title">Illustrative blueprint — not a Shunya-published reference architecture</div>
+          Shunya's HIPAA + BAA posture and the existence of the Zero STT Med model are documented on their site. The <strong>specific workflows, FHIR/HL7 mapping example, and ROI ranges below are example patterns</strong> built from those documented capabilities — they are <strong>not Shunya-published clinical reference designs or validated outcomes</strong>. Engage <a href="mailto:0@shunyalabs.ai">0@shunyalabs.ai</a> before submitting any of this to a hospital architecture review.
+        </div>
+
+        <h2>Reference architecture <span class="pill pill-illustrative">Illustrative</span></h2>
         <div class="mermaid">graph LR
   A[Microphone<br/>consultation room] --> B[Streaming ASR<br/>zero-med]
   B --> C[Medical terminology<br/>correction · MedGemma]
@@ -29,7 +34,7 @@
   style B fill:#eef2ff,stroke:#6366f1
   style C fill:#f3e8ff,stroke:#a855f7</div>
 
-        <h2>Common workflows</h2>
+        <h2>Common workflows <span class="pill pill-illustrative">Illustrative</span></h2>
 
         <h3>Real-time consultation scribe</h3>
         <ul>
@@ -88,7 +93,7 @@
           </div>
         </div>
 
-        <h2>FHIR / HL7 output shape</h2>
+        <h2>FHIR / HL7 output shape <span class="pill pill-illustrative">Illustrative</span></h2>
         <p>After structuring, a typical consultation produces resources like:</p>
 <pre><code>{
   "resourceType": "Encounter",
@@ -114,7 +119,7 @@
   "dosageInstruction": [{ "text": "1 tab at bedtime for 7 days" }]
 }</code></pre>
 
-        <h2>ROI levers we've seen</h2>
+        <h2>ROI levers <span class="pill pill-illustrative">Illustrative</span></h2>
         <div class="table-wrap">
           <table>
             <thead><tr><th>Metric</th><th>Before</th><th>With scribe</th></tr></thead>

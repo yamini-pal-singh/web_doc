@@ -17,7 +17,7 @@
           <a href="/index.html">Docs</a><span class="sep">/</span><span>Speech-to-Text</span><span class="sep">/</span><span>Streaming</span>
         </div>
         <h1>Streaming ASR over WebSocket</h1>
-        <p class="lead">For voice agents, IVR, and live captioning. You open a WebSocket, send audio frames as they arrive, and receive partial and final transcripts with sub-100 ms latency.</p>
+        <p class="lead">For voice agents, IVR, and live captioning. You open a WebSocket, send audio frames as they arrive, and receive partial and final transcripts in real time.</p>
 
         <h2>Endpoint</h2>
 <pre><code>wss://asr.shunyalabs.ai/ws</code></pre>
@@ -195,16 +195,20 @@ async def transcribe_stream(audio_iter):
 
         await asyncio.gather(sender(), receiver())</code></pre>
 
-        <h2>Tuning</h2>
+        <h2>Tuning <span class="pill pill-illustrative">Illustrative starting points</span></h2>
+        <div class="callout callout-illustrative">
+          <div class="callout-title">Illustrative — benchmark on your own audio</div>
+          The values below are <strong>reasonable starting points</strong> derived from Shunya's documented parameter defaults — not officially recommended presets published by Shunya Labs. Optimal values depend on codec, room acoustics, speaker pace, and the latency/accuracy trade-off you're willing to make. Always benchmark against a representative sample of your own audio.
+        </div>
 
         <h3>Telephony</h3>
-        <p>For Twilio or SIP: <code>dtype=ulaw</code>, <code>sample_rate=8000</code>, <code>chunk_size_sec=1.0</code>, <code>silence_threshold_sec=0.6</code>. This gives the fastest partials with acceptable accuracy on 8 kHz audio.</p>
+        <p>For Twilio or SIP: <code>dtype=ulaw</code>, <code>sample_rate=8000</code>, <code>chunk_size_sec=1.0</code>, <code>silence_threshold_sec=0.6</code>. Aims for fast partials on 8 kHz audio.</p>
 
         <h3>Dictation</h3>
         <p>For continuous dictation with long utterances: <code>chunk_size_sec=3.0</code>, <code>silence_threshold_sec=1.2</code>. Reduces churn on partials, produces cleaner final segments.</p>
 
         <h3>Voice agents</h3>
-        <p>For conversational agents that need to detect the user stopped speaking: <code>silence_threshold_sec=0.5</code>. The lower the threshold, the more aggressively the server finalizes — good for interruption handling, but can truncate speakers who pause to think.</p>
+        <p>For conversational agents that need to detect the user stopped speaking: <code>silence_threshold_sec=0.5</code>. Lower threshold = more aggressive finalization — good for interruption handling, but can truncate speakers who pause to think.</p>
 
         <div class="pager">
           <a class="pager-link" href="/asr/features.html">

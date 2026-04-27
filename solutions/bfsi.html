@@ -19,7 +19,12 @@
         <h1>BFSI — banking, financial services, insurance</h1>
         <p class="lead">Automate high-volume voice interactions in the language your customer actually speaks. Debt collection, EMI reminders, KYC verification, onboarding confirmation — all with auditable transcripts.</p>
 
-        <h2>Reference architecture</h2>
+        <div class="callout callout-illustrative">
+          <div class="callout-title">Illustrative blueprint — not a Shunya-published reference architecture</div>
+          The workflows, stack composition, and ROI ranges on this page are <strong>example patterns</strong> showing how Shunya's documented capabilities (Zero STT Indic, Zero TTS, Vāķ, Zero STT Numerical) could be assembled for BFSI use cases. They are <strong>not customer-validated case studies or Shunya-prescribed solution designs</strong>. Validate specifics with <a href="mailto:0@shunyalabs.ai">0@shunyalabs.ai</a> before quoting numbers internally.
+        </div>
+
+        <h2>Reference architecture <span class="pill pill-illustrative">Illustrative</span></h2>
         <div class="mermaid">graph LR
   A[Telephony / CPaaS<br/>Twilio · Exotel · Knowlarity] --> B[Streaming ASR<br/>zero-indic]
   B --> C[Intelligence<br/>intent · sentiment · redaction]
@@ -31,7 +36,7 @@
   style B fill:#eef2ff,stroke:#6366f1
   style F fill:#eef2ff,stroke:#6366f1</div>
 
-        <h2>Common workflows</h2>
+        <h2>Common workflows <span class="pill pill-illustrative">Illustrative</span></h2>
 
         <h3>EMI reminder &amp; collection</h3>
         <ul>
@@ -93,7 +98,7 @@
           </div>
         </div>
 
-        <h2>ROI levers we've seen</h2>
+        <h2>ROI levers <span class="pill pill-illustrative">Illustrative</span></h2>
         <div class="table-wrap">
           <table>
             <thead><tr><th>Metric</th><th>Manual baseline</th><th>With Shunya</th></tr></thead>

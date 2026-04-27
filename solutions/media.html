@@ -19,7 +19,12 @@
         <h1>Media &amp; entertainment</h1>
         <p class="lead">Subtitle generation, interview transcription, multi-language dubbing, content moderation, and post-production search — all powered by Zero STT, Vāķ, and Zero TTS.</p>
 
-        <h2>Reference architecture</h2>
+        <div class="callout callout-illustrative">
+          <div class="callout-title">Illustrative blueprint — example pipeline patterns</div>
+          The reference architecture and workflows below are <strong>example pipelines</strong> showing how Shunya's documented APIs can compose for typical media post-production tasks. They are <strong>not Shunya-published media reference designs</strong>. The SRT generation snippet uses standard SRT formatting plus Shunya's documented <code>word_timestamps</code> output and is portable to any project.
+        </div>
+
+        <h2>Reference architecture <span class="pill pill-illustrative">Illustrative</span></h2>
         <div class="mermaid">graph LR
   A[Source media<br/>video · podcast · interview] --> B[Zero STT<br/>batch · word timestamps]
   B --> C[Transcript + timing]
@@ -31,7 +36,7 @@
   style E fill:#f3e8ff,stroke:#a855f7
   style F fill:#eef2ff,stroke:#6366f1</div>
 
-        <h2>Common workflows</h2>
+        <h2>Common workflows <span class="pill pill-illustrative">Illustrative</span></h2>
 
         <h3>Subtitle generation</h3>
         <ul>
