@@ -62,6 +62,17 @@
       ]
     },
     {
+      heading: 'Integrations',
+      items: [
+        { href: '/integrations/overview.html', label: 'Overview', icon: 'plug' },
+        { href: '/integrations/python-sdk.html', label: 'Python SDK', icon: 'code' },
+        { href: '/integrations/openai-sdk.html', label: 'OpenAI SDK', icon: 'compatible' },
+        { href: '/integrations/twilio.html', label: 'Twilio', icon: 'phone' },
+        { href: '/integrations/sip-pstn.html', label: 'SIP / PSTN', icon: 'wifi' },
+        { href: '/integrations/hugging-face.html', label: 'Hugging Face', icon: 'flask' },
+      ]
+    },
+    {
       heading: 'Deployment',
       items: [
         { href: '/deployment/overview.html', label: 'Cloud / on-prem / air-gapped', icon: 'server' },
@@ -106,6 +117,9 @@
     film: '<rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/>',
     server: '<rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/>',
     shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+    plug: '<path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8z"/>',
+    compatible: '<polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>',
+    phone: '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>',
   };
 
   function icon(name) {

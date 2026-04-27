@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenAI SDK — Shunya Labs Docs</title>
+  <meta name="description" content="The Shunya Labs TTS API is OpenAI-compatible — use the official OpenAI Python SDK as a drop-in client.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css?v=9">
+  <script src="/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/index.html">Docs</a><span class="sep">/</span><span>Integrations</span><span class="sep">/</span><span>OpenAI SDK</span>
+        </div>
+        <h1>OpenAI SDK (compatible)</h1>
+        <p class="lead">Shunya Labs' TTS API is OpenAI-compatible. You can use the official OpenAI Python SDK by pointing <code>base_url</code> to the Shunya Labs endpoint — no other client changes needed.</p>
+
+        <h2>Why this is useful</h2>
+        <ul>
+          <li>You're already using <code>openai.audio.speech.create()</code> and you want to switch to Shunya without rewriting your call sites.</li>
+          <li>You want to A/B test voices across providers from one client interface.</li>
+          <li>Your team standardised on the OpenAI SDK and prefers not to maintain a second SDK.</li>
+        </ul>
+
+        <h2>Drop-in code sample</h2>
+<pre><code>from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://tts.shunyalabs.ai/v1",
+)
+
+response = client.audio.speech.create(
+    model="zero-indic",
+    input="Hello, how are you today?",
+    voice="Varun",
+    response_format="mp3",
+)
+
+response.stream_to_file("output.mp3")</code></pre>
+
+        <h2>Field mapping</h2>
+        <p>The OpenAI Python SDK's <code>audio.speech.create()</code> arguments map cleanly onto Shunya's <code>POST /v1/audio/speech</code> body:</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>OpenAI SDK argument</th><th>Shunya field</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td><code>model</code></td><td><code>model</code></td><td>Use <code>"zero-indic"</code>.</td></tr>
+              <tr><td><code>input</code></td><td><code>input</code></td><td>The text to synthesize. Up to 10,000 characters.</td></tr>
+              <tr><td><code>voice</code></td><td><code>voice</code></td><td>Any of the 46 Shunya voices — see <a href="/tts/voices.html">Voices &amp; languages</a>.</td></tr>
+              <tr><td><code>response_format</code></td><td><code>response_format</code></td><td><code>mp3</code>, <code>wav</code>, <code>pcm</code>, <code>ogg_opus</code>, <code>flac</code>, <code>mulaw</code>, <code>alaw</code>.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>What you keep when you switch</h2>
+        <ul>
+          <li>The OpenAI client's retry / timeout / streaming helpers.</li>
+          <li>Standard <code>response.stream_to_file()</code>, <code>response.iter_bytes()</code> patterns.</li>
+          <li>Same error types your code already catches.</li>
+        </ul>
+
+        <h2>What you give up</h2>
+        <p>The OpenAI SDK only exposes the parameters in the OpenAI spec. Shunya-specific parameters — voice cloning (<code>reference_wav</code>, <code>reference_text</code>), <code>speed</code>, <code>language</code>, <code>trim_silence</code>, <code>volume_normalization</code>, <code>background_audio</code>, <code>word_timestamps</code>, <code>max_tokens</code> — aren't accepted by the OpenAI SDK signature. To use those, switch to the <a href="/integrations/python-sdk.html">Shunya Python SDK</a> or call the REST endpoint directly.</p>
+
+        <div class="callout callout-info">
+          <div class="callout-title">Streaming via the OpenAI SDK</div>
+          For real-time / streaming synthesis, use Shunya's WebSocket endpoint at <code>wss://tts.shunyalabs.ai/ws/v1/audio/speech</code> — that path is not OpenAI-compatible. See <a href="/tts/streaming.html">TTS streaming</a>.
+        </div>
+
+        <p class="text-subtle">Source: Shunyalabs TTS Developer Documentation v1.0 (March 2026), §2.2 Your First Request → "OpenAI Python SDK (compatible)". Code reproduced verbatim.</p>
+
+        <div class="pager">
+          <a class="pager-link" href="/integrations/python-sdk.html">
+            <div class="pager-label">← Previous</div>
+            <div class="pager-title">Python SDK</div>
+          </a>
+          <a class="pager-link pager-right" href="/integrations/twilio.html">
+            <div class="pager-label">Next →</div>
+            <div class="pager-title">Twilio</div>
+          </a>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/nav.js"></script>
+</body>
+</html>

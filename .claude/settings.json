@@ -8,7 +8,9 @@
       "Bash(curl -s -o /dev/null -w '%{http_code}' http://localhost:8765/assets/img/playground/__TRACKED_VAR__)",
       "Bash(git mv *)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}  /personas/non-technical-user.html\\\\n\" \"http://localhost:8765/personas/non-technical-user.html\")",
-      "Bash(curl -s -o /dev/null -w \"%{http_code}  /personas/operator.html \\(should 404\\)\\\\n\" \"http://localhost:8765/personas/operator.html\")"
+      "Bash(curl -s -o /dev/null -w \"%{http_code}  /personas/operator.html \\(should 404\\)\\\\n\" \"http://localhost:8765/personas/operator.html\")",
+      "WebFetch(domain:docs.speechmatics.com)",
+      "WebFetch(domain:docs.cartesia.ai)"
     ]
   }
 }

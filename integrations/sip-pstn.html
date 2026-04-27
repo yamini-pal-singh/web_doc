@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SIP / PSTN — Shunya Labs Docs</title>
+  <meta name="description" content="Use Shunya Labs ASR and TTS over SIP and PSTN — mulaw 8 kHz for North American & Indian telephony, alaw for European.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css?v=9">
+  <script src="/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/index.html">Docs</a><span class="sep">/</span><span>Integrations</span><span class="sep">/</span><span>SIP / PSTN</span>
+        </div>
+        <h1>SIP / PSTN</h1>
+        <p class="lead">Shunya Labs supports the two G.711 codecs that telephone networks use globally — <code>mulaw</code> and <code>alaw</code> — for both ASR streaming and TTS output. Pick the codec that matches your geography or carrier.</p>
+
+        <h2>Pick the codec</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Codec</th><th>When to use</th><th>Sample rate</th></tr></thead>
+            <tbody>
+              <tr><td><code>mulaw</code> (G.711 μ-law)</td><td>Twilio, most Indian PSTN systems, North American telephony.</td><td>8 kHz, 8-bit</td></tr>
+              <tr><td><code>alaw</code> (G.711 A-law)</td><td>European telephony systems and some SIP providers.</td><td>8 kHz, 8-bit</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>TTS — generate telephony-ready audio</h2>
+        <p>Set <code>response_format</code> to the codec your trunk expects. The output is ready to forward to a SIP <code>RTP</code> stream or an IVR platform's audio sink.</p>
+
+<pre><code># mulaw — North American / Indian PSTN, Twilio
+config = TTSConfig(model="zero-indic", voice="Varun", response_format="mulaw")
+result = await client.tts.synthesize("&lt;Conversational&gt; Hello!", config=config)
+# Forward result.audio_data directly to Twilio media stream or IVR system
+
+# alaw — European telephony
+config = TTSConfig(model="zero-indic", voice="Rajesh", response_format="alaw")
+result = await client.tts.synthesize("Guten Morgen!", config=config)</code></pre>
+
+        <h2>ASR — accept telephony audio over WebSocket</h2>
+        <p>The streaming endpoint accepts μ-law and A-law frames natively — no resampling or codec conversion before sending.</p>
+
+<pre><code>// First message after connecting to wss://asr.shunyalabs.ai/ws
+{
+  "api_key": "your-api-key",
+  "language": "hi",
+  "sample_rate": 8000,
+  "dtype": "ulaw",     // or "alaw"
+  "model": "zero-indic"
+}</code></pre>
+
+        <h2>Why these codecs are first-class here</h2>
+        <p>From the TTS docs:</p>
+        <blockquote class="callout callout-info" style="font-style: italic;">
+          mulaw (G.711 mu-law) and alaw (G.711 A-law) are the two standard codecs for telephone networks globally. Both encode audio at 8 kHz, 8-bit, which is the standard for PSTN, SIP, and most IVR platforms.
+        </blockquote>
+        <p>And from the ASR streaming docs, <code>dtype</code> values:</p>
+        <ul>
+          <li><code>ulaw</code> — G.711 mu-law (8-bit) · Telephony (8 kHz)</li>
+          <li><code>alaw</code> — G.711 A-law (8-bit) · Telephony (8 kHz)</li>
+          <li><code>int16</code> — 16-bit signed PCM · General recording</li>
+          <li><code>float32</code> — 32-bit IEEE float · Pre-processed audio</li>
+        </ul>
+
+        <h2>Latency tuning for telephony</h2>
+        <p>For real-time agents over PSTN, lower the silence threshold so the server finalises segments quickly when the caller pauses:</p>
+
+<pre><code>{
+  "api_key": "your-api-key",
+  "model": "zero-indic",
+  "language": "hi",
+  "sample_rate": 8000,
+  "dtype": "ulaw",
+  "chunk_size_sec": 1.0,
+  "silence_threshold_sec": 0.6
+}</code></pre>
+
+        <p>The <code>silence_threshold_sec</code> default is 0.8 s; dropping it to 0.5–0.6 makes the server finalise faster — good for interruption handling, but can truncate speakers who pause to think. Tune against your own audio.</p>
+
+        <div class="callout callout-info">
+          <div class="callout-title">WAV headers are auto-detected</div>
+          If your audio frame has a WAV header, sample rate and dtype are extracted automatically from the first binary frame — you don't need to set them in the init.
+        </div>
+
+        <p class="text-subtle">Source: Shunyalabs TTS Developer Documentation v1.0 (March 2026), §8.2 Telephony Formats; Shunyalabs ASR Gateway API Reference (31 March), WebSocket Streaming API → "Audio Formats". Codec descriptions reproduced verbatim.</p>
+
+        <div class="pager">
+          <a class="pager-link" href="/integrations/twilio.html">
+            <div class="pager-label">← Previous</div>
+            <div class="pager-title">Twilio</div>
+          </a>
+          <a class="pager-link pager-right" href="/integrations/hugging-face.html">
+            <div class="pager-label">Next →</div>
+            <div class="pager-title">Hugging Face</div>
+          </a>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/nav.js"></script>
+</body>
+</html>

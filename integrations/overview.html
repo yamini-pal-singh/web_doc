@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Integrations — Shunya Labs Docs</title>
+  <meta name="description" content="SDKs, telephony providers, and platforms that integrate with Shunya Labs ASR and TTS.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css?v=9">
+  <script src="/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/index.html">Docs</a><span class="sep">/</span><span>Integrations</span>
+        </div>
+        <h1>Integrations</h1>
+        <p class="lead">SDKs, telephony providers, and platforms that work with Shunya Labs out of the box. Every integration on this page is documented in Shunya's published API guide or SDK reference — pick the one that matches your stack.</p>
+
+        <div class="int-grid">
+          <a href="/integrations/python-sdk.html" class="int-card">
+            <div class="int-logo" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            </div>
+            <div class="int-body">
+              <div class="int-title">Python SDK</div>
+              <p class="int-desc">First-party <code>shunyalabs</code> package on PyPI. <code>AsyncShunyaClient</code> with async/await, retries, and override URLs for self-hosted deployments.</p>
+              <span class="int-pill">First-party</span>
+            </div>
+          </a>
+
+          <a href="/integrations/openai-sdk.html" class="int-card">
+            <div class="int-logo" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+            </div>
+            <div class="int-body">
+              <div class="int-title">OpenAI SDK</div>
+              <p class="int-desc">The TTS API is OpenAI-compatible. Use the official OpenAI Python SDK — point <code>base_url</code> at Shunya and your existing code keeps working.</p>
+              <span class="int-pill">Drop-in</span>
+            </div>
+          </a>
+
+          <a href="/integrations/twilio.html" class="int-card">
+            <div class="int-logo" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <div class="int-body">
+              <div class="int-title">Twilio</div>
+              <p class="int-desc">Voice calls and Media Streams. Use Shunya's <code>mulaw</code> 8 kHz output to feed Twilio directly — no resampling step required.</p>
+              <span class="int-pill">Telephony</span>
+            </div>
+          </a>
+
+          <a href="/integrations/sip-pstn.html" class="int-card">
+            <div class="int-logo" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+            </div>
+            <div class="int-body">
+              <div class="int-title">SIP / PSTN</div>
+              <p class="int-desc">Generic telephony pipelines. <code>mulaw</code> for Twilio, North American, and Indian PSTN; <code>alaw</code> for European telephony and many SIP providers.</p>
+              <span class="int-pill">Telephony</span>
+            </div>
+          </a>
+
+          <a href="/integrations/hugging-face.html" class="int-card">
+            <div class="int-logo" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4 19a2 2 0 0 0 2 3h12a2 2 0 0 0 2-3L15 8V2"/><line x1="8" y1="2" x2="16" y2="2"/></svg>
+            </div>
+            <div class="int-body">
+              <div class="int-title">Hugging Face</div>
+              <p class="int-desc">Open weights at <code>huggingface.co/shunyalabs</code>. Download via <code>huggingface-cli</code> or use the <code>transformers</code> pipeline for local / air-gapped inference.</p>
+              <span class="int-pill">Self-host</span>
+            </div>
+          </a>
+        </div>
+
+        <h2>What's not on this page</h2>
+        <p>Integration patterns with named CRMs (Salesforce), CCaaS platforms (Genesys, NICE, Five9, Avaya, Twilio Flex), messaging (WhatsApp Business), or EHRs (Epic, Cerner) are not officially documented by Shunya Labs. We have <a href="/personas/enterprise.html#integration-surface">example architectures</a> for those on the Enterprise persona page, marked clearly as Illustrative — they're starting points to validate with your account team, not endorsed integration guides.</p>
+
+        <p class="text-subtle">Source: every integration above is documented in the Shunya Labs ASR Gateway API Reference and TTS Developer Documentation v1.0 (March 2026), or on the official <a href="https://huggingface.co/shunyalabs" target="_blank" rel="noopener">Hugging Face organization page</a>.</p>
+
+        <div class="pager">
+          <a class="pager-link" href="/solutions/media.html">
+            <div class="pager-label">← Previous</div>
+            <div class="pager-title">Solutions: Media</div>
+          </a>
+          <a class="pager-link pager-right" href="/integrations/python-sdk.html">
+            <div class="pager-label">Next →</div>
+            <div class="pager-title">Python SDK</div>
+          </a>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/nav.js"></script>
+</body>
+</html>

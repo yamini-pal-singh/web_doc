@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Python SDK — Shunya Labs Docs</title>
+  <meta name="description" content="The shunyalabs Python package — install options, AsyncShunyaClient configuration, error handling.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css?v=9">
+  <script src="/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/index.html">Docs</a><span class="sep">/</span><span>Integrations</span><span class="sep">/</span><span>Python SDK</span>
+        </div>
+        <h1>Python SDK</h1>
+        <p class="lead">First-party Python package for Shunya Labs. Async client, async generators for streaming, automatic retries, override URLs for self-hosted deployments.</p>
+
+        <h2>Install</h2>
+<pre><code># TTS only
+pip install shunyalabs[TTS]
+
+# TTS + ASR + all features
+pip install shunyalabs[all]
+
+# Audio playback helpers (sounddevice)
+pip install shunyalabs[extras]</code></pre>
+
+        <h3>Minimum requirements</h3>
+        <ul>
+          <li>Python 3.8 or higher.</li>
+          <li>An active Shunyalabs API key.</li>
+        </ul>
+
+        <h2>Client setup</h2>
+        <p>The client reads <code>SHUNYALABS_API_KEY</code> from the environment by default.</p>
+
+<pre><code>from shunyalabs import AsyncShunyaClient
+from shunyalabs.tts import TTSConfig
+
+# Option 1 — env var (recommended)
+client = AsyncShunyaClient()
+
+# Option 2 — explicit key
+client = AsyncShunyaClient(api_key="your-api-key")
+
+# Option 3 — full configuration for production
+client = AsyncShunyaClient(
+    api_key="your-api-key",
+    timeout=120.0,    # seconds before request times out
+    max_retries=3,    # retries on 5xx and connection errors
+)
+
+# Use as async context manager to ensure connection cleanup
+async with AsyncShunyaClient() as client:
+    result = await client.tts.synthesize("Hello!", config=config)</code></pre>
+
+        <h2>Configuration reference</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>api_key</code></td><td>string</td><td>None</td><td>Falls back to <code>SHUNYALABS_API_KEY</code> if not set.</td></tr>
+              <tr><td><code>timeout</code></td><td>float</td><td>60.0</td><td>Request timeout in seconds.</td></tr>
+              <tr><td><code>max_retries</code></td><td>int</td><td>2</td><td>Retries for 5xx and connection failures.</td></tr>
+              <tr><td><code>tts_url</code></td><td>string</td><td><code>https://tts.shunyalabs.ai</code></td><td>Override for self-hosted deployments.</td></tr>
+              <tr><td><code>tts_ws_url</code></td><td>string</td><td><code>wss://tts.shunyalabs.ai/ws/v1/audio/speech</code></td><td>Streaming WebSocket URL override.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Self-hosted / on-premise deployment</h3>
+<pre><code>client = AsyncShunyaClient(
+    api_key="your-api-key",
+    tts_url="https://my-tts-server.example.com",
+    tts_ws_url="wss://my-tts-server.example.com/ws",
+)</code></pre>
+
+        <h2>Environment variables</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Variable</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>SHUNYALABS_API_KEY</code></td><td>API key for authentication.</td></tr>
+              <tr><td><code>SHUNYALABS_TTS_URL</code></td><td>Override the TTS batch API base URL.</td></tr>
+              <tr><td><code>SHUNYALABS_TTS_WS_URL</code></td><td>Override the TTS streaming WebSocket URL.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Error handling</h2>
+        <p>All exceptions inherit from <code>ShunyalabsError</code> in <code>shunyalabs.exceptions</code>.</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Exception</th><th>HTTP status</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>AuthenticationError</code></td><td>401</td><td>Invalid or missing API key.</td></tr>
+              <tr><td><code>PermissionDeniedError</code></td><td>403</td><td>API key lacks required permissions.</td></tr>
+              <tr><td><code>RateLimitError</code></td><td>429</td><td>Rate limit exceeded. Back off and retry.</td></tr>
+              <tr><td><code>SynthesisError</code></td><td>422</td><td>Invalid text or configuration.</td></tr>
+              <tr><td><code>ServerError</code></td><td>5xx</td><td>Transient server error. Safe to retry.</td></tr>
+              <tr><td><code>TimeoutError</code></td><td>—</td><td>Request exceeded configured timeout.</td></tr>
+              <tr><td><code>ConnectionError</code></td><td>—</td><td>Network connectivity failure.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+<pre><code>from shunyalabs.exceptions import (
+    AuthenticationError, RateLimitError,
+    SynthesisError, ServerError, ShunyalabsError,
+)
+
+try:
+    result = await client.tts.synthesize("Hello!", config=config)
+except AuthenticationError:
+    print("Invalid API key — check SHUNYALABS_API_KEY")
+except RateLimitError:
+    print("Rate limit hit — back off and retry")
+except SynthesisError as e:
+    print(f"Synthesis failed: {e}")
+except ServerError:
+    print("Server error — safe to retry")
+except ShunyalabsError as e:
+    print(f"SDK error: {e}")</code></pre>
+
+        <h2>Security best practices</h2>
+        <ul>
+          <li>Never hardcode API keys in source code.</li>
+          <li>Use <code>.env</code> files locally and a secrets manager (AWS Secrets Manager, GCP Secret Manager) in production.</li>
+          <li>Add <code>.env</code> to <code>.gitignore</code> to prevent accidental commits.</li>
+          <li>Rotate keys immediately if compromised — generate a new key from the dashboard.</li>
+        </ul>
+
+        <h2>Source &amp; further reading</h2>
+        <ul>
+          <li>GitHub: <a href="https://github.com/Shunyalabsai/shunyalabs-python-sdk" target="_blank" rel="noopener">github.com/Shunyalabsai/shunyalabs-python-sdk</a></li>
+          <li>Pingala (ASR) PyPI package: <a href="https://pypi.org/project/pingala-shunya" target="_blank" rel="noopener">pypi.org/project/pingala-shunya</a></li>
+        </ul>
+
+        <p class="text-subtle">Source: Shunyalabs TTS Developer Documentation v1.0 (March 2026), §1.2 Authentication, §2.5 Error handling, §12.1 Python SDK. Reproduced verbatim.</p>
+
+        <div class="pager">
+          <a class="pager-link" href="/integrations/overview.html">
+            <div class="pager-label">← Previous</div>
+            <div class="pager-title">Integrations overview</div>
+          </a>
+          <a class="pager-link pager-right" href="/integrations/openai-sdk.html">
+            <div class="pager-label">Next →</div>
+            <div class="pager-title">OpenAI SDK</div>
+          </a>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/nav.js"></script>
+</body>
+</html>

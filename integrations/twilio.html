@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Twilio — Shunya Labs Docs</title>
+  <meta name="description" content="Use Shunya Labs ASR and TTS with Twilio Voice — mulaw 8 kHz audio plugs straight into Media Streams and IVR.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css?v=9">
+  <script src="/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/index.html">Docs</a><span class="sep">/</span><span>Integrations</span><span class="sep">/</span><span>Twilio</span>
+        </div>
+        <h1>Twilio</h1>
+        <p class="lead">Twilio is the canonical telephony case in Shunya's TTS docs. Both the ASR streaming endpoint and the TTS API support <code>mulaw</code> 8 kHz output — the exact format Twilio Voice expects — so you can wire them together with no resampling step.</p>
+
+        <h2>Why mulaw matters here</h2>
+        <p>From the TTS docs:</p>
+        <blockquote class="callout callout-info" style="font-style: italic;">
+          mulaw (G.711 mu-law) and alaw (G.711 A-law) are the two standard codecs for telephone networks globally. Both encode audio at 8 kHz, 8-bit, which is the standard for PSTN, SIP, and most IVR platforms. Use mulaw for Twilio, most Indian PSTN systems, and North American telephony.
+        </blockquote>
+
+        <h2>TTS for Twilio — IVR prompt example</h2>
+        <p>Synthesise an IVR prompt in <code>mulaw</code> at 8 kHz, ready to send straight to Twilio. <code>trim_silence=True</code> removes dead air at the start and end so the prompt feels tight on the line.</p>
+
+<pre><code># Full telephony IVR example
+config = TTSConfig(
+    model="zero-indic",
+    voice="Sunita",
+    response_format="mulaw",
+    trim_silence=True,
+)
+result = await client.tts.synthesize(
+    "&lt;Conversational&gt; नमस्ते! अपना खाता नंबर दबाएँ।",
+    config=config,
+)
+# result.audio_data is ready to send to Twilio / SIP</code></pre>
+
+        <h2>Streaming TTS into Twilio Media Streams</h2>
+        <p>For voice agents that need audio to start playing before the full sentence is synthesised, open the streaming WebSocket and forward each chunk into Twilio's <code>&lt;Stream&gt;</code> connection. Use <code>response_format="mulaw"</code> on the Shunya stream so chunks arrive in the format Twilio plays back natively.</p>
+
+<pre><code>config = TTSConfig(
+    model="zero-indic",
+    voice="Varun",
+    response_format="mulaw",
+)
+async for chunk in await client.tts.stream(text, config=config):
+    # forward `chunk` to your Twilio Media Streams WebSocket
+    await twilio_ws.send_bytes(chunk)</code></pre>
+
+        <h2>Streaming ASR from a Twilio call</h2>
+        <p>Inbound from Twilio Media Streams arrives as μ-law / 8 kHz audio frames. Shunya's WebSocket ASR accepts that natively — set <code>dtype="ulaw"</code> and <code>sample_rate=8000</code> in the init message.</p>
+
+<pre><code>// Init JSON sent as the first message to wss://asr.shunyalabs.ai/ws
+{
+  "api_key": "your-api-key",
+  "language": "hi",
+  "sample_rate": 8000,
+  "dtype": "ulaw",
+  "model": "zero-indic"
+}</code></pre>
+
+        <p>Then forward each binary audio frame from Twilio straight onto the ASR socket — no codec conversion needed.</p>
+
+        <h2>Recommended TTSConfig for Twilio</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Field</th><th>Value</th><th>Why</th></tr></thead>
+            <tbody>
+              <tr><td><code>response_format</code></td><td><code>mulaw</code></td><td>Twilio's native telephony codec.</td></tr>
+              <tr><td><code>trim_silence</code></td><td><code>true</code></td><td>Removes dead air at the ends of IVR prompts.</td></tr>
+              <tr><td><code>voice</code></td><td>Local-language voice</td><td>e.g. <code>Sunita</code> for Hindi, <code>Murugan</code> for Tamil — natural accent for Indian PSTN.</td></tr>
+              <tr><td><code>language</code></td><td>ISO code (optional)</td><td>Hints text preprocessing (number expansion, dates) for the spoken language.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Recommended ASR init for Twilio</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Field</th><th>Value</th><th>Why</th></tr></thead>
+            <tbody>
+              <tr><td><code>dtype</code></td><td><code>ulaw</code></td><td>Matches what Twilio Media Streams sends.</td></tr>
+              <tr><td><code>sample_rate</code></td><td><code>8000</code></td><td>Telephony sample rate.</td></tr>
+              <tr><td><code>model</code></td><td><code>zero-indic</code> or <code>zero-codeswitch</code></td><td>Indian languages or Hinglish/Tanglish in regional dialects.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="text-subtle">Source: Shunyalabs TTS Developer Documentation v1.0 (March 2026), §8.1 Format Reference and §8.2 Telephony Formats. ASR field details from the Shunyalabs ASR Gateway API Reference (31 March), WebSocket Streaming API. Code blocks reproduced verbatim from those documents.</p>
+
+        <div class="pager">
+          <a class="pager-link" href="/integrations/openai-sdk.html">
+            <div class="pager-label">← Previous</div>
+            <div class="pager-title">OpenAI SDK</div>
+          </a>
+          <a class="pager-link pager-right" href="/integrations/sip-pstn.html">
+            <div class="pager-label">Next →</div>
+            <div class="pager-title">SIP / PSTN</div>
+          </a>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/nav.js"></script>
+</body>
+</html>

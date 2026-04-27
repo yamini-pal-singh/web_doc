@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hugging Face — Shunya Labs Docs</title>
+  <meta name="description" content="Open weights for Shunya Labs models on Hugging Face — download via huggingface-cli, run with transformers, deploy air-gapped.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css?v=9">
+  <script src="/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/index.html">Docs</a><span class="sep">/</span><span>Integrations</span><span class="sep">/</span><span>Hugging Face</span>
+        </div>
+        <h1>Hugging Face</h1>
+        <p class="lead">Shunya Labs publishes open weights for several models on Hugging Face. Pull them down for local inference, fine-tuning, or air-gapped deployment in environments where the cloud API isn't an option.</p>
+
+        <h2>The Shunya Labs organization</h2>
+        <p>All open models live under <a href="https://huggingface.co/shunyalabs" target="_blank" rel="noopener">huggingface.co/shunyalabs</a>.</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Model</th><th>Task</th><th>Params</th><th>License</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><a href="https://huggingface.co/shunyalabs/pingala-v1-universal" target="_blank" rel="noopener"><code>pingala-v1-universal</code></a></td>
+                <td>ASR</td>
+                <td>0.8B</td>
+                <td>Shunya Labs RAIL-M</td>
+                <td>3.10% composite WER on the OpenASR leaderboard. 204 languages.</td>
+              </tr>
+              <tr>
+                <td><a href="https://huggingface.co/shunyalabs/zero-stt-hinglish" target="_blank" rel="noopener"><code>zero-stt-hinglish</code></a></td>
+                <td>ASR (code-switch)</td>
+                <td>0.8B</td>
+                <td>openrail</td>
+                <td>First Hinglish ASR that handles code-switched conversations natively.</td>
+              </tr>
+              <tr>
+                <td><a href="https://huggingface.co/shunyalabs/vak-translate-1.3b-ct2" target="_blank" rel="noopener"><code>vak-translate-1.3b-ct2</code></a></td>
+                <td>Translation</td>
+                <td>1.3B</td>
+                <td>CC-BY-SA-4.0</td>
+                <td>55 Indian languages, 2,970 any-to-any pairs. BLEU 38.5 weighted average.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Authentication</h2>
+        <p>Hugging Face access is gated by a personal access token. Pass it via the <code>HUGGINGFACE_HUB_TOKEN</code> environment variable, the CLI login command, or programmatic <code>login()</code>.</p>
+
+<pre><code># Option 1 — env var
+export HUGGINGFACE_HUB_TOKEN=hf_...
+
+# Option 2 — CLI login (interactive)
+huggingface-cli login
+
+# Option 3 — programmatic
+from huggingface_hub import login
+login(token="hf_...")</code></pre>
+
+        <h2>Download model weights</h2>
+
+<pre><code>huggingface-cli login
+huggingface-cli download shunyalabs/pingala-v1-universal --local-dir ./models/pingala
+huggingface-cli download shunyalabs/vak-translate-1.3b-ct2 --local-dir ./models/vak
+huggingface-cli download shunyalabs/zero-stt-hinglish --local-dir ./models/hinglish</code></pre>
+
+        <h2>Use the Pingala ASR model directly</h2>
+        <p>Shunya publishes a thin Python wrapper around the universal ASR model on PyPI as <a href="https://pypi.org/project/pingala-shunya" target="_blank" rel="noopener"><code>pingala-shunya</code></a>.</p>
+
+<pre><code>pip install pingala-shunya</code></pre>
+
+<pre><code>from pingala_shunya import PingalaTranscriber
+
+# Loads the model from a local path (handy for air-gapped runs)
+tx = PingalaTranscriber(model_path="./models/pingala")
+segments = tx.transcribe("meeting.wav")
+for s in segments:
+    print(f"[{s.start:.2f} → {s.end:.2f}] {s.text}")</code></pre>
+
+        <h2>Use the Vāķ translation model</h2>
+        <p>The Vāķ model ships in CTranslate2 format (<code>vak-translate-1.3b-ct2</code>). Run it with the <code>ctranslate2</code> + <code>transformers</code> + <code>sentencepiece</code> stack.</p>
+
+<pre><code>pip install ctranslate2 transformers sentencepiece</code></pre>
+
+<pre><code>import ctranslate2
+from transformers import NllbTokenizer
+
+tokenizer = NllbTokenizer.from_pretrained("./models/vak")
+translator = ctranslate2.Translator("./models/vak", device="cuda")  # or "cpu"
+
+src_lang = "eng_Latn"
+tgt_lang = "hin_Deva"
+text = "How are you today?"
+
+tokens = tokenizer.convert_ids_to_tokens(tokenizer.encode(text))
+results = translator.translate_batch([tokens], target_prefix=[[tgt_lang]])
+print(tokenizer.decode(tokenizer.convert_tokens_to_ids(results[0].hypotheses[0][1:])))</code></pre>
+
+        <h2>Air-gapped deployment</h2>
+        <p>For environments without internet connectivity (defence, offline kiosks, mobile edge), pull the weights once on an internet-connected machine and transfer them across:</p>
+        <ol>
+          <li>Run the <code>huggingface-cli download</code> commands above on a connected workstation.</li>
+          <li>Package the <code>./models</code> directory as a signed tarball.</li>
+          <li>Verify checksums, transfer via signed media to the secure zone.</li>
+          <li>Load the model from the local path — no further network calls needed.</li>
+        </ol>
+
+        <div class="callout callout-info">
+          <div class="callout-title">Production serving</div>
+          For multi-tenant, streaming, horizontally-scaled serving in an air-gapped zone, the on-prem Triton package is easier than rolling your own. See <a href="/deployment/overview.html">Deployment overview</a> or contact <a href="mailto:0@shunyalabs.ai">0@shunyalabs.ai</a>.
+        </div>
+
+        <h2>Licence reminder</h2>
+        <ul>
+          <li><code>pingala-v1-universal</code> — <strong>Shunya Labs RAIL-M</strong>: free up to 10,000 hours/month. No redistribution, no derivatives. Attribution required when outputs are public.</li>
+          <li><code>zero-stt-hinglish</code> — <strong>openrail</strong>: permissive with responsible-use restrictions.</li>
+          <li><code>vak-translate-1.3b-ct2</code> — <strong>CC-BY-SA-4.0</strong>: share-alike with attribution.</li>
+        </ul>
+        <p>Always check the model card on Hugging Face before shipping — the licence file there is authoritative.</p>
+
+        <p class="text-subtle">Source: Shunya Labs Hugging Face organization page (<a href="https://huggingface.co/shunyalabs" target="_blank" rel="noopener">huggingface.co/shunyalabs</a>) and the per-model cards linked above. Air-gapped deployment steps reproduced from the Shunya Labs Deployment guidance.</p>
+
+        <div class="pager">
+          <a class="pager-link" href="/integrations/sip-pstn.html">
+            <div class="pager-label">← Previous</div>
+            <div class="pager-title">SIP / PSTN</div>
+          </a>
+          <a class="pager-link pager-right" href="/deployment/overview.html">
+            <div class="pager-label">Next →</div>
+            <div class="pager-title">Deployment</div>
+          </a>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/nav.js"></script>
+</body>
+</html>
