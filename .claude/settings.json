@@ -4,7 +4,11 @@
       "Bash(curl -s \"http://localhost:8765/assets/css/main.css?v=3\")",
       "Bash(curl -sI \"http://localhost:8765/get-started/what-is-shunya.html\")",
       "Bash(curl -sI \"http://localhost:8765/asr/overview.html\")",
-      "Bash(curl -sI \"http://localhost:8765/tts/overview.html\")"
+      "Bash(curl -sI \"http://localhost:8765/tts/overview.html\")",
+      "Bash(curl -s -o /dev/null -w '%{http_code}' http://localhost:8765/assets/img/playground/__TRACKED_VAR__)",
+      "Bash(git mv *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}  /personas/non-technical-user.html\\\\n\" \"http://localhost:8765/personas/non-technical-user.html\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}  /personas/operator.html \\(should 404\\)\\\\n\" \"http://localhost:8765/personas/operator.html\")"
     ]
   }
 }

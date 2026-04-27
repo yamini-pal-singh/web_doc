@@ -17,7 +17,7 @@
         { href: '/personas/developer.html', label: 'Developer', icon: 'code' },
         { href: '/personas/researcher.html', label: 'Hugging Face', icon: 'flask' },
         { href: '/personas/enterprise.html', label: 'Enterprise', icon: 'building' },
-        { href: '/personas/operator.html', label: 'Non-technical user', icon: 'user' },
+        { href: '/personas/non-technical-user.html', label: 'Non-technical user', icon: 'user' },
       ]
     },
     {
