@@ -6,7 +6,7 @@
   <title>Deployment — Shunya Labs Docs</title>
   <meta name="description" content="Cloud API, on-prem / VPC, air-gapped CPU — same API surface, different deployment shapes.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=11">
+  <link rel="stylesheet" href="/assets/css/main.css?v=12">
   <script src="/assets/js/theme.js"></script>
 </head>
 <body>
@@ -22,17 +22,20 @@
         <h2>The three shapes</h2>
         <div class="grid grid-3">
           <div class="card">
-            <div class="card-title"><span class="pill pill-green">Fastest to start</span><br>Cloud API</div>
+            <div style="margin-bottom: 0.625rem;"><span class="pill pill-green">Fastest to start</span></div>
+            <div class="card-title">Cloud API</div>
             <p class="card-desc">Managed endpoints at <code>asr.shunyalabs.ai</code> and <code>tts.shunyalabs.ai</code>. Bearer token auth. Auto-scaled, 99.9% SLA.</p>
             <p class="small"><strong>Picks when:</strong> prototypes, SaaS products, latency is acceptable over WAN.</p>
           </div>
           <div class="card">
-            <div class="card-title"><span class="pill pill-amber">Data residency</span><br>On-prem / VPC</div>
+            <div style="margin-bottom: 0.625rem;"><span class="pill pill-amber">Data residency</span></div>
+            <div class="card-title">On-prem / VPC</div>
             <p class="card-desc">Same Triton containers inside your network. Data never leaves the VPC. Custom pricing.</p>
             <p class="small"><strong>Picks when:</strong> regulated industries (BFSI, healthcare, gov), strict data residency, predictable load.</p>
           </div>
           <div class="card">
-            <div class="card-title"><span class="pill pill-zinc">Offline</span><br>Air-gapped / CPU</div>
+            <div style="margin-bottom: 0.625rem;"><span class="pill pill-zinc">Offline</span></div>
+            <div class="card-title">Air-gapped / CPU</div>
             <p class="card-desc">Open weights from Hugging Face, run on commodity x86. No internet needed. RAIL-M / CC-BY-SA-4.0 licensed.</p>
             <p class="small"><strong>Picks when:</strong> defence, offline kiosks, edge devices, air-gapped labs.</p>
           </div>

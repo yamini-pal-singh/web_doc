@@ -596,6 +596,7 @@ html.dark .card:hover {
   border-radius: 999px;
   font-size: 0.75rem;
   font-weight: 500;
+  white-space: nowrap;
   background: var(--accent-subtle);
   color: var(--accent-text);
 }
