@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>TTS API reference — Shunya Labs Docs</title>
   <meta name="description" content="Complete TTS API reference: endpoints, fields, response schema, error codes, rate limits.">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=15">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css?v=23">
   <script src="/assets/js/theme.js"></script>
 </head>
 <body>
@@ -32,11 +32,25 @@
         </div>
 
         <h2>Authentication</h2>
-<pre><code># HTTP
-Authorization: Bearer sk-your-api-key
+        <p>Same API key works for both transports. Pick the tab for the protocol you're using.</p>
 
-# WebSocket: header on upgrade, or query param if headers unavailable
-wss://tts.shunyalabs.ai/ws?token=sk-your-api-key</code></pre>
+        <div class="code-group">
+          <div class="code-tabs" role="tablist">
+            <button class="code-tab active">HTTP (Bearer header)</button>
+            <button class="code-tab">WebSocket (header or query param)</button>
+          </div>
+
+          <div class="code-panel active">
+            <div class="code-header"><span>http</span><button class="copy-btn">Copy</button></div>
+<pre><code class="language-http">Authorization: Bearer sk-your-api-key</code></pre>
+          </div>
+
+          <div class="code-panel">
+            <div class="code-header"><span>shell</span><button class="copy-btn">Copy</button></div>
+            <p style="margin:0 0 0.75rem; padding:0 0.25rem;">Send the key as an <code>Authorization</code> header on the WebSocket upgrade. If your client can't set headers, fall back to a <code>token</code> query parameter:</p>
+<pre><code class="language-bash">wss://tts.shunyalabs.ai/ws?token=sk-your-api-key</code></pre>
+          </div>
+        </div>
 
         <h2>POST /v1/audio/speech</h2>
         <p>Batch synthesis. Returns audio bytes in the requested format.</p>
@@ -91,15 +105,33 @@ wss://tts.shunyalabs.ai/ws?token=sk-your-api-key</code></pre>
         <p>Full protocol in <a href="/tts/streaming.html">Streaming</a>. Summary below.</p>
 
         <h3>Handshake</h3>
-        <p>Three equivalent ways to send the synthesis request on connect:</p>
-<pre><code># 1. Query params on connect
-wss://tts.shunyalabs.ai/ws?model=zero-indic&voice=Varun&encoding=pcm
+        <p>Three equivalent ways to send the synthesis request on connect — pick whichever fits your client.</p>
 
-# 2. JSON config message after connecting
-&gt; {"type": "config", "model": "zero-indic", "voice": "Varun", "response_format": "pcm"}
+        <div class="code-group">
+          <div class="code-tabs" role="tablist">
+            <button class="code-tab active">1. Query params on connect</button>
+            <button class="code-tab">2. JSON config message</button>
+            <button class="code-tab">3. Full synthesis request</button>
+          </div>
 
-# 3. Full synthesis request after connecting
-&gt; {"model": "zero-indic", "input": "Hello!", "voice": "Sunita", "response_format": "pcm"}</code></pre>
+          <div class="code-panel active">
+            <div class="code-header"><span>shell</span><button class="copy-btn">Copy</button></div>
+            <p style="margin:0 0 0.75rem; padding:0 0.25rem;">Encode parameters in the URL — works in clients that can't easily send post-connect messages.</p>
+<pre><code class="language-bash">wss://tts.shunyalabs.ai/ws?model=zero-indic&amp;voice=Varun&amp;encoding=pcm</code></pre>
+          </div>
+
+          <div class="code-panel">
+            <div class="code-header"><span>json</span><button class="copy-btn">Copy</button></div>
+            <p style="margin:0 0 0.75rem; padding:0 0.25rem;">Connect with no params, then send a config message. Useful when you want to reuse the connection.</p>
+<pre><code class="language-json">{"type": "config", "model": "zero-indic", "voice": "Varun", "response_format": "pcm"}</code></pre>
+          </div>
+
+          <div class="code-panel">
+            <div class="code-header"><span>json</span><button class="copy-btn">Copy</button></div>
+            <p style="margin:0 0 0.75rem; padding:0 0.25rem;">Send the full synthesis request in one message — the server treats it as both config and synthesis trigger.</p>
+<pre><code class="language-json">{"model": "zero-indic", "input": "Hello!", "voice": "Sunita", "response_format": "pcm"}</code></pre>
+          </div>
+        </div>
 
         <h3>Inbound fields</h3>
         <div class="table-wrap">
@@ -118,21 +150,25 @@ wss://tts.shunyalabs.ai/ws?model=zero-indic&voice=Varun&encoding=pcm
         </div>
 
         <h3>Outbound message shape</h3>
-<pre><code># 1. Chunk metadata (JSON) — sent before each binary audio frame
-{
+        <p>For each synthesis, the server emits messages in this order: a chunk metadata JSON, then a binary audio frame, repeated for every chunk; then a final completion JSON. If something goes wrong, an error JSON arrives instead of completion.</p>
+
+        <h4>1. Chunk metadata (JSON)</h4>
+        <p>Sent before each binary audio frame.</p>
+<pre><code class="language-json">{
   "type": "chunk",
   "request_id": "uuid",
   "chunk_index": 0,
   "is_final": false,
   "format": "pcm",
   "sample_rate": 16000
-}
+}</code></pre>
 
-# 2. Audio data (binary frame) — immediately follows the chunk JSON
-# isinstance(msg, bytes) == True
+        <h4>2. Audio data (binary frame)</h4>
+        <p>Raw audio bytes that immediately follow each chunk JSON. In the SDK, <code>isinstance(msg, bytes)</code> is <code>True</code>.</p>
 
-# 3. Completion (JSON) — sent after all chunks have been delivered
-{
+        <h4>3. Completion (JSON)</h4>
+        <p>Sent once after all audio chunks have been delivered.</p>
+<pre><code class="language-json">{
   "type": "completion",
   "request_id": "uuid",
   "status": "complete",
@@ -140,20 +176,23 @@ wss://tts.shunyalabs.ai/ws?model=zero-indic&voice=Varun&encoding=pcm
   "total_duration_seconds": 2.48,
   "format": "pcm",
   "sample_rate": 16000
-}
+}</code></pre>
 
-# 4. Error (JSON) — sent instead of completion on failure
-{
+        <h4>4. Error (JSON)</h4>
+        <p>Sent instead of completion on failure. The connection closes after this message.</p>
+<pre><code class="language-json">{
   "type": "error",
   "request_id": "uuid",
   "error": "Error description"
 }</code></pre>
 
         <h2>GET /health</h2>
-<pre><code>curl https://tts.shunyalabs.ai/health \
-  -H "Authorization: Bearer $SHUNYALABS_API_KEY"
+        <p><strong>Request:</strong></p>
+<pre><code class="language-bash">curl https://tts.shunyalabs.ai/health \
+  -H "Authorization: Bearer $SHUNYALABS_API_KEY"</code></pre>
 
-{"status": "healthy", "triton_ready": true, "auth_ready": true}</code></pre>
+        <p><strong>Response:</strong></p>
+<pre><code class="language-json">{"status": "healthy", "triton_ready": true, "auth_ready": true}</code></pre>
 
         <h2>SDK exception hierarchy</h2>
         <p>All SDK exceptions inherit from <code>ShunyalabsError</code>.</p>
@@ -268,6 +307,6 @@ results = await asyncio.gather(*tasks)</code></pre>
   </div>
 
   <script src="/assets/js/shell.js"></script>
-  <script src="/assets/js/nav.js"></script>
+  <script src="/assets/js/nav.js?v=2"></script>
 </body>
 </html>

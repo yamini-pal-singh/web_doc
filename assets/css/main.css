@@ -100,6 +100,34 @@ a {
 }
 a:hover { color: var(--accent-hover); }
 
+/* Inline prose links — subtle underline by default, clear highlight on hover */
+.content p a,
+.content li a,
+.content td a,
+.content .callout a {
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  border-radius: 3px;
+  transition:
+    color 120ms ease,
+    text-decoration-color 120ms ease,
+    text-decoration-thickness 120ms ease,
+    background 120ms ease,
+    box-shadow 120ms ease;
+}
+.content p a:hover,
+.content li a:hover,
+.content td a:hover,
+.content .callout a:hover {
+  color: var(--accent-hover);
+  text-decoration-color: currentColor;
+  text-decoration-thickness: 2px;
+  background: var(--accent-subtle);
+  box-shadow: 0 0 0 3px var(--accent-subtle);
+}
+
 ul, ol { padding-left: 1.25rem; color: var(--text-muted); }
 li { margin: 0.25rem 0; }
 
@@ -449,6 +477,58 @@ html.dark .sidebar-link.active {
   line-height: 1.6;
 }
 
+/* Glossary-style definition list — compact term + definition pairs.
+   Use inside <dl class="glossary"> for category groupings. */
+.glossary {
+  margin: 0 0 1.5rem;
+  padding: 0;
+  display: grid;
+  gap: 0;
+}
+.glossary dt {
+  font-weight: 600;
+  color: var(--text);
+  font-size: 0.95rem;
+  padding: 0.625rem 0 0.25rem;
+  border-top: 1px solid var(--border);
+  position: relative;
+  padding-left: 0.875rem;
+}
+.glossary dt::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1.05rem;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.glossary dt:first-of-type { border-top: none; }
+.glossary dd {
+  margin: 0 0 0.625rem 0.875rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+/* Shared italic-serif accent — paired with sans-serif headings/body for emphasis.
+   Use on a <span> inside any heading, lead, or paragraph that benefits from a
+   different visual register. Same color + font everywhere for consistency. */
+.accent-italic {
+  font-family: 'Fraunces', 'Times New Roman', Georgia, serif;
+  font-style: italic;
+  font-weight: 600;
+  color: #5eead4;
+  /* In case the parent uses gradient/clip text fill, force the accent color */
+  -webkit-text-fill-color: #5eead4;
+  letter-spacing: -0.005em;
+}
+html.dark .accent-italic {
+  color: #5eead4;
+  -webkit-text-fill-color: #5eead4;
+}
+
 /* Right-side TOC */
 .toc {
   position: sticky;
@@ -546,10 +626,71 @@ html.dark .card:hover {
 }
 .card-link {
   display: block;
+  height: 100%;
   text-decoration: none;
   color: inherit;
 }
 .card-link:hover { color: inherit; }
+.card-link > .card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+/* Push the CTA to the bottom so all cards line up neatly,
+   and let it size to its content rather than stretch to full card width */
+.card-link > .card > .card-cta {
+  margin-top: auto;
+  align-self: flex-start;
+}
+
+/* Pill-style CTA for use inside cards — looks like an affordance, not body text */
+.card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  background: var(--accent-subtle);
+  color: var(--accent-text);
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+.card-cta .card-cta-arrow {
+  display: inline-block;
+  transition: transform 200ms ease;
+}
+.card-link:hover .card-cta,
+.card-cta:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  box-shadow: 0 6px 18px rgba(99, 102, 241, 0.35);
+}
+.card-link:hover .card-cta .card-cta-arrow,
+.card-cta:hover .card-cta-arrow {
+  transform: translateX(3px);
+}
+html.dark .card-cta {
+  background: rgba(129, 140, 248, 0.14);
+  color: var(--accent-hover);
+  border-color: rgba(129, 140, 248, 0.35);
+}
+html.dark .card-link:hover .card-cta,
+html.dark .card-cta:hover {
+  background: var(--accent);
+  color: #0b0b15;
+  border-color: var(--accent);
+  box-shadow: 0 6px 18px rgba(129, 140, 248, 0.35);
+}
 
 .grid {
   display: grid;
@@ -749,10 +890,7 @@ html.dark .code-tab.active { color: var(--accent-hover); }
   letter-spacing: -0.03em;
   line-height: 1.1;
   margin-bottom: 0.75rem;
-  background: linear-gradient(135deg, var(--text) 0%, var(--text) 60%, var(--accent) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--text);
 }
 .hero p {
   font-size: 1.125rem;

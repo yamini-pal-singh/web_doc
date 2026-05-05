@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>TTS streaming — Shunya Labs Docs</title>
   <meta name="description" content="Stream synthesized audio as it's generated over WebSocket. First audio in under 350 ms.">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=15">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css?v=23">
   <script src="/assets/js/theme.js"></script>
 </head>
 <body>
@@ -37,8 +37,30 @@
 
         <h2>Your first stream</h2>
 
-        <h3>Python SDK</h3>
-<pre><code>import asyncio
+        <div class="code-group">
+          <div class="code-tabs" role="tablist">
+            <button class="code-tab active">wscat (raw WebSocket)</button>
+            <button class="code-tab">Python SDK</button>
+          </div>
+
+          <div class="code-panel active">
+            <div class="code-header"><span>shell</span><button class="copy-btn">Copy</button></div>
+<pre><code class="language-bash"># Install: npm install -g wscat
+wscat -c "wss://tts.shunyalabs.ai/ws/v1/audio/speech" \
+  -H "Authorization: Bearer $SHUNYALABS_API_KEY"
+
+# Send synthesis request
+&gt; {"model": "zero-indic", "input": "Hello!", "voice": "Varun", "response_format": "pcm"}
+
+# Receive metadata + binary + completion
+&lt; {"type": "chunk", "chunk_index": 0, "format": "pcm", "sample_rate": 16000, ...}
+&lt; [binary audio data]
+&lt; {"type": "completion", "total_chunks": 3, "total_duration_seconds": 0.8, ...}</code></pre>
+          </div>
+
+          <div class="code-panel">
+            <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
+<pre><code class="language-python">import asyncio
 from shunyalabs import AsyncShunyaClient
 from shunyalabs.tts import TTSConfig
 
@@ -54,19 +76,8 @@ async def main():
                 f.write(audio)
 
 asyncio.run(main())</code></pre>
-
-        <h3>Raw WebSocket (wscat)</h3>
-<pre><code># Install: npm install -g wscat
-wscat -c "wss://tts.shunyalabs.ai/ws/v1/audio/speech" \
-  -H "Authorization: Bearer $SHUNYALABS_API_KEY"
-
-# Send synthesis request
-&gt; {"model": "zero-indic", "input": "Hello!", "voice": "Varun", "response_format": "pcm"}
-
-# Receive metadata + binary + completion
-&lt; {"type": "chunk", "chunk_index": 0, "format": "pcm", "sample_rate": 16000, ...}
-&lt; [binary audio data]
-&lt; {"type": "completion", "total_chunks": 3, "total_duration_seconds": 0.8, ...}</code></pre>
+          </div>
+        </div>
 
         <h2>Streaming methods (SDK)</h2>
         <div class="table-wrap">
@@ -82,31 +93,62 @@ wscat -c "wss://tts.shunyalabs.ai/ws/v1/audio/speech" \
         </div>
 
         <h3>Pick the right variant</h3>
-<pre><code># 1. Raw byte stream — play or process each chunk immediately
-async for audio in await client.tts.stream("Hello!", config=config):
-    speaker.write(audio)
+        <p>All four variants do the same job — generate audio for some text — but each one is shaped for a different consumer. Pick the tab that matches your scenario.</p>
 
-# 2. With chunk metadata
-async for chunk_meta, audio in await client.tts.stream("Hello!", config=config, detailed=True):
-    print(f"chunk {chunk_meta.chunk_index}: {len(audio)} bytes")
+        <div class="code-group">
+          <div class="code-tabs" role="tablist">
+            <button class="code-tab active">1. Raw byte stream</button>
+            <button class="code-tab">2. With chunk metadata</button>
+            <button class="code-tab">3. One-shot (collect everything)</button>
+            <button class="code-tab">4. Stream to file (constant memory)</button>
+          </div>
 
-# 3. One-shot — collect all chunks internally
-audio_bytes = await client.tts.synthesize_stream("Hello!", config=config)
+          <div class="code-panel active">
+            <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
+            <p style="margin:0 0 0.75rem; padding:0 0.25rem;"><strong>Use when:</strong> you want to play or process each audio chunk the moment it arrives — voice agents, IVR, real-time playback.</p>
+<pre><code class="language-python">async for audio in await client.tts.stream("Hello!", config=config):
+    speaker.write(audio)</code></pre>
+          </div>
 
-# 4. Constant-memory file write — best for long-form synthesis
-await client.tts.stream_to_file("Hello!", "output.pcm", config=config)</code></pre>
+          <div class="code-panel">
+            <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
+            <p style="margin:0 0 0.75rem; padding:0 0.25rem;"><strong>Use when:</strong> you also need per-chunk metadata — index, timing, format — for logging, analytics, or buffering decisions.</p>
+<pre><code class="language-python">async for chunk_meta, audio in await client.tts.stream("Hello!", config=config, detailed=True):
+    print(f"chunk {chunk_meta.chunk_index}: {len(audio)} bytes")</code></pre>
+          </div>
+
+          <div class="code-panel">
+            <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
+            <p style="margin:0 0 0.75rem; padding:0 0.25rem;"><strong>Use when:</strong> you need the full audio as a single <code>bytes</code> object and don't care about per-chunk handling. Convenience wrapper that consumes the stream for you.</p>
+<pre><code class="language-python">audio_bytes = await client.tts.synthesize_stream("Hello!", config=config)</code></pre>
+          </div>
+
+          <div class="code-panel">
+            <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
+            <p style="margin:0 0 0.75rem; padding:0 0.25rem;"><strong>Use when:</strong> long-form synthesis (audiobooks, batch scripts) where buffering the full audio in RAM is impractical. Writes each chunk to disk as it arrives — constant memory regardless of length.</p>
+<pre><code class="language-python">await client.tts.stream_to_file("Hello!", "output.pcm", config=config)</code></pre>
+          </div>
+        </div>
 
         <h2>Flush &amp; close commands</h2>
-        <p>For interactive sessions with multiple text messages, you can flush buffered text mid-stream.</p>
-<pre><code># Send over the WebSocket connection
-&gt; {"type": "flush"}
+        <p>For interactive sessions where you send multiple text messages over the same WebSocket, two control messages let you drive the lifecycle:</p>
 
-# Server acknowledges and returns audio for buffered text
-&lt; [binary audio data]
-&lt; {"type": "flushed", "sequence_id": 1}
+        <ul>
+          <li><code>{"type": "flush"}</code> — synthesize whatever buffered text the server has so far, without closing the connection.</li>
+          <li><code>{"type": "close"}</code> — end the session cleanly.</li>
+        </ul>
 
-# Close the session
-&gt; {"type": "close"}</code></pre>
+        <h3>Flush mid-stream</h3>
+        <p><strong>Client sends:</strong></p>
+<pre><code class="language-json">{"type": "flush"}</code></pre>
+
+        <p><strong>Server replies (binary audio chunks, then a flushed marker):</strong></p>
+<pre><code class="language-json">[binary audio data]
+{"type": "flushed", "sequence_id": 1}</code></pre>
+
+        <h3>Close the session</h3>
+        <p><strong>Client sends:</strong></p>
+<pre><code class="language-json">{"type": "close"}</code></pre>
 
         <h2>Error handling</h2>
         <p>Connection-level errors raise on stream start; server errors can arrive mid-stream.</p>
@@ -181,7 +223,7 @@ async def stream_with_reconnect(text, config):
   </div>
 
   <script src="/assets/js/shell.js"></script>
-  <script src="/assets/js/nav.js"></script>
+  <script src="/assets/js/nav.js?v=2"></script>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
   <script src="/assets/js/mermaid-init.js?v=2"></script>
 </body>

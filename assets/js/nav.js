@@ -14,10 +14,10 @@
     {
       heading: 'Pick your journey',
       items: [
-        { href: '/personas/developer.html', label: 'Developer', icon: 'code' },
-        { href: '/personas/researcher.html', label: 'Hugging Face', icon: 'flask' },
-        { href: '/personas/enterprise.html', label: 'Enterprise', icon: 'building' },
-        { href: '/personas/non-technical-user.html', label: 'Non-technical user', icon: 'user' },
+        { href: '/personas/api.html', label: 'Heavy code · API', icon: 'terminal' },
+        { href: '/personas/sdk.html', label: 'Small code · SDK', icon: 'code' },
+        { href: '/personas/playground.html', label: 'No code · Playground', icon: 'layout' },
+        { href: '/personas/openai-compatible.html', label: 'OpenAI compatible', icon: 'compatible' },
       ]
     },
     {
@@ -74,7 +74,7 @@
     {
       heading: 'Deployment',
       items: [
-        { href: '/deployment/overview.html', label: 'Cloud / on-prem / air-gapped', icon: 'server' },
+        { href: '/deployment/overview.html', label: 'Cloud / on-prem', icon: 'server' },
       ]
     },
     {
@@ -162,7 +162,22 @@
     `).join('');
 
     const sidebar = document.querySelector('.sidebar');
-    if (sidebar) sidebar.innerHTML = html;
+    if (!sidebar) return;
+    sidebar.innerHTML = html;
+
+    // After the sidebar renders, scroll the active link into view inside
+    // the sidebar so the user can always see where they are in the doc tree.
+    // We only scroll the sidebar (its own overflow container) — not the page.
+    const active = sidebar.querySelector('.sidebar-link.active');
+    if (active) {
+      const sb = sidebar.getBoundingClientRect();
+      const a = active.getBoundingClientRect();
+      const visible = a.top >= sb.top && a.bottom <= sb.bottom;
+      if (!visible) {
+        const target = active.offsetTop - (sidebar.clientHeight / 2) + (active.clientHeight / 2);
+        sidebar.scrollTop = Math.max(0, target);
+      }
+    }
   }
 
   function wireMobileToggle() {

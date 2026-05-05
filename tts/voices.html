@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Voices & languages — Shunya Labs Docs</title>
   <meta name="description" content="All 46 Zero TTS voices across 23 Indic languages and English. Any voice can speak any language.">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=15">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css?v=23">
   <script src="/assets/js/theme.js"></script>
 </head>
 <body>
@@ -57,22 +57,44 @@
         </div>
 
         <h2>Cross-lingual examples</h2>
+        <p>The voice controls the vocal character; the input text controls the language. Pick a tab to see four pairings.</p>
 
-<pre><code># English-native voice speaking Hindi
+        <div class="code-group">
+          <div class="code-tabs" role="tablist">
+            <button class="code-tab active">Varun (English) → Hindi</button>
+            <button class="code-tab">Murugan (Tamil) → English</button>
+            <button class="code-tab">Sunita (Hindi) → Bengali</button>
+            <button class="code-tab">Shreya (Kannada) → Tamil</button>
+          </div>
+
+          <div class="code-panel active">
+            <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
+<pre><code class="language-python"># English-native voice speaking Hindi
 config = TTSConfig(model="zero-indic", voice="Varun")
-await client.tts.synthesize("नमस्ते, आप कैसे हैं?", config=config)
+await client.tts.synthesize("नमस्ते, आप कैसे हैं?", config=config)</code></pre>
+          </div>
 
-# Tamil-native voice speaking English
+          <div class="code-panel">
+            <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
+<pre><code class="language-python"># Tamil-native voice speaking English
 config = TTSConfig(model="zero-indic", voice="Murugan")
-await client.tts.synthesize("Good morning, how are you?", config=config)
+await client.tts.synthesize("Good morning, how are you?", config=config)</code></pre>
+          </div>
 
-# Hindi-native voice speaking Bengali
+          <div class="code-panel">
+            <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
+<pre><code class="language-python"># Hindi-native voice speaking Bengali
 config = TTSConfig(model="zero-indic", voice="Sunita")
-await client.tts.synthesize("আমি ভালো আছি, ধন্যবাদ।", config=config)
+await client.tts.synthesize("আমি ভালো আছি, ধন্যবাদ।", config=config)</code></pre>
+          </div>
 
-# Kannada-native voice speaking Tamil
+          <div class="code-panel">
+            <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
+<pre><code class="language-python"># Kannada-native voice speaking Tamil
 config = TTSConfig(model="zero-indic", voice="Shreya")
 await client.tts.synthesize("வணக்கம், நீங்கள் எப்படி இருக்கிறீர்கள்?", config=config)</code></pre>
+          </div>
+        </div>
 
         <h2>Voice selection guide</h2>
         <p>Pick the voice whose native language matches the primary language of your content — it produces the most natural accent and prosody. Only pick a cross-lingual voice when you have a specific brand reason.</p>
@@ -97,14 +119,32 @@ await client.tts.synthesize("வணக்கம், நீங்கள் எப
 
         <h2>Language hint for preprocessing</h2>
         <p>The optional <code>language</code> field in <code>TTSConfig</code> hints the <em>text preprocessor</em> — it decides how to expand numbers, dates, and script-specific rules. It does not restrict what language the model speaks.</p>
-<pre><code># Hint Hindi preprocessing — Devanagari number expansion, Hindi date formats
-config = TTSConfig(model="zero-indic", voice="Rajesh", language="hi")
 
-# Hint English preprocessing — English number expansion, English date formats
-config = TTSConfig(model="zero-indic", voice="Varun", language="en")
+        <div class="code-group">
+          <div class="code-tabs" role="tablist">
+            <button class="code-tab active">Hint Hindi (<code>hi</code>)</button>
+            <button class="code-tab">Hint English (<code>en</code>)</button>
+            <button class="code-tab">No hint (recommended for code-switched text)</button>
+          </div>
 
-# No hint — model auto-handles mixed scripts natively (recommended for code-switched text)
+          <div class="code-panel active">
+            <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
+<pre><code class="language-python"># Devanagari number expansion, Hindi date formats
+config = TTSConfig(model="zero-indic", voice="Rajesh", language="hi")</code></pre>
+          </div>
+
+          <div class="code-panel">
+            <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
+<pre><code class="language-python"># English number expansion, English date formats
+config = TTSConfig(model="zero-indic", voice="Varun", language="en")</code></pre>
+          </div>
+
+          <div class="code-panel">
+            <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
+<pre><code class="language-python"># Model auto-handles mixed scripts natively
 config = TTSConfig(model="zero-indic", voice="Varun")</code></pre>
+          </div>
+        </div>
 
         <h2>Need a custom voice?</h2>
         <p>Two paths:</p>
@@ -135,6 +175,6 @@ config = TTSConfig(model="zero-indic", voice="Varun")</code></pre>
   </div>
 
   <script src="/assets/js/shell.js"></script>
-  <script src="/assets/js/nav.js"></script>
+  <script src="/assets/js/nav.js?v=2"></script>
 </body>
 </html>

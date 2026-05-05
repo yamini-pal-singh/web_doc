@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Small code · SDK integration — Shunya Labs Docs</title>
+  <meta name="description" content="Integrate Shunya Labs in five lines using the Python SDK. Async client, typed TTSConfig, streaming generators, built-in error classes.">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css?v=23">
+  <script src="/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/index.html">Docs</a><span class="sep">/</span><span>Pick your journey</span><span class="sep">/</span><span>Small code · SDK</span>
+        </div>
+        <div class="persona-label" style="margin-bottom: 0.5rem;">For builders who want results in five lines</div>
+        <h1>Integrate with the <span class="accent-italic">Python SDK</span></h1>
+        <p class="lead">The <code>shunyalabs</code> SDK wraps the REST + WebSocket APIs in an idiomatic async client. Typed configuration, streaming generators, and a clean exception hierarchy — production-grade integration in under a dozen lines of code.</p>
+
+        <h2>Your journey</h2>
+        <div class="mermaid">graph LR
+  A[1. pip install] --> B[2. Set API key]
+  B --> C[3. AsyncShunyaClient]
+  C --> D{Batch or<br/>streaming?}
+  D -->|Batch| E[client.tts.synthesize]
+  D -->|Streaming| F[client.tts.stream]
+  E --> G[4. Save / play]
+  F --> G
+  G --> H[5. Ship]
+  style A fill:#6366f1,stroke:#4338ca,color:#fff,stroke-width:2px
+  style H fill:#6366f1,stroke:#4338ca,color:#fff,stroke-width:2px</div>
+
+        <h2>Step 1 — Install</h2>
+<pre><code>pip install shunyalabs</code></pre>
+
+        <h2>Step 2 — Configure your API key</h2>
+        <p>The SDK reads <code>SHUNYALABS_API_KEY</code> from the environment by default. Recommended:</p>
+<pre><code>export SHUNYALABS_API_KEY="your-api-key"</code></pre>
+        <p>Or pass directly to the client:</p>
+<pre><code>from shunyalabs import AsyncShunyaClient
+
+client = AsyncShunyaClient(api_key="your-api-key")</code></pre>
+        <p>Other env vars: <code>SHUNYALABS_TTS_URL</code>, <code>SHUNYALABS_TTS_WS_URL</code> override the batch and WebSocket endpoints — useful for on-prem deployments.</p>
+
+        <h2>Step 3 — Your first synthesis</h2>
+
+        <div class="code-group">
+          <div class="code-tabs" role="tablist">
+            <button class="code-tab active">Batch — complete audio file</button>
+            <button class="code-tab">Streaming — play as it generates</button>
+          </div>
+
+          <div class="code-panel active">
+            <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
+<pre><code class="language-python">import asyncio
+from shunyalabs import AsyncShunyaClient
+from shunyalabs.tts import TTSConfig
+
+async def main():
+    async with AsyncShunyaClient() as client:
+        result = await client.tts.synthesize(
+            "Hello, how are you today?",
+            config=TTSConfig(model="zero-indic", voice="Varun"),
+        )
+        result.save("output.mp3")
+        print(f"{len(result.audio_data)} bytes saved")
+
+asyncio.run(main())</code></pre>
+          </div>
+
+          <div class="code-panel">
+            <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
+<pre><code class="language-python">import asyncio
+from shunyalabs import AsyncShunyaClient
+from shunyalabs.tts import TTSConfig
+
+async def main():
+    async with AsyncShunyaClient() as client:
+        config = TTSConfig(model="zero-indic", voice="Sunita", response_format="pcm")
+        async for audio in await client.tts.stream("Hello!", config=config):
+            play(audio)   # your playback function — bytes arrive ~1s after the call
+
+asyncio.run(main())</code></pre>
+          </div>
+        </div>
+
+        <h3>What batch returns</h3>
+        <p><code>result</code> is a <code>TTSResult</code> with three fields:</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>audio_data</code></td><td>bytes</td><td>Decoded audio bytes — write to file or pass to playback.</td></tr>
+              <tr><td><code>sample_rate</code></td><td>int</td><td>Hz (e.g. 22050 for mp3, 8000 for mulaw).</td></tr>
+              <tr><td><code>format</code></td><td>string</td><td>Matches the <code>response_format</code> in TTSConfig.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Long-form streaming → disk</h3>
+        <p>For long-form content where buffering the whole response is impractical, use <code>stream_to_file()</code> — constant memory regardless of length:</p>
+<pre><code class="language-python">await client.tts.stream_to_file(
+    "Long audiobook chapter text...",
+    "chapter_01.pcm",
+    config=TTSConfig(model="zero-indic", voice="Varun", response_format="pcm"),
+)</code></pre>
+
+        <h2>Step 4 — TTSConfig knobs you'll actually use</h2>
+<pre><code>TTSConfig(
+    model="zero-indic",          # required
+    voice="Rajesh",              # required — see /tts/voices.html
+    response_format="pcm",       # pcm, wav, mp3, ogg_opus, flac, mulaw, alaw
+    speed=1.0,                   # 0.25 → 4.0
+    language="hi",               # optional ISO 639 hint
+    trim_silence=True,           # strip leading/trailing silence
+    volume_normalization="loudness",  # "peak" or "loudness"
+)</code></pre>
+        <p>Other knobs worth knowing:</p>
+        <ul>
+          <li><code>background_audio="cafe"</code> + <code>background_volume=0.1</code> — preset ambient mix.</li>
+          <li><code>reference_wav</code> + <code>reference_text</code> — voice cloning from a 1–6 second sample.</li>
+          <li><code>word_timestamps=True</code> — per-word timing for captions and alignment (batch only).</li>
+        </ul>
+
+        <h2>Step 5 — Error handling</h2>
+        <p>All exceptions inherit from <code>ShunyalabsError</code>. Import from <code>shunyalabs.exceptions</code>:</p>
+<pre><code>from shunyalabs.exceptions import (
+    AuthenticationError, RateLimitError,
+    SynthesisError, ServerError, ShunyalabsError,
+)
+
+try:
+    result = await client.tts.synthesize("Hello!", config=config)
+except AuthenticationError:
+    print("Invalid API key — check SHUNYALABS_API_KEY")
+except RateLimitError:
+    print("Rate limit hit — back off and retry")
+except SynthesisError as e:
+    print(f"Synthesis failed: {e}")
+except ServerError:
+    print("Server error — safe to retry")
+except ShunyalabsError as e:
+    print(f"SDK error: {e}")</code></pre>
+
+        <h2>Step 6 — LLM → TTS pipeline (the conversational pattern)</h2>
+        <p>Pipe LLM tokens into TTS at sentence boundaries. Cuts time-to-first-audio by 200–400 ms vs. waiting for the full response.</p>
+<pre><code>from openai import AsyncOpenAI
+from shunyalabs import AsyncShunyaClient
+from shunyalabs.tts import TTSConfig
+
+async def gpt_to_tts(user_message: str):
+    oai     = AsyncOpenAI()
+    shunya  = AsyncShunyaClient()
+    config  = TTSConfig(model="zero-indic", voice="Sunita", response_format="pcm")
+
+    buffer = ""
+    stream = await oai.chat.completions.create(
+        model="gpt-4o",
+        messages=[{"role": "user", "content": user_message}],
+        stream=True,
+    )
+    async for chunk in stream:
+        token = chunk.choices[0].delta.content or ""
+        buffer += token
+        if token in (".", "!", "?", ";") and len(buffer) > 15:
+            async for audio in await shunya.tts.stream(buffer, config=config):
+                play(audio)
+            buffer = ""
+    if buffer.strip():
+        async for audio in await shunya.tts.stream(buffer, config=config):
+            play(audio)</code></pre>
+
+        <h2>Step 7 — Ship checklist</h2>
+        <ul>
+          <li>✅ <code>SHUNYALABS_API_KEY</code> from environment, never hardcoded</li>
+          <li>✅ <code>async with AsyncShunyaClient()</code> for proper connection cleanup</li>
+          <li>✅ Error handler covers <code>AuthenticationError</code>, <code>RateLimitError</code>, <code>ConnectionError</code></li>
+          <li>✅ <code>stream_to_file()</code> for long-form synthesis (no memory pressure)</li>
+          <li>✅ Reconnect / retry on <code>ConnectionError</code> for long-running streaming sessions</li>
+          <li>✅ Sentence-boundary buffering when piping from an LLM (don't flush per token)</li>
+        </ul>
+
+        <div class="callout callout-success">
+          <div class="callout-title">Already have OpenAI SDK code?</div>
+          You can reuse it as-is — just change the <code>base_url</code>. See <a href="/personas/openai-compatible.html">OpenAI compatible</a>.
+        </div>
+
+        <div class="pager">
+          <a class="pager-link" href="/personas/api.html">
+            <div class="pager-label">← Previous</div>
+            <div class="pager-title">Heavy code · API</div>
+          </a>
+          <a class="pager-link pager-right" href="/personas/playground.html">
+            <div class="pager-label">Next →</div>
+            <div class="pager-title">No code · Playground</div>
+          </a>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/nav.js?v=2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script src="/assets/js/mermaid-init.js?v=2"></script>
+</body>
+</html>

@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Glossary — Shunya Labs Docs</title>
   <meta name="description" content="Voice AI terms defined: ASR, diarization, code-switching, sovereign AI, and more.">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=15">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css?v=23">
   <script src="/assets/js/theme.js"></script>
 </head>
 <body>
@@ -20,135 +20,142 @@
         <p class="lead">Plain-English definitions for every term you'll see in these docs. Use it when a specification feels dense.</p>
 
         <h2>Speech fundamentals</h2>
+        <dl class="glossary">
+          <dt>ASR (Automatic Speech Recognition)</dt>
+          <dd>The process of converting spoken audio into written text. Also called <strong>STT (speech-to-text)</strong>. Shunya's ASR endpoint is <code>POST /v1/audio/transcriptions</code>.</dd>
 
-        <h3>ASR (Automatic Speech Recognition)</h3>
-        <p>The process of converting spoken audio into written text. Also called <strong>STT (speech-to-text)</strong>. Shunya's ASR endpoint is <code>POST /v1/audio/transcriptions</code>.</p>
+          <dt>TTS (Text-to-Speech)</dt>
+          <dd>The reverse: turning written text into synthesized audio. Also called <strong>speech synthesis</strong>.</dd>
 
-        <h3>TTS (Text-to-Speech)</h3>
-        <p>The reverse: turning written text into synthesized audio. Also called <strong>speech synthesis</strong>.</p>
+          <dt>Translation</dt>
+          <dd>Converting text (or speech, via ASR + translate) from one language to another. Shunya's translation product is <strong>Vāķ</strong>.</dd>
 
-        <h3>Translation</h3>
-        <p>Converting text (or speech, via ASR + translate) from one language to another. Shunya's translation product is <strong>Vāķ</strong>.</p>
-
-        <h3>Voice agent</h3>
-        <p>A conversational system that listens (ASR), understands (NLU / LLM), and speaks (TTS) — usually with a business workflow in between.</p>
+          <dt>Voice agent</dt>
+          <dd>A conversational system that listens (ASR), understands (NLU / LLM), and speaks (TTS) — usually with a business workflow in between.</dd>
+        </dl>
 
         <h2>Audio concepts</h2>
+        <dl class="glossary">
+          <dt>Sample rate</dt>
+          <dd>How many audio samples per second. <strong>16 kHz</strong> is standard for ASR and TTS output; <strong>8 kHz</strong> is standard for telephony (PSTN, Twilio, SIP).</dd>
 
-        <h3>Sample rate</h3>
-        <p>How many audio samples per second. <strong>16 kHz</strong> is standard for ASR and TTS output; <strong>8 kHz</strong> is standard for telephony (PSTN, Twilio, SIP).</p>
+          <dt>PCM (Pulse Code Modulation)</dt>
+          <dd>Raw, uncompressed audio samples. Lowest latency and no decoding overhead — best for real-time pipelines.</dd>
 
-        <h3>PCM (Pulse Code Modulation)</h3>
-        <p>Raw, uncompressed audio samples. Lowest latency and no decoding overhead — best for real-time pipelines.</p>
+          <dt>μ-law / A-law (G.711)</dt>
+          <dd>8-bit, 8 kHz codecs used by telephone networks. <strong>μ-law (mulaw)</strong> dominates in North America and India; <strong>A-law (alaw)</strong> in Europe.</dd>
 
-        <h3>μ-law / A-law (G.711)</h3>
-        <p>8-bit, 8 kHz codecs used by telephone networks. <strong>μ-law (mulaw)</strong> dominates in North America and India; <strong>A-law (alaw)</strong> in Europe.</p>
+          <dt>VAD (Voice Activity Detection)</dt>
+          <dd>Detecting when speech is happening vs silence. Used to chunk audio at natural pauses and to strip silence before sending to the ASR model.</dd>
 
-        <h3>VAD (Voice Activity Detection)</h3>
-        <p>Detecting when speech is happening vs silence. Used to chunk audio at natural pauses and to strip silence before sending to the ASR model.</p>
-
-        <h3>WAV / MP3 / OGG Opus / FLAC</h3>
-        <p>Audio file formats. WAV is uncompressed; MP3 is small and compatible; OGG Opus is great for streaming; FLAC is lossless compressed.</p>
+          <dt>WAV / MP3 / OGG Opus / FLAC</dt>
+          <dd>Audio file formats. WAV is uncompressed; MP3 is small and compatible; OGG Opus is great for streaming; FLAC is lossless compressed.</dd>
+        </dl>
 
         <h2>ASR features</h2>
+        <dl class="glossary">
+          <dt>Diarization</dt>
+          <dd>"Who spoke when" — splitting a transcript into segments by speaker. Each segment gets a <code>speaker: SPEAKER_00</code> label. Essential for meeting transcripts and call analytics.</dd>
 
-        <h3>Diarization</h3>
-        <p>"Who spoke when" — splitting a transcript into segments by speaker. Each segment gets a <code>speaker: SPEAKER_00</code> label. Essential for meeting transcripts and call analytics.</p>
+          <dt>Speaker identification</dt>
+          <dd>Diarization + named recognition. Registered voice profiles turn <code>SPEAKER_00</code> into <code>Priya</code>.</dd>
 
-        <h3>Speaker identification</h3>
-        <p>Diarization + named recognition. Registered voice profiles turn <code>SPEAKER_00</code> into <code>Priya</code>.</p>
+          <dt>Code-switching</dt>
+          <dd>Mixing two or more languages in a single utterance ("Can you <em>mujhe</em> that document <em>bhej dena</em>?"). Common across India. <strong>Hinglish</strong> and <strong>Tanglish</strong> are code-switch blends. Shunya's <code>zero-codeswitch</code> model handles these natively.</dd>
 
-        <h3>Code-switching</h3>
-        <p>Mixing two or more languages in a single utterance ("Can you <em>mujhe</em> that document <em>bhej dena</em>?"). Common across India. <strong>Hinglish</strong> and <strong>Tanglish</strong> are code-switch blends. Shunya's <code>zero-codeswitch</code> model handles these natively.</p>
+          <dt>Transliteration vs translation</dt>
+          <dd><strong>Transliteration</strong> rewrites the same sounds in a different script (Devanagari → Latin: <code>नमस्ते</code> → <code>namaste</code>). <strong>Translation</strong> changes the meaning into another language (<code>नमस्ते</code> → <code>hello</code>). Shunya exposes both: <code>output_script</code> for transliteration, <code>output_language</code> for translation.</dd>
 
-        <h3>Transliteration vs translation</h3>
-        <p><strong>Transliteration</strong> rewrites the same sounds in a different script (Devanagari → Latin: <code>नमस्ते</code> → <code>namaste</code>). <strong>Translation</strong> changes the meaning into another language (<code>नमस्ते</code> → <code>hello</code>). Shunya exposes both: <code>output_script</code> for transliteration, <code>output_language</code> for translation.</p>
+          <dt>Word timestamps</dt>
+          <dd>Per-word start/end times in seconds. Enables karaoke-style subtitle highlighting and precise audio-text alignment.</dd>
 
-        <h3>Word timestamps</h3>
-        <p>Per-word start/end times in seconds. Enables karaoke-style subtitle highlighting and precise audio-text alignment.</p>
-
-        <h3>WER (Word Error Rate)</h3>
-        <p>Transcription accuracy metric. Lower is better. <code>WER = (substitutions + deletions + insertions) / reference_words</code>. Zero STT's composite WER is 3.10%.</p>
+          <dt>WER (Word Error Rate)</dt>
+          <dd>Transcription accuracy metric. Lower is better. <code>WER = (substitutions + deletions + insertions) / reference_words</code>. Zero STT's composite WER is 3.10%.</dd>
+        </dl>
 
         <h2>TTS concepts</h2>
+        <dl class="glossary">
+          <dt>Voice</dt>
+          <dd>The speaker identity used for synthesis — vocal timbre, accent, speaking style. Shunya has 46 voices across 23 languages (one male, one female per language).</dd>
 
-        <h3>Voice</h3>
-        <p>The speaker identity used for synthesis — vocal timbre, accent, speaking style. Shunya has 46 voices across 23 languages (one male, one female per language).</p>
+          <dt>Cross-lingual synthesis</dt>
+          <dd>A voice speaking a language that isn't its native one. Shunya's voices can speak any supported language — <code>voice="Murugan"</code> (Tamil-native) can read English with a Tamil-inflected accent.</dd>
 
-        <h3>Cross-lingual synthesis</h3>
-        <p>A voice speaking a language that isn't its native one. Shunya's voices can speak any supported language — <code>voice="Murugan"</code> (Tamil-native) can read English with a Tamil-inflected accent.</p>
+          <dt>Expression style</dt>
+          <dd>An emotional tone tag prepended to text: <code>&lt;Happy&gt;</code>, <code>&lt;Sad&gt;</code>, <code>&lt;News&gt;</code>, <code>&lt;Narrative&gt;</code>. Eleven styles available.</dd>
 
-        <h3>Expression style</h3>
-        <p>An emotional tone tag prepended to text: <code>&lt;Happy&gt;</code>, <code>&lt;Sad&gt;</code>, <code>&lt;News&gt;</code>, <code>&lt;Narrative&gt;</code>. Eleven styles available.</p>
+          <dt>Voice cloning</dt>
+          <dd>Generating speech in a custom voice from a short reference audio sample (3–6 seconds). Use <code>reference_wav</code> and optionally <code>reference_text</code>.</dd>
 
-        <h3>Voice cloning</h3>
-        <p>Generating speech in a custom voice from a short reference audio sample (3–6 seconds). Use <code>reference_wav</code> and optionally <code>reference_text</code>.</p>
+          <dt>Prosody</dt>
+          <dd>The rhythm, stress, and intonation of speech. Good prosody requires the TTS model to see full sentences — which is why you flush LLM tokens to TTS at sentence boundaries, not word boundaries.</dd>
+        </dl>
 
-        <h3>Prosody</h3>
-        <p>The rhythm, stress, and intonation of speech. Good prosody requires the TTS model to see full sentences — which is why you flush LLM tokens to TTS at sentence boundaries, not word boundaries.</p>
+        <h2>Deployment &amp; security</h2>
+        <dl class="glossary">
+          <dt>Sovereign AI</dt>
+          <dd>AI systems where compute, data, and model weights stay under the control of the deploying organization — usually within a specific legal jurisdiction. Shunya's on-prem and air-gapped deployments are sovereign by default.</dd>
 
-        <h2>Deployment & security</h2>
+          <dt>Air-gapped</dt>
+          <dd>A deployment with no network connection to the public internet. Used in defence, finance, and healthcare settings where data cannot leave the network.</dd>
 
-        <h3>Sovereign AI</h3>
-        <p>AI systems where compute, data, and model weights stay under the control of the deploying organization — usually within a specific legal jurisdiction. Shunya's on-prem and air-gapped deployments are sovereign by default.</p>
+          <dt>CPU-compatible / CPU-first</dt>
+          <dd>Models designed to run efficiently on standard x86 processors without a GPU. Lowers deployment cost and enables edge / on-device use cases.</dd>
 
-        <h3>Air-gapped</h3>
-        <p>A deployment with no network connection to the public internet. Used in defence, finance, and healthcare settings where data cannot leave the network.</p>
+          <dt>SOC 2 Type II</dt>
+          <dd>A third-party audit of an organization's security controls over time (usually 6–12 months). Demonstrates operating effectiveness, not just design.</dd>
 
-        <h3>CPU-compatible / CPU-first</h3>
-        <p>Models designed to run efficiently on standard x86 processors without a GPU. Lowers deployment cost and enables edge / on-device use cases.</p>
+          <dt>ISO 27001:2022</dt>
+          <dd>International standard for information security management. The 2022 revision adds modern controls around cloud services and threat intelligence.</dd>
 
-        <h3>SOC 2 Type II</h3>
-        <p>A third-party audit of an organization's security controls over time (usually 6–12 months). Demonstrates operating effectiveness, not just design.</p>
+          <dt>HIPAA</dt>
+          <dd>US healthcare privacy law. Covered entities and their vendors must sign a <strong>BAA (Business Associate Agreement)</strong> before handling protected health information (PHI). Shunya executes BAAs.</dd>
 
-        <h3>ISO 27001:2022</h3>
-        <p>International standard for information security management. The 2022 revision adds modern controls around cloud services and threat intelligence.</p>
-
-        <h3>HIPAA</h3>
-        <p>US healthcare privacy law. Covered entities and their vendors must sign a <strong>BAA (Business Associate Agreement)</strong> before handling protected health information (PHI). Shunya executes BAAs.</p>
-
-        <h3>FHIR / HL7</h3>
-        <p>Interoperability standards for electronic health records. Shunya's medical STT output can be serialized to FHIR resources or HL7 v2 messages for EHR integration.</p>
+          <dt>FHIR / HL7</dt>
+          <dd>Interoperability standards for electronic health records. Shunya's medical STT output can be serialized to FHIR resources or HL7 v2 messages for EHR integration.</dd>
+        </dl>
 
         <h2>Infrastructure</h2>
+        <dl class="glossary">
+          <dt>Triton Inference Server</dt>
+          <dd>NVIDIA's production inference server. Shunya uses Triton under the hood to serve models at scale. You see it in the <code>/health</code> endpoint response.</dd>
 
-        <h3>Triton Inference Server</h3>
-        <p>NVIDIA's production inference server. Shunya uses Triton under the hood to serve models at scale. You see it in the <code>/health</code> endpoint response.</p>
+          <dt>RTFx (Real-Time Factor)</dt>
+          <dd>How many seconds of audio the model can process per second of wall-clock time. RTFx 100 = 100× real-time. Higher = faster batch throughput.</dd>
 
-        <h3>RTFx (Real-Time Factor)</h3>
-        <p>How many seconds of audio the model can process per second of wall-clock time. RTFx 100 = 100× real-time. Higher = faster batch throughput.</p>
+          <dt>WebSocket</dt>
+          <dd>Persistent bidirectional TCP connection for real-time streaming. Shunya's streaming ASR and TTS both speak WebSocket.</dd>
 
-        <h3>WebSocket</h3>
-        <p>Persistent bidirectional TCP connection for real-time streaming. Shunya's streaming ASR and TTS both speak WebSocket.</p>
-
-        <h3>Bearer token</h3>
-        <p>API key passed in the HTTP <code>Authorization: Bearer &lt;key&gt;</code> header.</p>
+          <dt>Bearer token</dt>
+          <dd>API key passed in the HTTP <code>Authorization: Bearer &lt;key&gt;</code> header.</dd>
+        </dl>
 
         <h2>Intelligence layer</h2>
+        <dl class="glossary">
+          <dt>Intent detection</dt>
+          <dd>Classifying what a speaker wants (<em>complaint · inquiry · service_request</em>). Pass <code>intent_choices</code> to constrain to your options.</dd>
 
-        <h3>Intent detection</h3>
-        <p>Classifying what a speaker wants (<em>complaint · inquiry · service_request</em>). Pass <code>intent_choices</code> to constrain to your options.</p>
+          <dt>Sentiment analysis</dt>
+          <dd>Scoring whether the speech is positive, negative, or neutral. Returns a label, a numeric score, and a one-sentence explanation.</dd>
 
-        <h3>Sentiment analysis</h3>
-        <p>Scoring whether the speech is positive, negative, or neutral. Returns a label, a numeric score, and a one-sentence explanation.</p>
+          <dt>Named Entity Recognition (NER)</dt>
+          <dd>Extracting structured data (people, places, dates, amounts) from a transcript.</dd>
 
-        <h3>Named Entity Recognition (NER)</h3>
-        <p>Extracting structured data (people, places, dates, amounts) from a transcript.</p>
+          <dt>Keyterm normalization</dt>
+          <dd>Standardizing domain-specific vocabulary in a transcript (<code>emi</code> → <code>EMI</code>, <code>nach mandate</code> → <code>NACH mandate</code>).</dd>
 
-        <h3>Keyterm normalization</h3>
-        <p>Standardizing domain-specific vocabulary in a transcript (<code>emi</code> → <code>EMI</code>, <code>nach mandate</code> → <code>NACH mandate</code>).</p>
-
-        <h3>Profanity hashing</h3>
-        <p>Replacing profane words with <code>****</code> in the output. Pair with <code>hash_keywords</code> to also mask domain-sensitive terms (card numbers, OTPs).</p>
+          <dt>Profanity hashing</dt>
+          <dd>Replacing profane words with <code>****</code> in the output. Pair with <code>hash_keywords</code> to also mask domain-sensitive terms (card numbers, OTPs).</dd>
+        </dl>
 
         <div class="pager">
           <a class="pager-link" href="/get-started/capability-matrix.html">
             <div class="pager-label">← Previous</div>
             <div class="pager-title">Capability matrix</div>
           </a>
-          <a class="pager-link pager-right" href="/personas/developer.html">
+          <a class="pager-link pager-right" href="/personas/api.html">
             <div class="pager-label">Next →</div>
-            <div class="pager-title">Developer journey</div>
+            <div class="pager-title">Heavy code · API</div>
           </a>
         </div>
       </div>
@@ -157,6 +164,6 @@
   </div>
 
   <script src="/assets/js/shell.js"></script>
-  <script src="/assets/js/nav.js"></script>
+  <script src="/assets/js/nav.js?v=2"></script>
 </body>
 </html>

@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ASR API reference — Shunya Labs Docs</title>
   <meta name="description" content="Complete API reference for Zero STT: endpoints, request fields, response schema, error codes, speaker APIs.">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=15">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css?v=23">
   <script src="/assets/js/theme.js"></script>
 </head>
 <body>
@@ -19,21 +19,24 @@
         <h1>ASR API reference</h1>
         <p class="lead">Every endpoint under <code>asr.shunyalabs.ai</code>, their request fields, response shapes, and error codes.</p>
 
-        <h2>Authentication</h2>
-        <p>All endpoints except <code>/health</code> require a bearer token:</p>
-<pre><code>Authorization: Bearer sk-your-api-key</code></pre>
+        <h2>1. Authentication</h2>
+        <p>All endpoints except <code>/health</code> require a bearer token in the <code>Authorization</code> header.</p>
+<pre><code class="language-http">Authorization: Bearer $SHUNYALABS_API_KEY</code></pre>
 
-        <h2>POST /v1/audio/transcriptions</h2>
+        <h2>2. POST /v1/audio/transcriptions</h2>
         <p>Batch transcription of an audio file or URL. Returns the full transcript, per-segment timestamps, and any intelligence results you enabled.</p>
+        <p>Required fields: <code>file</code> (or <code>url</code>) and <code>model</code>. Content-Type: <code>multipart/form-data</code>. See <a href="/asr/configuration.html">Configuration</a> for every parameter.</p>
 
-        <h3>Request</h3>
-        <p>Content-Type: <code>multipart/form-data</code>. One of <code>file</code> or <code>url</code> required.</p>
+        <p><strong>Request:</strong></p>
+<pre><code class="language-bash">curl -X POST https://asr.shunyalabs.ai/v1/audio/transcriptions \
+  -H "Authorization: Bearer $SHUNYALABS_API_KEY" \
+  -F "file=@call.wav" \
+  -F "model=zero-indic" \
+  -F "language_code=hi" \
+  -F "response_format=verbose_json"</code></pre>
 
-        <h3>Fields</h3>
-        <p>See <a href="/asr/configuration.html">Configuration</a> for every field. Required: <code>file</code> (or <code>url</code>) and <code>model</code>.</p>
-
-        <h3>Response (<code>verbose_json</code>)</h3>
-<pre><code>{
+        <p><strong>Response (<code>verbose_json</code>):</strong></p>
+<pre><code class="language-json">{
   "success": true,
   "request_id": "b3f1a2c4-...",
   "text": "नमस्ते मोहम्मद जी...",
@@ -53,11 +56,11 @@
   }
 }</code></pre>
 
-        <h3>Response (<code>json</code>)</h3>
-<pre><code>{ "text": "नमस्ते मोहम्मद जी..." }</code></pre>
+        <p><strong>Response (<code>json</code> — minimal, OpenAI-compatible):</strong></p>
+<pre><code class="language-json">{ "text": "नमस्ते मोहम्मद जी..." }</code></pre>
 
-        <h2>WebSocket /ws</h2>
-        <p>Full protocol documented in <a href="/asr/streaming.html">Streaming</a>. Summary:</p>
+        <h2>3. WebSocket /ws</h2>
+        <p>Full protocol documented in <a href="/asr/streaming.html">Streaming</a>. Summary of the lifecycle:</p>
         <ol>
           <li>Open <code>wss://asr.shunyalabs.ai/ws</code></li>
           <li>Send JSON init with <code>api_key</code>, <code>model</code>, <code>language</code>, <code>sample_rate</code>, <code>dtype</code></li>
@@ -66,11 +69,14 @@
           <li>Receive <code>ready</code> → <code>speech_start</code> → <code>partial</code>* → <code>speech_end</code> → <code>final_segment</code> → ... → <code>end_of_transcript</code> → <code>done</code></li>
         </ol>
 
-        <h2>GET /health</h2>
+        <h2>4. GET /health</h2>
         <p>Unauthenticated. Use for deployment smoke tests.</p>
-<pre><code>curl https://asr.shunyalabs.ai/health
 
-{
+        <p><strong>Request:</strong></p>
+<pre><code class="language-bash">curl https://asr.shunyalabs.ai/health</code></pre>
+
+        <p><strong>Response:</strong></p>
+<pre><code class="language-json">{
   "status": "ok",
   "services": {
     "triton": "ready",
@@ -82,61 +88,71 @@
 
         <p><code>status</code> is <code>"ok"</code> when Triton is healthy, <code>"degraded"</code> otherwise.</p>
 
-        <h2>GET /languages</h2>
+        <h2>5. GET /languages</h2>
         <p>Returns the full supported language list with ISO codes and script mappings.</p>
-<pre><code>curl https://asr.shunyalabs.ai/languages \
+
+        <p><strong>Request:</strong></p>
+<pre><code class="language-bash">curl https://asr.shunyalabs.ai/languages \
   -H "Authorization: Bearer $SHUNYALABS_API_KEY"</code></pre>
 
-        <h2 id="speakers">Speaker APIs</h2>
-        <p>Diarization produces <code>SPEAKER_00</code>-style labels. To map those to actual names, register voice profiles.</p>
-
-        <h3>POST /v1/speakers/register</h3>
-<pre><code>curl -X POST https://asr.shunyalabs.ai/v1/speakers/register \
-  -H "Authorization: Bearer $SHUNYALABS_API_KEY" \
-  -F "name=Priya" \
-  -F "file=@priya_sample.wav" \
-  -F "project=support_team"
-
-# Response
-{ "success": true, "speaker": "Priya", "message": "Registered successfully" }</code></pre>
+        <h2 id="speakers">6. Speaker APIs</h2>
+        <p>Diarization produces <code>SPEAKER_00</code>-style labels. To map those to actual names, register voice profiles using these four endpoints.</p>
 
         <div class="callout callout-info">
           <div class="callout-title">Reference clip requirements</div>
           5–15 seconds · speaker alone · no background music · no overlapping voices · 16 kHz or higher sample rate.
         </div>
 
-        <h3>GET /v1/speakers/list</h3>
-<pre><code>curl "https://asr.shunyalabs.ai/v1/speakers/list?project=support_team" \
-  -H "Authorization: Bearer $SHUNYALABS_API_KEY"
+        <h3>6.1 POST /v1/speakers/register</h3>
+        <p><strong>Request:</strong></p>
+<pre><code class="language-bash">curl -X POST https://asr.shunyalabs.ai/v1/speakers/register \
+  -H "Authorization: Bearer $SHUNYALABS_API_KEY" \
+  -F "name=Priya" \
+  -F "file=@priya_sample.wav" \
+  -F "project=support_team"</code></pre>
 
-# Response
-{
+        <p><strong>Response:</strong></p>
+<pre><code class="language-json">{ "success": true, "speaker": "Priya", "message": "Registered successfully" }</code></pre>
+
+        <h3>6.2 GET /v1/speakers/list</h3>
+        <p><strong>Request:</strong></p>
+<pre><code class="language-bash">curl "https://asr.shunyalabs.ai/v1/speakers/list?project=support_team" \
+  -H "Authorization: Bearer $SHUNYALABS_API_KEY"</code></pre>
+
+        <p><strong>Response:</strong></p>
+<pre><code class="language-json">{
   "speakers": [
     { "name": "Priya", "project": "support_team", "registered_at": "2026-03-17T10:00:00" },
     { "name": "Rahul", "project": "support_team", "registered_at": "2026-03-17T10:05:00" }
   ]
 }</code></pre>
 
-        <h3>POST /v1/speakers/identify</h3>
+        <h3>6.3 POST /v1/speakers/identify</h3>
         <p>Standalone speaker ID — skip diarization, just identify who is in a clip.</p>
-<pre><code>curl -X POST https://asr.shunyalabs.ai/v1/speakers/identify \
+
+        <p><strong>Request:</strong></p>
+<pre><code class="language-bash">curl -X POST https://asr.shunyalabs.ai/v1/speakers/identify \
   -H "Authorization: Bearer $SHUNYALABS_API_KEY" \
   -F "file=@unknown.wav" \
-  -F "project=support_team"
+  -F "project=support_team"</code></pre>
 
-# Response
-{ "speaker": "Priya", "confidence": 0.91 }
-# Or: { "speaker": "unknown", "confidence": 0.23 }</code></pre>
+        <p><strong>Response (recognised):</strong></p>
+<pre><code class="language-json">{ "speaker": "Priya", "confidence": 0.91 }</code></pre>
 
-        <h3>DELETE /v1/speakers/delete</h3>
-<pre><code>curl -X DELETE https://asr.shunyalabs.ai/v1/speakers/delete \
+        <p><strong>Response (below threshold):</strong></p>
+<pre><code class="language-json">{ "speaker": "unknown", "confidence": 0.23 }</code></pre>
+
+        <h3>6.4 DELETE /v1/speakers/delete</h3>
+        <p><strong>Request:</strong></p>
+<pre><code class="language-bash">curl -X DELETE https://asr.shunyalabs.ai/v1/speakers/delete \
   -H "Authorization: Bearer $SHUNYALABS_API_KEY" \
   -F "name=Priya" \
-  -F "project=support_team"
+  -F "project=support_team"</code></pre>
 
-{ "success": true }</code></pre>
+        <p><strong>Response:</strong></p>
+<pre><code class="language-json">{ "success": true }</code></pre>
 
-        <h2>HTTP error codes</h2>
+        <h2>7. HTTP error codes</h2>
         <div class="table-wrap">
           <table>
             <thead><tr><th>Status</th><th>Meaning</th></tr></thead>
@@ -153,7 +169,7 @@
           </table>
         </div>
 
-        <h2 id="reconnect">Retry patterns</h2>
+        <h2 id="reconnect">8. Retry patterns</h2>
         <p>Safe to retry: <code>429</code>, <code>500</code>, <code>502</code>, <code>503</code>, <code>504</code>. Not safe: <code>400</code>, <code>401</code>, <code>422</code> — fix the request first.</p>
 
         <h3>Exponential backoff (Python)</h3>
@@ -190,7 +206,7 @@ def transcribe_with_retry(file_path, retries=3):
             await asyncio.sleep(2 ** attempt)
     raise RuntimeError("Max reconnects exceeded")</code></pre>
 
-        <h2>Rate limits</h2>
+        <h2>9. Rate limits</h2>
         <div class="table-wrap">
           <table>
             <thead><tr><th>Limit</th><th>Value</th></tr></thead>
@@ -204,7 +220,7 @@ def transcribe_with_retry(file_path, retries=3):
           </table>
         </div>
 
-        <h2>Request IDs</h2>
+        <h2>10. Request IDs</h2>
         <p>Every response includes <code>request_id</code> (and an <code>X-Request-Id</code> header). Log it — Shunya support uses it to trace issues. On WebSocket, the <code>session_id</code> in the <code>ready</code> event is the equivalent.</p>
 
         <div class="pager">
@@ -223,6 +239,6 @@ def transcribe_with_retry(file_path, retries=3):
   </div>
 
   <script src="/assets/js/shell.js"></script>
-  <script src="/assets/js/nav.js"></script>
+  <script src="/assets/js/nav.js?v=2"></script>
 </body>
 </html>

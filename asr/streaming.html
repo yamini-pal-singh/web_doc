@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ASR streaming — Shunya Labs Docs</title>
   <meta name="description" content="Real-time speech recognition over WebSocket with partial and final transcripts.">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=15">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css?v=23">
   <script src="/assets/js/theme.js"></script>
 </head>
 <body>
@@ -135,8 +135,17 @@
           </table>
         </div>
 
-        <h2>Full example — Node.js</h2>
-<pre><code>import WebSocket from "ws";
+        <h2>Full example</h2>
+
+        <div class="code-group">
+          <div class="code-tabs" role="tablist">
+            <button class="code-tab active">Node.js</button>
+            <button class="code-tab">Python</button>
+          </div>
+
+          <div class="code-panel active">
+            <div class="code-header"><span>node</span><button class="copy-btn">Copy</button></div>
+<pre><code class="language-javascript">import WebSocket from "ws";
 const ws = new WebSocket("wss://asr.shunyalabs.ai/ws");
 
 ws.on("open", () => {
@@ -164,9 +173,11 @@ ws.on("message", (raw) => {
 // Stream audio from a source (e.g. Twilio media, mic, file)
 audioSource.on("data", (chunk) => ws.send(chunk));
 audioSource.on("end",  () => ws.send("END"));</code></pre>
+          </div>
 
-        <h2>Python example</h2>
-<pre><code>import asyncio, json, websockets
+          <div class="code-panel">
+            <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
+<pre><code class="language-python">import asyncio, json, os, websockets
 
 async def transcribe_stream(audio_iter):
     async with websockets.connect("wss://asr.shunyalabs.ai/ws") as ws:
@@ -194,6 +205,8 @@ async def transcribe_stream(audio_iter):
                     return
 
         await asyncio.gather(sender(), receiver())</code></pre>
+          </div>
+        </div>
 
         <div class="pager">
           <a class="pager-link" href="/asr/features.html">
@@ -211,7 +224,7 @@ async def transcribe_stream(audio_iter):
   </div>
 
   <script src="/assets/js/shell.js"></script>
-  <script src="/assets/js/nav.js"></script>
+  <script src="/assets/js/nav.js?v=2"></script>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
   <script src="/assets/js/mermaid-init.js?v=2"></script>
 </body>

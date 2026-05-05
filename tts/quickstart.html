@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>TTS quickstart — Shunya Labs Docs</title>
   <meta name="description" content="Synthesize your first audio in five minutes: SDK, REST, and OpenAI-compatible clients.">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=15">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css?v=23">
   <script src="/assets/js/theme.js"></script>
 </head>
 <body>
@@ -34,8 +34,26 @@ pip install "shunyalabs[extras]"      # + audio playback helpers (sounddevice)</
 
         <h2>3. First synthesis</h2>
 
-        <h3>Python SDK (recommended)</h3>
-<pre><code>import asyncio
+        <div class="code-group">
+          <div class="code-tabs" role="tablist">
+            <button class="code-tab active">cURL</button>
+            <button class="code-tab">Python SDK (recommended)</button>
+            <button class="code-tab">Python (<code>requests</code>)</button>
+            <button class="code-tab">OpenAI SDK</button>
+          </div>
+
+          <div class="code-panel active">
+            <div class="code-header"><span>shell</span><button class="copy-btn">Copy</button></div>
+<pre><code class="language-bash">curl -X POST https://tts.shunyalabs.ai/v1/audio/speech \
+  -H "Authorization: Bearer $SHUNYALABS_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"model": "zero-indic", "input": "Hello, how are you today?", "voice": "Varun"}' \
+  --output output.mp3</code></pre>
+          </div>
+
+          <div class="code-panel">
+            <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
+<pre><code class="language-python">import asyncio
 from shunyalabs import AsyncShunyaClient
 from shunyalabs.tts import TTSConfig
 
@@ -49,16 +67,11 @@ async def main():
         print(f"{len(result.audio_data)} bytes saved · {result.sample_rate} Hz")
 
 asyncio.run(main())</code></pre>
+          </div>
 
-        <h3>REST API (cURL)</h3>
-<pre><code>curl -X POST https://tts.shunyalabs.ai/v1/audio/speech \
-  -H "Authorization: Bearer $SHUNYALABS_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"model": "zero-indic", "input": "Hello, how are you today?", "voice": "Varun"}' \
-  --output output.mp3</code></pre>
-
-        <h3>REST API (Python requests)</h3>
-<pre><code>import requests
+          <div class="code-panel">
+            <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
+<pre><code class="language-python">import requests
 
 response = requests.post(
     "https://tts.shunyalabs.ai/v1/audio/speech",
@@ -69,9 +82,11 @@ response = requests.post(
 response.raise_for_status()
 with open("output.mp3", "wb") as f:
     f.write(response.content)</code></pre>
+          </div>
 
-        <h3>OpenAI SDK (compatible)</h3>
-<pre><code>from openai import OpenAI
+          <div class="code-panel">
+            <div class="code-header"><span>openai SDK</span><button class="copy-btn">Copy</button></div>
+<pre><code class="language-python">from openai import OpenAI
 
 client = OpenAI(api_key=API_KEY, base_url="https://tts.shunyalabs.ai/v1")
 response = client.audio.speech.create(
@@ -81,6 +96,8 @@ response = client.audio.speech.create(
     response_format="mp3",
 )
 response.stream_to_file("output.mp3")</code></pre>
+          </div>
+        </div>
 
         <h2>4. Switch voice, language, speed, format</h2>
 
@@ -166,6 +183,6 @@ except ShunyalabsError as e:
   </div>
 
   <script src="/assets/js/shell.js"></script>
-  <script src="/assets/js/nav.js"></script>
+  <script src="/assets/js/nav.js?v=2"></script>
 </body>
 </html>

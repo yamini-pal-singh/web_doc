@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Voice cloning — Shunya Labs Docs</title>
   <meta name="description" content="Clone a speaker voice from a 3–6 second reference audio sample. Works across all 23 Indic languages.">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=15">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css?v=23">
   <script src="/assets/js/theme.js"></script>
 </head>
 <body>
@@ -33,11 +33,18 @@
         </div>
 
         <h2>Two cloning modes</h2>
+        <p>Pick the tab that fits how much you know about the reference clip.</p>
 
-        <h3>Mode 1 — Audio + transcript (recommended)</h3>
-        <p>Higher quality. The model uses speaker identity <em>and</em> speaking style from the reference. The transcript gives semantic alignment between reference and target, significantly improving voice similarity.</p>
+        <div class="code-group">
+          <div class="code-tabs" role="tablist">
+            <button class="code-tab active">Mode 1 — Audio + transcript (recommended)</button>
+            <button class="code-tab">Mode 2 — Audio only</button>
+          </div>
 
-<pre><code>import base64, requests
+          <div class="code-panel active">
+            <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
+            <p style="margin:0 0 0.75rem; padding:0 0.25rem;">Higher quality. The model uses speaker identity <em>and</em> speaking style from the reference. The transcript gives semantic alignment between reference and target, significantly improving voice similarity.</p>
+<pre><code class="language-python">import base64, requests
 
 with open("reference.wav", "rb") as f:
     audio_b64 = base64.b64encode(f.read()).decode()
@@ -56,11 +63,17 @@ response = requests.post(
 )
 with open("cloned_output.mp3", "wb") as f:
     f.write(response.content)</code></pre>
+          </div>
 
-        <h3>Mode 2 — Audio only</h3>
-        <p>Speaker identity only. Simpler, slightly lower quality. Use when you don't have a clean transcript.</p>
+          <div class="code-panel">
+            <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
+            <p style="margin:0 0 0.75rem; padding:0 0.25rem;">Speaker identity only. Simpler, slightly lower quality. Use when you don't have a clean transcript.</p>
+<pre><code class="language-python">import base64, requests
 
-<pre><code>response = requests.post(
+with open("reference.wav", "rb") as f:
+    audio_b64 = base64.b64encode(f.read()).decode()
+
+response = requests.post(
     "https://tts.shunyalabs.ai/v1/audio/speech",
     headers={"Authorization": f"Bearer {API_KEY}"},
     json={
@@ -70,7 +83,11 @@ with open("cloned_output.mp3", "wb") as f:
         "reference_wav": audio_b64,
     },
     timeout=120,
-)</code></pre>
+)
+with open("cloned_output.mp3", "wb") as f:
+    f.write(response.content)</code></pre>
+          </div>
+        </div>
 
         <h2>Reference audio requirements</h2>
         <div class="table-wrap">
@@ -154,6 +171,6 @@ with open("cloned_output.mp3", "wb") as f:
   </div>
 
   <script src="/assets/js/shell.js"></script>
-  <script src="/assets/js/nav.js"></script>
+  <script src="/assets/js/nav.js?v=2"></script>
 </body>
 </html>

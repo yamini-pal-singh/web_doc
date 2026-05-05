@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Capability matrix — Shunya Labs Docs</title>
   <meta name="description" content="Languages, accuracy, latency, and pricing across every Shunya model at a glance.">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=15">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css?v=23">
   <script src="/assets/js/theme.js"></script>
 </head>
 <body>
@@ -28,7 +28,6 @@
               <tr><td><strong>zero-indic</strong></td><td>Hindi, Tamil, Telugu, Bengali, Kannada, and 50+ Indian languages</td><td>55+</td><td>Streaming-first</td><td>$0.0045</td></tr>
               <tr><td><strong>zero-codeswitch</strong></td><td>Hinglish, Tanglish — mixed Indic + English</td><td>Indic + English</td><td>Native code-switch</td><td>$0.0050</td></tr>
               <tr><td><strong>zero-med</strong></td><td>Clinical / medical speech</td><td>English (+ Indic)</td><td>FHIR / HL7 compatible</td><td>$0.0050</td></tr>
-              <tr><td><strong>zero-numerical</strong></td><td>Finance, digit-heavy transcripts</td><td>English</td><td>Digit-optimised</td><td>$0.0050</td></tr>
               <tr><td><strong>zero-tts</strong></td><td>Speech synthesis, voice agents, IVR</td><td>23 Indic + English</td><td>46 voices · 11 styles</td><td>See pricing</td></tr>
               <tr><td><strong>vak-translate-1.3b</strong></td><td>Indic ↔ Indic translation</td><td>55 · 2,970 pairs</td><td>BLEU 38.5 weighted</td><td>See pricing</td></tr>
             </tbody>
@@ -36,6 +35,10 @@
         </div>
 
         <h2>ASR accuracy — OpenASR composite</h2>
+        <div class="callout callout-info">
+          <div class="callout-title">Reading this table</div>
+          Same Shunya model evaluated across eight industry-standard test datasets. The rows below are <strong>benchmarks, not competing models</strong>.
+        </div>
         <p>Zero STT Universal (model: <code>pingala-v1-universal</code>) benchmarked on the <a href="https://huggingface.co/spaces/hf-audio/open_asr_leaderboard" target="_blank" rel="noopener">HuggingFace Open ASR leaderboard</a>. Lower WER = fewer errors. <strong>Composite WER: 3.10% · Average RTFx: 146.23.</strong></p>
         <div class="table-wrap">
           <table>
@@ -137,6 +140,6 @@
   </div>
 
   <script src="/assets/js/shell.js"></script>
-  <script src="/assets/js/nav.js"></script>
+  <script src="/assets/js/nav.js?v=2"></script>
 </body>
 </html>

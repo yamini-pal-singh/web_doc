@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>LLM → TTS pipeline — Shunya Labs Docs</title>
   <meta name="description" content="Pipe LLM token output directly to TTS as it arrives — the core latency pattern for voice agents.">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=15">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css?v=23">
   <script src="/assets/js/theme.js"></script>
 </head>
 <body>
@@ -64,8 +64,18 @@
           <li>After the LLM stream ends, always flush the remaining buffer — LLMs often end mid-sentence.</li>
         </ul>
 
-        <h2>OpenAI → Shunyalabs</h2>
-<pre><code>from openai import AsyncOpenAI
+        <h2>LLM → Shunyalabs pipeline</h2>
+        <p>Pick your LLM provider — the pattern is the same on both sides: stream tokens out of the LLM, buffer them until a sentence boundary, flush each complete sentence into Shunya TTS.</p>
+
+        <div class="code-group">
+          <div class="code-tabs" role="tablist">
+            <button class="code-tab active">OpenAI (GPT-4o)</button>
+            <button class="code-tab">Anthropic (Claude)</button>
+          </div>
+
+          <div class="code-panel active">
+            <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
+<pre><code class="language-python">from openai import AsyncOpenAI
 from shunyalabs import AsyncShunyaClient
 from shunyalabs.tts import TTSConfig
 
@@ -92,9 +102,11 @@ async def gpt_to_tts(user_message: str):
     if buffer.strip():
         async for audio in await shunya.tts.stream(buffer, config=config):
             speaker.write(audio)</code></pre>
+          </div>
 
-        <h2>Anthropic Claude → Shunyalabs</h2>
-<pre><code>import anthropic
+          <div class="code-panel">
+            <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
+<pre><code class="language-python">import anthropic
 from shunyalabs import AsyncShunyaClient
 from shunyalabs.tts import TTSConfig
 
@@ -116,9 +128,12 @@ async def claude_to_tts(user_message: str):
                     speaker.write(audio)
                 buffer = ""
 
+    # Flush remaining buffer after LLM stream ends
     if buffer.strip():
         async for audio in await shunya.tts.stream(buffer, config=config):
             speaker.write(audio)</code></pre>
+          </div>
+        </div>
 
         <h2>Interruption handling</h2>
         <p>In voice agents, users often talk over the bot. When your ASR detects <code>speech_start</code> from the user, cancel the in-flight TTS stream so the user gets the floor immediately.</p>
@@ -234,7 +249,7 @@ class VoiceAgent:
   </div>
 
   <script src="/assets/js/shell.js"></script>
-  <script src="/assets/js/nav.js"></script>
+  <script src="/assets/js/nav.js?v=2"></script>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
   <script src="/assets/js/mermaid-init.js?v=2"></script>
 </body>

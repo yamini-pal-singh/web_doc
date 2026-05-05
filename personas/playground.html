@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>No code · Playground dashboard — Shunya Labs Docs</title>
+  <meta name="description" content="Try Shunya Labs voice AI from the dashboard — no code. Type text, pick a voice, hear the result. Generate API keys, evaluate ASR/TTS quality before you write a line.">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css?v=23">
+  <script src="/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/index.html">Docs</a><span class="sep">/</span><span>Pick your journey</span><span class="sep">/</span><span>No code · Playground</span>
+        </div>
+        <div class="persona-label" style="margin-bottom: 0.5rem;">For evaluators, content teams, and anyone non-technical</div>
+        <h1>Try it <span class="accent-italic">from the dashboard</span></h1>
+        <p class="lead">No SDKs, no terminals, no API keys to wire up. Sign in to the Shunya dashboard, type some text, pick a voice, and hear the output. Same models, same quality — just without the code.</p>
+
+        <h2>Your journey</h2>
+        <div class="mermaid">graph LR
+  A[1. Sign in] --> B[2. Open Playground]
+  B --> C{Try what?}
+  C -->|Voice| D[Type → pick voice → hear]
+  C -->|Speech| E[Upload audio → see transcript]
+  C -->|Translate| F[Paste text → pick language pair]
+  D --> G[3. Compare voices]
+  E --> G
+  F --> G
+  G --> H[4. Generate API key when ready]
+  style A fill:#6366f1,stroke:#4338ca,color:#fff,stroke-width:2px
+  style H fill:#6366f1,stroke:#4338ca,color:#fff,stroke-width:2px</div>
+
+        <h2>Step 1 — Sign in</h2>
+        <p>Go to the Shunya Labs dashboard and create an account. You'll land on a workspace home page with three tools in the left rail: <strong>TTS</strong>, <strong>ASR</strong>, and <strong>Vāķ Translate</strong>.</p>
+        <ul>
+          <li>Free tier includes monthly minutes for TTS, ASR, and translation — enough to evaluate.</li>
+          <li>No credit card required to start.</li>
+          <li>Workspace is shareable with teammates so a content reviewer and a developer can both work in the same place.</li>
+        </ul>
+
+        <h2>Step 2 — Try Text-to-Speech</h2>
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-title">Type and hear</div>
+            <p class="card-desc">Paste your text into the input box. Mix Hindi, English, Tamil — the model handles code-switching natively. Hit <strong>Generate</strong> and the audio plays in your browser.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">Compare voices side-by-side</div>
+            <p class="card-desc">46 voices across 23 Indic languages. Each language has one male and one female speaker — Rajesh / Sunita for Hindi, Varun / Nisha for English, Murugan / Thangam for Tamil, and so on. Click a voice, hit play.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">Adjust speed, format, expression</div>
+            <p class="card-desc">Sliders for speed (0.25× → 4×), volume normalization, and silence trimming. Pick from 11 expression styles — Happy, Sad, News, Narrative, Conversational, and more.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">Cross-lingual synthesis</div>
+            <p class="card-desc">Voice controls accent, not language. A Tamil-native voice can speak English; an English-native voice can read Hindi. Try the same text with different voices to find the right vocal character.</p>
+          </div>
+        </div>
+
+        <h2>Step 3 — Try Speech-to-Text</h2>
+        <p>Drag-and-drop an audio file (WAV, MP3, FLAC, OGG) into the ASR panel. The dashboard returns a transcript with timestamps in seconds. Useful checks:</p>
+        <ul>
+          <li>Recognition accuracy on your real-world audio — accents, noise, code-switching.</li>
+          <li>Diarization — who spoke when, with per-segment speaker labels.</li>
+          <li>Emotion and sentiment tags on each segment.</li>
+          <li>Hinglish handling — mid-sentence Hindi/English mixing without language tagging.</li>
+        </ul>
+
+        <h2>Step 4 — Try Vāķ Translation</h2>
+        <p>Paste source text, pick the source and target language from the dropdowns, and translate. 55 Indian languages, 2,970 directional pairs, BLEU 38.5 weighted average. Useful for:</p>
+        <ul>
+          <li>Quickly localizing a script before recording it as TTS.</li>
+          <li>Spot-checking translation quality on your specific content vocabulary.</li>
+          <li>Generating multilingual prompts for an IVR or voice agent.</li>
+        </ul>
+
+        <h2>Step 5 — Generate an API key (when you're ready)</h2>
+        <p>Once a voice or pipeline feels right, the dashboard hands you off to engineering:</p>
+        <ol>
+          <li>Open <strong>API Keys</strong> in the dashboard.</li>
+          <li>Click <strong>Create New Key</strong> — name it after the environment (e.g. <code>prod-2026-q2</code>).</li>
+          <li>Copy and store the key securely. It will not be shown again.</li>
+          <li>Send your developer to <a href="/personas/api.html">Heavy code · API</a> or <a href="/personas/sdk.html">Small code · SDK</a>.</li>
+        </ol>
+
+        <h2>Who the playground is for</h2>
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-title">Content &amp; localization teams</div>
+            <p class="card-desc">Generate voiceovers and audio prompts for IVR, ads, and accessibility — without filing a developer ticket.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">Buyers evaluating Shunya</div>
+            <p class="card-desc">Hear quality before signing a contract. Test on your actual content, your actual languages, your actual voices.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">Product managers</div>
+            <p class="card-desc">Prototype voice features visually before scoping engineering. Click-to-validate replaces back-and-forth specs.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">Support and ops</div>
+            <p class="card-desc">Quickly transcribe a customer call or generate a notification audio without writing code or installing tools.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-success">
+          <div class="callout-title">Ready to integrate?</div>
+          When the dashboard has answered your "does this work?" questions, hand off to your developer with the <a href="/personas/sdk.html">Python SDK</a> guide or the <a href="/personas/api.html">REST &amp; WebSocket</a> reference.
+        </div>
+
+        <div class="pager">
+          <a class="pager-link" href="/personas/sdk.html">
+            <div class="pager-label">← Previous</div>
+            <div class="pager-title">Small code · SDK</div>
+          </a>
+          <a class="pager-link pager-right" href="/personas/openai-compatible.html">
+            <div class="pager-label">Next →</div>
+            <div class="pager-title">OpenAI compatible</div>
+          </a>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+
+  <script src="/assets/js/shell.js"></script>
+  <script src="/assets/js/nav.js?v=2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script src="/assets/js/mermaid-init.js?v=2"></script>
+</body>
+</html>

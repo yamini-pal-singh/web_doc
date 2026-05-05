@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Audio formats — Shunya Labs Docs</title>
   <meta name="description" content="Seven TTS output formats: PCM, WAV, MP3, OGG Opus, FLAC, mulaw, alaw. When to use each.">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=15">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css?v=23">
   <script src="/assets/js/theme.js"></script>
 </head>
 <body>
@@ -52,9 +52,22 @@
         </div>
 
         <h2>Per-format examples</h2>
+        <p>Pick the tab that matches your use case. The only difference between formats is the <code>response_format</code> string.</p>
 
-        <h3>PCM — real-time pipelines</h3>
-<pre><code>config = TTSConfig(model="zero-indic", voice="Varun", response_format="pcm")
+        <div class="code-group">
+          <div class="code-tabs" role="tablist">
+            <button class="code-tab active">PCM — real-time</button>
+            <button class="code-tab">WAV — editing</button>
+            <button class="code-tab">MP3 — general</button>
+            <button class="code-tab">OGG Opus — web</button>
+            <button class="code-tab">FLAC — archival</button>
+            <button class="code-tab">mulaw — Twilio / India PSTN</button>
+            <button class="code-tab">alaw — European telephony</button>
+          </div>
+
+          <div class="code-panel active">
+            <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
+<pre><code class="language-python">config = TTSConfig(model="zero-indic", voice="Varun", response_format="pcm")
 result = await client.tts.synthesize("Hello!", config=config)
 
 # PCM has no file header. Wrap in WAV for playback:
@@ -64,35 +77,49 @@ with wave.open("output.wav", "wb") as wf:
     wf.setsampwidth(2)      # 16-bit = 2 bytes
     wf.setframerate(16000)
     wf.writeframes(result.audio_data)</code></pre>
+          </div>
 
-        <h3>WAV — editing and tooling</h3>
-<pre><code>config = TTSConfig(model="zero-indic", voice="Varun", response_format="wav")
+          <div class="code-panel">
+            <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
+<pre><code class="language-python">config = TTSConfig(model="zero-indic", voice="Varun", response_format="wav")
 result = await client.tts.synthesize("Hello!", config=config)
 result.save("output.wav")</code></pre>
+          </div>
 
-        <h3>MP3 — default, general-purpose</h3>
-<pre><code>config = TTSConfig(model="zero-indic", voice="Varun", response_format="mp3")
+          <div class="code-panel">
+            <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
+<pre><code class="language-python">config = TTSConfig(model="zero-indic", voice="Varun", response_format="mp3")
 result = await client.tts.synthesize("Hello!", config=config)
 result.save("output.mp3")</code></pre>
+          </div>
 
-        <h3>OGG Opus — web streaming</h3>
-<pre><code>config = TTSConfig(model="zero-indic", voice="Varun", response_format="ogg_opus")
+          <div class="code-panel">
+            <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
+<pre><code class="language-python">config = TTSConfig(model="zero-indic", voice="Varun", response_format="ogg_opus")
 result = await client.tts.synthesize("Hello!", config=config)
 result.save("output.ogg")</code></pre>
+          </div>
 
-        <h3>FLAC — archival</h3>
-<pre><code>config = TTSConfig(model="zero-indic", voice="Varun", response_format="flac")
+          <div class="code-panel">
+            <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
+<pre><code class="language-python">config = TTSConfig(model="zero-indic", voice="Varun", response_format="flac")
 result = await client.tts.synthesize("Hello!", config=config)
 result.save("archive.flac")</code></pre>
+          </div>
 
-        <h3>mulaw — Twilio / Indian PSTN</h3>
-<pre><code>config = TTSConfig(model="zero-indic", voice="Varun", response_format="mulaw")
+          <div class="code-panel">
+            <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
+<pre><code class="language-python">config = TTSConfig(model="zero-indic", voice="Varun", response_format="mulaw")
 result = await client.tts.synthesize("&lt;Conversational&gt; Hello!", config=config)
 # result.audio_data is ready to send to Twilio Media Stream or IVR system</code></pre>
+          </div>
 
-        <h3>alaw — European telephony</h3>
-<pre><code>config = TTSConfig(model="zero-indic", voice="Rajesh", response_format="alaw")
+          <div class="code-panel">
+            <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
+<pre><code class="language-python">config = TTSConfig(model="zero-indic", voice="Rajesh", response_format="alaw")
 result = await client.tts.synthesize("Guten Morgen!", config=config)</code></pre>
+          </div>
+        </div>
 
         <h2>Telephony — mulaw &amp; alaw</h2>
         <p><code>mulaw</code> (G.711 μ-law) and <code>alaw</code> (G.711 A-law) are the two standard codecs for telephone networks globally. Both encode audio at 8 kHz, 8-bit — which is the standard for PSTN, SIP, and most IVR platforms.</p>
@@ -150,6 +177,6 @@ result = await client.tts.synthesize(
   </div>
 
   <script src="/assets/js/shell.js"></script>
-  <script src="/assets/js/nav.js"></script>
+  <script src="/assets/js/nav.js?v=2"></script>
 </body>
 </html>

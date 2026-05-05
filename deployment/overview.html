@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Deployment — Shunya Labs Docs</title>
   <meta name="description" content="Cloud API, on-prem / VPC, air-gapped CPU — same API surface, different deployment shapes.">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=15">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css?v=23">
   <script src="/assets/js/theme.js"></script>
 </head>
 <body>
@@ -16,32 +16,28 @@
         <div class="breadcrumb">
           <a href="/index.html">Docs</a><span class="sep">/</span><span>Deployment</span>
         </div>
-        <h1>Deployment options</h1>
-        <p class="lead">Same API surface, three deployment shapes. Pick what fits your compliance, latency, and operating-cost constraints. You can switch later without changing a line of calling code.</p>
+        <h1>Deployment <span class="accent-italic">options</span></h1>
+        <p class="lead">Same API surface, two deployment shapes. Pick what fits your compliance, latency, and operating-cost constraints. You can switch later without changing a line of calling code.</p>
 
-        <h2>The three shapes</h2>
-        <div class="grid grid-3">
-          <div class="card">
+        <h2>The two shapes</h2>
+        <div class="grid grid-2">
+          <a href="#cloud-api" class="card-link"><div class="card">
             <div style="margin-bottom: 0.625rem;"><span class="pill pill-green">Fastest to start</span></div>
             <div class="card-title">Cloud API</div>
             <p class="card-desc">Managed endpoints at <code>asr.shunyalabs.ai</code> and <code>tts.shunyalabs.ai</code>. Bearer token auth. Auto-scaled, 99.9% SLA.</p>
             <p class="small"><strong>Picks when:</strong> prototypes, SaaS products, latency is acceptable over WAN.</p>
-          </div>
-          <div class="card">
+            <span class="card-cta">Read the Cloud API guide <span class="card-cta-arrow">→</span></span>
+          </div></a>
+          <a href="#on-prem-vpc" class="card-link"><div class="card">
             <div style="margin-bottom: 0.625rem;"><span class="pill pill-amber">Data residency</span></div>
             <div class="card-title">On-prem / VPC</div>
             <p class="card-desc">Same Triton containers inside your network. Data never leaves the VPC. Custom pricing.</p>
             <p class="small"><strong>Picks when:</strong> regulated industries (BFSI, healthcare, gov), strict data residency, predictable load.</p>
-          </div>
-          <div class="card">
-            <div style="margin-bottom: 0.625rem;"><span class="pill pill-zinc">Offline</span></div>
-            <div class="card-title">Air-gapped / CPU</div>
-            <p class="card-desc">Open weights from Hugging Face, run on commodity x86. No internet needed. RAIL-M / CC-BY-SA-4.0 licensed.</p>
-            <p class="small"><strong>Picks when:</strong> defence, offline kiosks, edge devices, air-gapped labs.</p>
-          </div>
+            <span class="card-cta">Read the On-prem guide <span class="card-cta-arrow">→</span></span>
+          </div></a>
         </div>
 
-        <h2>Cloud API</h2>
+        <h2 id="cloud-api">Cloud API</h2>
         <p>The fastest path. Sign up → get API key → start calling. All features available, including the intelligence layer.</p>
 
         <h3>Endpoints</h3>
@@ -58,7 +54,7 @@ TTS streaming: wss://tts.shunyalabs.ai/ws/v1/audio/speech</code></pre>
           <li>Planned maintenance windows announced 14 days in advance.</li>
         </ul>
 
-        <h2>On-prem / VPC</h2>
+        <h2 id="on-prem-vpc">On-prem / VPC</h2>
         <p>Container parity — the exact same Triton containers that power the cloud, running on infrastructure you operate.</p>
 
         <h3>What you get</h3>
@@ -91,8 +87,8 @@ TTS streaming: wss://tts.shunyalabs.ai/ws/v1/audio/speech</code></pre>
     tts_ws_url="wss://voice.yourcompany.internal/ws",
 )</code></pre>
 
-        <h2>Air-gapped / CPU</h2>
-        <p>For environments with no network connectivity to the internet — defence, offline kiosks, mobile edge, air-gapped labs.</p>
+        <h2>The only models of their kind <span class="accent-italic">on Hugging Face</span></h2>
+        <p>For environments with no network connectivity to the internet — defence, offline kiosks, mobile edge, air-gapped labs. Open weights from Shunya's <a href="https://huggingface.co/shunyalabs" target="_blank" rel="noopener">Hugging Face organization</a>, run on commodity x86.</p>
 
         <h3>Pull models from Hugging Face (on an internet-connected machine)</h3>
 <pre><code>huggingface-cli login
@@ -143,7 +139,7 @@ segments = tx.transcribe("meeting.wav")</code></pre>
   </div>
 
   <script src="/assets/js/shell.js"></script>
-  <script src="/assets/js/nav.js"></script>
+  <script src="/assets/js/nav.js?v=2"></script>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
   <script src="/assets/js/mermaid-init.js?v=2"></script>
 </body>
