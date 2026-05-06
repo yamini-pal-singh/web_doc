@@ -6,15 +6,15 @@
   <title>Heavy code · API integration — Shunya Labs Docs</title>
   <meta name="description" content="Direct REST and WebSocket integration with Shunya Labs. Bearer-token auth, batch HTTP synthesis, real-time streaming, full control.">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=23">
-  <script src="/assets/js/theme.js"></script>
+  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=23">
+  <script src="/web_doc/assets/js/theme.js"></script>
 </head>
 <body>
   <div class="app">
     <main class="main">
       <div class="content">
         <div class="breadcrumb">
-          <a href="/index.html">Docs</a><span class="sep">/</span><span>Pick your journey</span><span class="sep">/</span><span>Heavy code · API</span>
+          <a href="/web_doc/index.html">Docs</a><span class="sep">/</span><span>Pick your journey</span><span class="sep">/</span><span>Heavy code · API</span>
         </div>
         <div class="persona-label" style="margin-bottom: 0.5rem;">For teams that integrate at the protocol level</div>
         <h1>Integrate via <span class="accent-italic">REST &amp; WebSocket</span></h1>
@@ -125,7 +125,7 @@ wscat -c "wss://tts.shunyalabs.ai/ws/v1/audio/speech" \
             <tbody>
               <tr><td><code>model</code></td><td>string</td><td>required</td><td>Use <code>"zero-indic"</code> for all Indic + English text.</td></tr>
               <tr><td><code>input</code> / <code>target_text</code></td><td>string</td><td>required</td><td>Text to synthesize (1–10,000 characters).</td></tr>
-              <tr><td><code>voice</code> / <code>speaker_id</code></td><td>string</td><td>required</td><td>Speaker name. 46 voices across 23 Indic languages — see the <a href="/tts/voices.html">voice list</a>.</td></tr>
+              <tr><td><code>voice</code> / <code>speaker_id</code></td><td>string</td><td>required</td><td>Speaker name. 46 voices across 23 Indic languages — see the <a href="/web_doc/tts/voices.html">voice list</a>.</td></tr>
               <tr><td><code>response_format</code></td><td>string</td><td><code>mp3</code></td><td><code>pcm</code>, <code>wav</code>, <code>mp3</code>, <code>ogg_opus</code>, <code>flac</code>, <code>mulaw</code>, <code>alaw</code>.</td></tr>
               <tr><td><code>speed</code></td><td>float</td><td>1.0</td><td>0.25 (slowest) → 4.0 (fastest). Pitch-preserving.</td></tr>
               <tr><td><code>language</code></td><td>string</td><td>null</td><td>ISO 639 hint for text preprocessing (e.g. <code>"hi"</code>). Optional — model handles mixed scripts natively.</td></tr>
@@ -173,15 +173,15 @@ wscat -c "wss://tts.shunyalabs.ai/ws/v1/audio/speech" \
 
         <div class="callout callout-success">
           <div class="callout-title">Want less boilerplate?</div>
-          The <a href="/personas/sdk.html">Python SDK</a> wraps these endpoints with typed config, async streaming generators, and built-in error classes. Same protocol, fewer lines.
+          The <a href="/web_doc/personas/sdk.html">Python SDK</a> wraps these endpoints with typed config, async streaming generators, and built-in error classes. Same protocol, fewer lines.
         </div>
 
         <div class="pager">
-          <a class="pager-link" href="/index.html">
+          <a class="pager-link" href="/web_doc/index.html">
             <div class="pager-label">← Previous</div>
             <div class="pager-title">Overview</div>
           </a>
-          <a class="pager-link pager-right" href="/personas/sdk.html">
+          <a class="pager-link pager-right" href="/web_doc/personas/sdk.html">
             <div class="pager-label">Next →</div>
             <div class="pager-title">Small code · SDK</div>
           </a>
@@ -191,9 +191,9 @@ wscat -c "wss://tts.shunyalabs.ai/ws/v1/audio/speech" \
     </main>
   </div>
 
-  <script src="/assets/js/shell.js"></script>
-  <script src="/assets/js/nav.js?v=2"></script>
+  <script src="/web_doc/assets/js/shell.js"></script>
+  <script src="/web_doc/assets/js/nav.js?v=2"></script>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-  <script src="/assets/js/mermaid-init.js?v=2"></script>
+  <script src="/web_doc/assets/js/mermaid-init.js?v=2"></script>
 </body>
 </html>

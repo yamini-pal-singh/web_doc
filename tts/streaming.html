@@ -6,15 +6,15 @@
   <title>TTS streaming — Shunya Labs Docs</title>
   <meta name="description" content="Stream synthesized audio as it's generated over WebSocket. First audio in under 350 ms.">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=23">
-  <script src="/assets/js/theme.js"></script>
+  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=23">
+  <script src="/web_doc/assets/js/theme.js"></script>
 </head>
 <body>
   <div class="app">
     <main class="main">
       <div class="content">
         <div class="breadcrumb">
-          <a href="/index.html">Docs</a><span class="sep">/</span><span>Text-to-Speech</span><span class="sep">/</span><span>Streaming</span>
+          <a href="/web_doc/index.html">Docs</a><span class="sep">/</span><span>Text-to-Speech</span><span class="sep">/</span><span>Streaming</span>
         </div>
         <h1>Streaming TTS</h1>
         <p class="lead">Open a persistent WebSocket and receive audio chunks in real time as synthesis happens. Best for voice agents, IVR, and any case where audio has to start playing before the full text is synthesized.</p>
@@ -195,7 +195,7 @@ async def stream_with_reconnect(text, config):
         <ul>
           <li>Pre-open the WebSocket before your LLM call — saves ~200 ms of connection setup.</li>
           <li>Use PCM — no client-side decoding overhead.</li>
-          <li>Use shorter sentences as flush units if piping from an LLM — see <a href="/tts/llm-to-tts.html">LLM → TTS pipeline</a>.</li>
+          <li>Use shorter sentences as flush units if piping from an LLM — see <a href="/web_doc/tts/llm-to-tts.html">LLM → TTS pipeline</a>.</li>
         </ul>
 
         <h2>Production readiness checklist</h2>
@@ -208,11 +208,11 @@ async def stream_with_reconnect(text, config):
         </ul>
 
         <div class="pager">
-          <a class="pager-link" href="/tts/voice-cloning.html">
+          <a class="pager-link" href="/web_doc/tts/voice-cloning.html">
             <div class="pager-label">← Previous</div>
             <div class="pager-title">Voice cloning</div>
           </a>
-          <a class="pager-link pager-right" href="/tts/llm-to-tts.html">
+          <a class="pager-link pager-right" href="/web_doc/tts/llm-to-tts.html">
             <div class="pager-label">Next →</div>
             <div class="pager-title">LLM → TTS pipeline</div>
           </a>
@@ -222,9 +222,9 @@ async def stream_with_reconnect(text, config):
     </main>
   </div>
 
-  <script src="/assets/js/shell.js"></script>
-  <script src="/assets/js/nav.js?v=2"></script>
+  <script src="/web_doc/assets/js/shell.js"></script>
+  <script src="/web_doc/assets/js/nav.js?v=2"></script>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-  <script src="/assets/js/mermaid-init.js?v=2"></script>
+  <script src="/web_doc/assets/js/mermaid-init.js?v=2"></script>
 </body>
 </html>

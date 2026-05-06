@@ -6,15 +6,15 @@
   <title>OpenAI SDK — Shunya Labs Docs</title>
   <meta name="description" content="The Shunya Labs TTS API is OpenAI-compatible — use the official OpenAI Python SDK as a drop-in client.">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=23">
-  <script src="/assets/js/theme.js"></script>
+  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=23">
+  <script src="/web_doc/assets/js/theme.js"></script>
 </head>
 <body>
   <div class="app">
     <main class="main">
       <div class="content">
         <div class="breadcrumb">
-          <a href="/index.html">Docs</a><span class="sep">/</span><span>Integrations</span><span class="sep">/</span><span>OpenAI SDK</span>
+          <a href="/web_doc/index.html">Docs</a><span class="sep">/</span><span>Integrations</span><span class="sep">/</span><span>OpenAI SDK</span>
         </div>
         <h1>OpenAI SDK (compatible)</h1>
         <p class="lead">Shunya Labs' TTS API is OpenAI-compatible. You can use the official OpenAI Python SDK by pointing <code>base_url</code> to the Shunya Labs endpoint — no other client changes needed.</p>
@@ -51,7 +51,7 @@ response.stream_to_file("output.mp3")</code></pre>
             <tbody>
               <tr><td><code>model</code></td><td><code>model</code></td><td>Use <code>"zero-indic"</code>.</td></tr>
               <tr><td><code>input</code></td><td><code>input</code></td><td>The text to synthesize. Up to 10,000 characters.</td></tr>
-              <tr><td><code>voice</code></td><td><code>voice</code></td><td>Any of the 46 Shunya voices — see <a href="/tts/voices.html">Voices &amp; languages</a>.</td></tr>
+              <tr><td><code>voice</code></td><td><code>voice</code></td><td>Any of the 46 Shunya voices — see <a href="/web_doc/tts/voices.html">Voices &amp; languages</a>.</td></tr>
               <tr><td><code>response_format</code></td><td><code>response_format</code></td><td><code>mp3</code>, <code>wav</code>, <code>pcm</code>, <code>ogg_opus</code>, <code>flac</code>, <code>mulaw</code>, <code>alaw</code>.</td></tr>
             </tbody>
           </table>
@@ -65,21 +65,21 @@ response.stream_to_file("output.mp3")</code></pre>
         </ul>
 
         <h2>What you give up</h2>
-        <p>The OpenAI SDK only exposes the parameters in the OpenAI spec. Shunya-specific parameters — voice cloning (<code>reference_wav</code>, <code>reference_text</code>), <code>speed</code>, <code>language</code>, <code>trim_silence</code>, <code>volume_normalization</code>, <code>background_audio</code>, <code>word_timestamps</code>, <code>max_tokens</code> — aren't accepted by the OpenAI SDK signature. To use those, switch to the <a href="/integrations/python-sdk.html">Shunya Python SDK</a> or call the REST endpoint directly.</p>
+        <p>The OpenAI SDK only exposes the parameters in the OpenAI spec. Shunya-specific parameters — voice cloning (<code>reference_wav</code>, <code>reference_text</code>), <code>speed</code>, <code>language</code>, <code>trim_silence</code>, <code>volume_normalization</code>, <code>background_audio</code>, <code>word_timestamps</code>, <code>max_tokens</code> — aren't accepted by the OpenAI SDK signature. To use those, switch to the <a href="/web_doc/integrations/python-sdk.html">Shunya Python SDK</a> or call the REST endpoint directly.</p>
 
         <div class="callout callout-info">
           <div class="callout-title">Streaming via the OpenAI SDK</div>
-          For real-time / streaming synthesis, use Shunya's WebSocket endpoint at <code>wss://tts.shunyalabs.ai/ws/v1/audio/speech</code> — that path is not OpenAI-compatible. See <a href="/tts/streaming.html">TTS streaming</a>.
+          For real-time / streaming synthesis, use Shunya's WebSocket endpoint at <code>wss://tts.shunyalabs.ai/ws/v1/audio/speech</code> — that path is not OpenAI-compatible. See <a href="/web_doc/tts/streaming.html">TTS streaming</a>.
         </div>
 
         <p class="text-subtle">Source: Shunyalabs TTS Developer Documentation v1.0 (March 2026), §2.2 Your First Request → "OpenAI Python SDK (compatible)". Code reproduced verbatim.</p>
 
         <div class="pager">
-          <a class="pager-link" href="/integrations/python-sdk.html">
+          <a class="pager-link" href="/web_doc/integrations/python-sdk.html">
             <div class="pager-label">← Previous</div>
             <div class="pager-title">Python SDK</div>
           </a>
-          <a class="pager-link pager-right" href="/integrations/twilio.html">
+          <a class="pager-link pager-right" href="/web_doc/integrations/twilio.html">
             <div class="pager-label">Next →</div>
             <div class="pager-title">Twilio</div>
           </a>
@@ -89,7 +89,7 @@ response.stream_to_file("output.mp3")</code></pre>
     </main>
   </div>
 
-  <script src="/assets/js/shell.js"></script>
-  <script src="/assets/js/nav.js?v=2"></script>
+  <script src="/web_doc/assets/js/shell.js"></script>
+  <script src="/web_doc/assets/js/nav.js?v=2"></script>
 </body>
 </html>

@@ -6,15 +6,15 @@
   <title>ASR configuration — Shunya Labs Docs</title>
   <meta name="description" content="Every ASR parameter explained with defaults, examples, and when to change them.">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=23">
-  <script src="/assets/js/theme.js"></script>
+  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=23">
+  <script src="/web_doc/assets/js/theme.js"></script>
 </head>
 <body>
   <div class="app">
     <main class="main">
       <div class="content">
         <div class="breadcrumb">
-          <a href="/index.html">Docs</a><span class="sep">/</span><span>Speech-to-Text</span><span class="sep">/</span><span>Configuration</span>
+          <a href="/web_doc/index.html">Docs</a><span class="sep">/</span><span>Speech-to-Text</span><span class="sep">/</span><span>Configuration</span>
         </div>
         <h1>Configuration</h1>
         <p class="lead">Every parameter you can pass to <code>POST /v1/audio/transcriptions</code>, in one place. Two are required (<code>file</code> or <code>url</code>, and <code>model</code>); the rest have safe defaults.</p>
@@ -116,7 +116,7 @@
               <tr>
                 <td><code>enable_speaker_identification</code> + <code>project</code></td>
                 <td>bool · <code>false</code></td>
-                <td>Resolves anonymous <code>SPEAKER_XX</code> labels to registered names. Requires <code>enable_diarization=true</code> and pre-registered voice profiles. <code>project</code> scopes the speaker library — useful for per-customer isolation. <a href="/asr/api-reference.html#speakers">Speaker registration API →</a></td>
+                <td>Resolves anonymous <code>SPEAKER_XX</code> labels to registered names. Requires <code>enable_diarization=true</code> and pre-registered voice profiles. <code>project</code> scopes the speaker library — useful for per-customer isolation. <a href="/web_doc/asr/api-reference.html#speakers">Speaker registration API →</a></td>
               </tr>
               <tr>
                 <td><code>enable_emotion_diarization</code></td>
@@ -227,11 +227,11 @@
         </div>
 
         <div class="pager">
-          <a class="pager-link" href="/asr/models.html">
+          <a class="pager-link" href="/web_doc/asr/models.html">
             <div class="pager-label">← Previous</div>
             <div class="pager-title">ASR models</div>
           </a>
-          <a class="pager-link pager-right" href="/asr/features.html">
+          <a class="pager-link pager-right" href="/web_doc/asr/features.html">
             <div class="pager-label">Next →</div>
             <div class="pager-title">Features</div>
           </a>
@@ -241,7 +241,7 @@
     </main>
   </div>
 
-  <script src="/assets/js/shell.js"></script>
-  <script src="/assets/js/nav.js?v=2"></script>
+  <script src="/web_doc/assets/js/shell.js"></script>
+  <script src="/web_doc/assets/js/nav.js?v=2"></script>
 </body>
 </html>

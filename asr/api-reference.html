@@ -6,15 +6,15 @@
   <title>ASR API reference — Shunya Labs Docs</title>
   <meta name="description" content="Complete API reference for Zero STT: endpoints, request fields, response schema, error codes, speaker APIs.">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=23">
-  <script src="/assets/js/theme.js"></script>
+  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=23">
+  <script src="/web_doc/assets/js/theme.js"></script>
 </head>
 <body>
   <div class="app">
     <main class="main">
       <div class="content">
         <div class="breadcrumb">
-          <a href="/index.html">Docs</a><span class="sep">/</span><span>Speech-to-Text</span><span class="sep">/</span><span>API reference</span>
+          <a href="/web_doc/index.html">Docs</a><span class="sep">/</span><span>Speech-to-Text</span><span class="sep">/</span><span>API reference</span>
         </div>
         <h1>ASR API reference</h1>
         <p class="lead">Every endpoint under <code>asr.shunyalabs.ai</code>, their request fields, response shapes, and error codes.</p>
@@ -25,7 +25,7 @@
 
         <h2>2. POST /v1/audio/transcriptions</h2>
         <p>Batch transcription of an audio file or URL. Returns the full transcript, per-segment timestamps, and any intelligence results you enabled.</p>
-        <p>Required fields: <code>file</code> (or <code>url</code>) and <code>model</code>. Content-Type: <code>multipart/form-data</code>. See <a href="/asr/configuration.html">Configuration</a> for every parameter.</p>
+        <p>Required fields: <code>file</code> (or <code>url</code>) and <code>model</code>. Content-Type: <code>multipart/form-data</code>. See <a href="/web_doc/asr/configuration.html">Configuration</a> for every parameter.</p>
 
         <p><strong>Request:</strong></p>
 <pre><code class="language-bash">curl -X POST https://asr.shunyalabs.ai/v1/audio/transcriptions \
@@ -60,7 +60,7 @@
 <pre><code class="language-json">{ "text": "नमस्ते मोहम्मद जी..." }</code></pre>
 
         <h2>3. WebSocket /ws</h2>
-        <p>Full protocol documented in <a href="/asr/streaming.html">Streaming</a>. Summary of the lifecycle:</p>
+        <p>Full protocol documented in <a href="/web_doc/asr/streaming.html">Streaming</a>. Summary of the lifecycle:</p>
         <ol>
           <li>Open <code>wss://asr.shunyalabs.ai/ws</code></li>
           <li>Send JSON init with <code>api_key</code>, <code>model</code>, <code>language</code>, <code>sample_rate</code>, <code>dtype</code></li>
@@ -224,11 +224,11 @@ def transcribe_with_retry(file_path, retries=3):
         <p>Every response includes <code>request_id</code> (and an <code>X-Request-Id</code> header). Log it — Shunya support uses it to trace issues. On WebSocket, the <code>session_id</code> in the <code>ready</code> event is the equivalent.</p>
 
         <div class="pager">
-          <a class="pager-link" href="/asr/dashboard.html">
+          <a class="pager-link" href="/web_doc/asr/dashboard.html">
             <div class="pager-label">← Previous</div>
             <div class="pager-title">Dashboard</div>
           </a>
-          <a class="pager-link pager-right" href="/tts/overview.html">
+          <a class="pager-link pager-right" href="/web_doc/tts/overview.html">
             <div class="pager-label">Next →</div>
             <div class="pager-title">Text-to-Speech overview</div>
           </a>
@@ -238,7 +238,7 @@ def transcribe_with_retry(file_path, retries=3):
     </main>
   </div>
 
-  <script src="/assets/js/shell.js"></script>
-  <script src="/assets/js/nav.js?v=2"></script>
+  <script src="/web_doc/assets/js/shell.js"></script>
+  <script src="/web_doc/assets/js/nav.js?v=2"></script>
 </body>
 </html>

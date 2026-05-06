@@ -4,90 +4,90 @@
     {
       heading: 'Get Started',
       items: [
-        { href: '/index.html', label: 'Overview', icon: 'home' },
-        { href: '/get-started/what-is-shunya.html', label: 'What is Shunya?', icon: 'sparkles' },
-        { href: '/get-started/quickstart.html', label: 'Quickstart', icon: 'zap' },
-        { href: '/get-started/capability-matrix.html', label: 'Capability matrix', icon: 'grid' },
-        { href: '/get-started/glossary.html', label: 'Glossary', icon: 'book' },
+        { href: '/web_doc/index.html', label: 'Overview', icon: 'home' },
+        { href: '/web_doc/get-started/what-is-shunya.html', label: 'What is Shunya?', icon: 'sparkles' },
+        { href: '/web_doc/get-started/quickstart.html', label: 'Quickstart', icon: 'zap' },
+        { href: '/web_doc/get-started/capability-matrix.html', label: 'Capability matrix', icon: 'grid' },
+        { href: '/web_doc/get-started/glossary.html', label: 'Glossary', icon: 'book' },
       ]
     },
     {
       heading: 'Pick your journey',
       items: [
-        { href: '/personas/api.html', label: 'Heavy code · API', icon: 'terminal' },
-        { href: '/personas/sdk.html', label: 'Small code · SDK', icon: 'code' },
-        { href: '/personas/playground.html', label: 'No code · Playground', icon: 'layout' },
-        { href: '/personas/openai-compatible.html', label: 'OpenAI compatible', icon: 'compatible' },
+        { href: '/web_doc/personas/api.html', label: 'Heavy code · API', icon: 'terminal' },
+        { href: '/web_doc/personas/sdk.html', label: 'Small code · SDK', icon: 'code' },
+        { href: '/web_doc/personas/playground.html', label: 'No code · Playground', icon: 'layout' },
+        { href: '/web_doc/personas/openai-compatible.html', label: 'OpenAI compatible', icon: 'compatible' },
       ]
     },
     {
       heading: 'Speech-to-Text (ASR)',
       items: [
-        { href: '/asr/overview.html', label: 'Overview', icon: 'mic' },
-        { href: '/asr/models.html', label: 'Models', icon: 'layers' },
-        { href: '/asr/configuration.html', label: 'Configuration', icon: 'sliders' },
-        { href: '/asr/features.html', label: 'Features', icon: 'star' },
-        { href: '/asr/streaming.html', label: 'Streaming (WebSocket)', icon: 'wifi' },
-        { href: '/asr/api-reference.html', label: 'API reference', icon: 'terminal' },
+        { href: '/web_doc/asr/overview.html', label: 'Overview', icon: 'mic' },
+        { href: '/web_doc/asr/models.html', label: 'Models', icon: 'layers' },
+        { href: '/web_doc/asr/configuration.html', label: 'Configuration', icon: 'sliders' },
+        { href: '/web_doc/asr/features.html', label: 'Features', icon: 'star' },
+        { href: '/web_doc/asr/streaming.html', label: 'Streaming (WebSocket)', icon: 'wifi' },
+        { href: '/web_doc/asr/api-reference.html', label: 'API reference', icon: 'terminal' },
       ]
     },
     {
       heading: 'Text-to-Speech (TTS)',
       items: [
-        { href: '/tts/overview.html', label: 'Overview', icon: 'volume' },
-        { href: '/tts/quickstart.html', label: 'Quickstart', icon: 'zap' },
-        { href: '/tts/voices.html', label: 'Voices & languages', icon: 'users' },
-        { href: '/tts/audio-formats.html', label: 'Audio formats', icon: 'file-audio' },
-        { href: '/tts/expression-styles.html', label: 'Expression styles', icon: 'smile' },
-        { href: '/tts/voice-cloning.html', label: 'Voice cloning', icon: 'copy' },
-        { href: '/tts/streaming.html', label: 'Streaming (WebSocket)', icon: 'wifi' },
-        { href: '/tts/llm-to-tts.html', label: 'LLM → TTS pipeline', icon: 'link' },
-        { href: '/tts/api-reference.html', label: 'API reference', icon: 'terminal' },
+        { href: '/web_doc/tts/overview.html', label: 'Overview', icon: 'volume' },
+        { href: '/web_doc/tts/quickstart.html', label: 'Quickstart', icon: 'zap' },
+        { href: '/web_doc/tts/voices.html', label: 'Voices & languages', icon: 'users' },
+        { href: '/web_doc/tts/audio-formats.html', label: 'Audio formats', icon: 'file-audio' },
+        { href: '/web_doc/tts/expression-styles.html', label: 'Expression styles', icon: 'smile' },
+        { href: '/web_doc/tts/voice-cloning.html', label: 'Voice cloning', icon: 'copy' },
+        { href: '/web_doc/tts/streaming.html', label: 'Streaming (WebSocket)', icon: 'wifi' },
+        { href: '/web_doc/tts/llm-to-tts.html', label: 'LLM → TTS pipeline', icon: 'link' },
+        { href: '/web_doc/tts/api-reference.html', label: 'API reference', icon: 'terminal' },
       ]
     },
     {
       heading: 'Translation',
       items: [
-        { href: '/translation/vak-overview.html', label: 'Vāķ Translate', icon: 'globe' },
+        { href: '/web_doc/translation/vak-overview.html', label: 'Vāķ Translate', icon: 'globe' },
       ]
     },
     {
       heading: 'Solutions',
       items: [
-        { href: '/solutions/bfsi.html', label: 'BFSI', icon: 'banknote' },
-        { href: '/solutions/healthcare.html', label: 'Healthcare', icon: 'heart' },
-        { href: '/solutions/contact-centers.html', label: 'Contact centers', icon: 'headphones' },
-        { href: '/solutions/media.html', label: 'Media & entertainment', icon: 'film' },
+        { href: '/web_doc/solutions/bfsi.html', label: 'BFSI', icon: 'banknote' },
+        { href: '/web_doc/solutions/healthcare.html', label: 'Healthcare', icon: 'heart' },
+        { href: '/web_doc/solutions/contact-centers.html', label: 'Contact centers', icon: 'headphones' },
+        { href: '/web_doc/solutions/media.html', label: 'Media & entertainment', icon: 'film' },
       ]
     },
     {
       heading: 'Integrations',
       items: [
-        { href: '/integrations/overview.html', label: 'Overview', icon: 'plug' },
-        { href: '/integrations/python-sdk.html', label: 'Python SDK', icon: 'code' },
-        { href: '/integrations/openai-sdk.html', label: 'OpenAI SDK', icon: 'compatible' },
-        { href: '/integrations/twilio.html', label: 'Twilio', icon: 'phone' },
-        { href: '/integrations/sip-pstn.html', label: 'SIP / PSTN', icon: 'wifi' },
-        { href: '/integrations/hugging-face.html', label: 'Hugging Face', icon: 'flask' },
+        { href: '/web_doc/integrations/overview.html', label: 'Overview', icon: 'plug' },
+        { href: '/web_doc/integrations/python-sdk.html', label: 'Python SDK', icon: 'code' },
+        { href: '/web_doc/integrations/openai-sdk.html', label: 'OpenAI SDK', icon: 'compatible' },
+        { href: '/web_doc/integrations/twilio.html', label: 'Twilio', icon: 'phone' },
+        { href: '/web_doc/integrations/sip-pstn.html', label: 'SIP / PSTN', icon: 'wifi' },
+        { href: '/web_doc/integrations/hugging-face.html', label: 'Hugging Face', icon: 'flask' },
       ]
     },
     {
       heading: 'Deployment',
       items: [
-        { href: '/deployment/overview.html', label: 'Cloud / on-prem', icon: 'server' },
+        { href: '/web_doc/deployment/overview.html', label: 'Cloud / on-prem', icon: 'server' },
       ]
     },
     {
       heading: 'Enterprise',
       items: [
-        { href: '/enterprise/sso.html', label: 'Set up SSO', icon: 'lock' },
-        { href: '/enterprise/hands-on-evaluation.html', label: 'Hands-on evaluation', icon: 'beaker' },
+        { href: '/web_doc/enterprise/sso.html', label: 'Set up SSO', icon: 'lock' },
+        { href: '/web_doc/enterprise/hands-on-evaluation.html', label: 'Hands-on evaluation', icon: 'beaker' },
       ]
     },
     {
       heading: 'Security',
       items: [
-        { href: '/security/compliance.html', label: 'Compliance & privacy', icon: 'shield' },
+        { href: '/web_doc/security/compliance.html', label: 'Compliance & privacy', icon: 'shield' },
       ]
     },
   ];

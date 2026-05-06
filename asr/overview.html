@@ -6,15 +6,15 @@
   <title>ASR overview — Shunya Labs Docs</title>
   <meta name="description" content="Speech-to-text overview: models, endpoints, and when to use each.">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=23">
-  <script src="/assets/js/theme.js"></script>
+  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=23">
+  <script src="/web_doc/assets/js/theme.js"></script>
 </head>
 <body>
   <div class="app">
     <main class="main">
       <div class="content">
         <div class="breadcrumb">
-          <a href="/index.html">Docs</a><span class="sep">/</span><span>Speech-to-Text</span><span class="sep">/</span><span>Overview</span>
+          <a href="/web_doc/index.html">Docs</a><span class="sep">/</span><span>Speech-to-Text</span><span class="sep">/</span><span>Overview</span>
         </div>
         <h1>Speech-to-Text (ASR)</h1>
         <p class="lead">Zero STT is Shunya's speech recognition family. One API surface for batch and streaming, a choice of four models tuned for different domains, and an intelligence layer that adds diarization, emotion, intent, and more on top of the transcript.</p>
@@ -174,19 +174,19 @@
         <p>Every request takes a <code>model</code> field. There are four to choose from:</p>
 
         <div class="grid grid-2">
-          <a href="/asr/models.html#zero-indic" class="card-link"><div class="card">
+          <a href="/web_doc/asr/models.html#zero-indic" class="card-link"><div class="card">
             <div class="card-title"><code>zero-indic</code></div>
             <p class="card-desc">Hindi, Tamil, Telugu, Kannada, Marathi, Bengali and 50+ Indian languages. The default for Indic content.</p>
           </div></a>
-          <a href="/asr/models.html#zero-universal" class="card-link"><div class="card">
+          <a href="/web_doc/asr/models.html#zero-universal" class="card-link"><div class="card">
             <div class="card-title"><code>zero-universal</code></div>
             <p class="card-desc">204-language Whisper-class model. English, European, Asian, African. Auto-detects language when you don't know it.</p>
           </div></a>
-          <a href="/asr/models.html#zero-med" class="card-link"><div class="card">
+          <a href="/web_doc/asr/models.html#zero-med" class="card-link"><div class="card">
             <div class="card-title"><code>zero-med</code></div>
             <p class="card-desc">Clinical / medical speech with drug, procedure, and diagnosis vocabulary. HIPAA-cleared. Auto-applies medical terminology correction.</p>
           </div></a>
-          <a href="/asr/models.html#zero-codeswitch" class="card-link"><div class="card">
+          <a href="/web_doc/asr/models.html#zero-codeswitch" class="card-link"><div class="card">
             <div class="card-title"><code>zero-codeswitch</code></div>
             <p class="card-desc">Native handling of mixed Hindi-English (Hinglish), Tamil-English (Tanglish) and similar blends. Gemini-backed code-switch restoration.</p>
           </div></a>
@@ -207,38 +207,38 @@
 
         <h2>Where to go next</h2>
         <div class="grid grid-3">
-          <a href="/asr/models.html" class="card-link"><div class="card">
+          <a href="/web_doc/asr/models.html" class="card-link"><div class="card">
             <div class="card-title">Models →</div>
             <p class="card-desc">Decide between indic, universal, med, and code-switch.</p>
           </div></a>
-          <a href="/asr/configuration.html" class="card-link"><div class="card">
+          <a href="/web_doc/asr/configuration.html" class="card-link"><div class="card">
             <div class="card-title">Configuration →</div>
             <p class="card-desc">Every parameter, with defaults and when to change them.</p>
           </div></a>
-          <a href="/asr/features.html" class="card-link"><div class="card">
+          <a href="/web_doc/asr/features.html" class="card-link"><div class="card">
             <div class="card-title">Features →</div>
             <p class="card-desc">Diarization, emotion, intent, redaction, translation.</p>
           </div></a>
-          <a href="/asr/streaming.html" class="card-link"><div class="card">
+          <a href="/web_doc/asr/streaming.html" class="card-link"><div class="card">
             <div class="card-title">Streaming →</div>
             <p class="card-desc">WebSocket for real-time pipelines.</p>
           </div></a>
-          <a href="/asr/dashboard.html" class="card-link"><div class="card">
+          <a href="/web_doc/asr/dashboard.html" class="card-link"><div class="card">
             <div class="card-title">Dashboard →</div>
             <p class="card-desc">The no-code upload & edit UI.</p>
           </div></a>
-          <a href="/asr/api-reference.html" class="card-link"><div class="card">
+          <a href="/web_doc/asr/api-reference.html" class="card-link"><div class="card">
             <div class="card-title">API reference →</div>
             <p class="card-desc">Every endpoint, field, and error code.</p>
           </div></a>
         </div>
 
         <div class="pager">
-          <a class="pager-link" href="/personas/playground.html">
+          <a class="pager-link" href="/web_doc/personas/playground.html">
             <div class="pager-label">← Previous</div>
             <div class="pager-title">No code · Playground</div>
           </a>
-          <a class="pager-link pager-right" href="/asr/models.html">
+          <a class="pager-link pager-right" href="/web_doc/asr/models.html">
             <div class="pager-label">Next →</div>
             <div class="pager-title">ASR models</div>
           </a>
@@ -248,9 +248,9 @@
     </main>
   </div>
 
-  <script src="/assets/js/shell.js"></script>
-  <script src="/assets/js/nav.js?v=2"></script>
+  <script src="/web_doc/assets/js/shell.js"></script>
+  <script src="/web_doc/assets/js/nav.js?v=2"></script>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-  <script src="/assets/js/mermaid-init.js?v=2"></script>
+  <script src="/web_doc/assets/js/mermaid-init.js?v=2"></script>
 </body>
 </html>

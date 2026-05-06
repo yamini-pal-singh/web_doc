@@ -6,15 +6,15 @@
   <title>TTS quickstart — Shunya Labs Docs</title>
   <meta name="description" content="Synthesize your first audio in five minutes: SDK, REST, and OpenAI-compatible clients.">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/main.css?v=23">
-  <script src="/assets/js/theme.js"></script>
+  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=23">
+  <script src="/web_doc/assets/js/theme.js"></script>
 </head>
 <body>
   <div class="app">
     <main class="main">
       <div class="content">
         <div class="breadcrumb">
-          <a href="/index.html">Docs</a><span class="sep">/</span><span>Text-to-Speech</span><span class="sep">/</span><span>Quickstart</span>
+          <a href="/web_doc/index.html">Docs</a><span class="sep">/</span><span>Text-to-Speech</span><span class="sep">/</span><span>Quickstart</span>
         </div>
         <h1>TTS quickstart</h1>
         <p class="lead">Install, authenticate, synthesize. By the end of this page you'll have an MP3 on disk and know how to switch voice, language, speed, and format.</p>
@@ -111,7 +111,7 @@ TTSConfig(model="zero-indic", voice="Murugan")
 # English female
 TTSConfig(model="zero-indic", voice="Nisha")</code></pre>
 
-        <p>46 voices total. See <a href="/tts/voices.html">Voices & languages</a> for the full catalogue.</p>
+        <p>46 voices total. See <a href="/web_doc/tts/voices.html">Voices & languages</a> for the full catalogue.</p>
 
         <h3>Change speed</h3>
 <pre><code>TTSConfig(model="zero-indic", voice="Nisha", speed=1.3)   # fast notifications
@@ -122,7 +122,7 @@ TTSConfig(model="zero-indic", voice="Nisha", speed=0.85)  # slower dictation</co
 TTSConfig(model="zero-indic", voice="Varun", response_format="mulaw")  # telephony
 TTSConfig(model="zero-indic", voice="Varun", response_format="wav")    # editing</code></pre>
 
-        <p>Full format list at <a href="/tts/audio-formats.html">Audio formats</a>.</p>
+        <p>Full format list at <a href="/web_doc/tts/audio-formats.html">Audio formats</a>.</p>
 
         <h3>Add an expression style</h3>
 <pre><code>await client.tts.synthesize(
@@ -130,7 +130,7 @@ TTSConfig(model="zero-indic", voice="Varun", response_format="wav")    # editing
     config=TTSConfig(model="zero-indic", voice="Sunita"),
 )</code></pre>
 
-        <p>11 styles: Happy, Sad, Angry, Fearful, Surprised, Disgust, News, Conversational, Narrative, Enthusiastic, Neutral. See <a href="/tts/expression-styles.html">Expression styles</a>.</p>
+        <p>11 styles: Happy, Sad, Angry, Fearful, Surprised, Disgust, News, Conversational, Narrative, Enthusiastic, Neutral. See <a href="/web_doc/tts/expression-styles.html">Expression styles</a>.</p>
 
         <h2>5. Stream it</h2>
         <p>For real-time use (voice agents, IVR), stream audio as it synthesizes instead of waiting for the full file:</p>
@@ -141,7 +141,7 @@ async for chunk in await client.tts.stream("Hello!", config=config):
     # play chunk bytes as they arrive
     speaker.write(chunk)</code></pre>
 
-        <p>Full streaming details at <a href="/tts/streaming.html">Streaming</a>.</p>
+        <p>Full streaming details at <a href="/web_doc/tts/streaming.html">Streaming</a>.</p>
 
         <h2>6. Handle errors</h2>
 <pre><code>from shunyalabs.exceptions import (
@@ -164,15 +164,15 @@ except ShunyalabsError as e:
 
         <div class="callout callout-success">
           <div class="callout-title">You're done</div>
-          You now have text → audio working. Next, skim <a href="/tts/voices.html">voices</a> and <a href="/tts/audio-formats.html">audio formats</a> to pick the right ones for your use case.
+          You now have text → audio working. Next, skim <a href="/web_doc/tts/voices.html">voices</a> and <a href="/web_doc/tts/audio-formats.html">audio formats</a> to pick the right ones for your use case.
         </div>
 
         <div class="pager">
-          <a class="pager-link" href="/tts/overview.html">
+          <a class="pager-link" href="/web_doc/tts/overview.html">
             <div class="pager-label">← Previous</div>
             <div class="pager-title">TTS overview</div>
           </a>
-          <a class="pager-link pager-right" href="/tts/voices.html">
+          <a class="pager-link pager-right" href="/web_doc/tts/voices.html">
             <div class="pager-label">Next →</div>
             <div class="pager-title">Voices & languages</div>
           </a>
@@ -182,7 +182,7 @@ except ShunyalabsError as e:
     </main>
   </div>
 
-  <script src="/assets/js/shell.js"></script>
-  <script src="/assets/js/nav.js?v=2"></script>
+  <script src="/web_doc/assets/js/shell.js"></script>
+  <script src="/web_doc/assets/js/nav.js?v=2"></script>
 </body>
 </html>
