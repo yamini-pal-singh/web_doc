@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Deployment — Shunya Labs Docs</title>
-  <meta name="description" content="Cloud API, on-prem / VPC, air-gapped CPU — same API surface, different deployment shapes.">
+  <title>Deployment | Shunya Labs Docs</title>
+  <meta name="description" content="Cloud API, on-prem / VPC, air-gapped CPU, same API surface, different deployment shapes.">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=23">
+  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=32">
   <script src="/web_doc/assets/js/theme.js"></script>
 </head>
 <body>
@@ -55,7 +55,7 @@ TTS streaming: wss://tts.shunyalabs.ai/ws/v1/audio/speech</code></pre>
         </ul>
 
         <h2 id="on-prem-vpc">On-prem / VPC</h2>
-        <p>Container parity — the exact same Triton containers that power the cloud, running on infrastructure you operate.</p>
+        <p>Container parity, the exact same Triton containers that power the cloud, running on infrastructure you operate.</p>
 
         <h3>What you get</h3>
         <ul>
@@ -63,11 +63,11 @@ TTS streaming: wss://tts.shunyalabs.ai/ws/v1/audio/speech</code></pre>
           <li>REST and WebSocket edge services with the same API contract</li>
           <li>Management plane for API keys, quotas, and monitoring</li>
           <li>Helm charts (Kubernetes) or <code>docker-compose</code> for smaller setups</li>
-          <li>Update channel — you control the cadence</li>
+          <li>Update channel, you control the cadence</li>
         </ul>
 
         <h3>Sizing</h3>
-        <p>Hardware requirements depend on concurrency, codec, audio length, NLP add-ons, and Triton configuration. Shunya doesn't publish a sizing matrix — <a href="https://www.shunyalabs.ai/contact" target="_blank" rel="noopener">contact Shunya Labs ↗</a> for a sizing exercise before specifying hardware.</p>
+        <p>Hardware requirements depend on concurrency, codec, audio length, NLP add-ons, and Triton configuration. Shunya doesn't publish a sizing matrix, <a href="https://www.shunyalabs.ai/contact" target="_blank" rel="noopener">contact Shunya Labs ↗</a> for a sizing exercise before specifying hardware.</p>
 
         <h3>Network topology</h3>
         <div class="mermaid">graph LR
@@ -76,7 +76,7 @@ TTS streaming: wss://tts.shunyalabs.ai/ws/v1/audio/speech</code></pre>
     B --> C[Triton ASR]
     B --> D[Triton TTS]
     B --> E[Triton Vāķ]
-    F[Management plane<br/>keys · quotas · metrics] --> B
+    F[Management plane<br/>keys, quotas, metrics] --> B
   end
   style B fill:#6366f1,stroke:#4338ca,color:#fff,stroke-width:2px</div>
 
@@ -88,7 +88,7 @@ TTS streaming: wss://tts.shunyalabs.ai/ws/v1/audio/speech</code></pre>
 )</code></pre>
 
         <h2>The only models of their kind <span class="accent-italic">on Hugging Face</span></h2>
-        <p>For environments with no network connectivity to the internet — defence, offline kiosks, mobile edge, air-gapped labs. Open weights from Shunya's <a href="https://huggingface.co/shunyalabs" target="_blank" rel="noopener">Hugging Face organization</a>, run on commodity x86.</p>
+        <p>For environments with no network connectivity to the internet, defence, offline kiosks, mobile edge, air-gapped labs. Open weights from Shunya's <a class="hf-model-link" href="https://huggingface.co/shunyalabs" target="_blank" rel="noopener">Hugging Face organization</a>, run on commodity x86.</p>
 
         <h3>Pull models from Hugging Face (on an internet-connected machine)</h3>
 <pre><code>huggingface-cli login
@@ -116,9 +116,9 @@ segments = tx.transcribe("meeting.wav")</code></pre>
           <table>
             <thead><tr><th>Model</th><th>License</th><th>Constraints</th></tr></thead>
             <tbody>
-              <tr><td><code>pingala-v1-universal</code></td><td>RAIL-M</td><td>Free up to 10,000 hours/month. No redistribution, no derivatives. Attribution if outputs public.</td></tr>
-              <tr><td><code>zero-stt-hinglish</code></td><td>openrail</td><td>Permissive, with responsible-use restrictions.</td></tr>
-              <tr><td><code>vak-translate-1.3b-ct2</code></td><td>CC-BY-SA-4.0</td><td>Share-alike — derivative works must carry the same license.</td></tr>
+              <tr><td><a class="hf-model-link" href="https://huggingface.co/shunyalabs/pingala-v1-universal" target="_blank" rel="noopener" title="View on Hugging Face"><code>pingala-v1-universal</code></a></td><td>RAIL-M</td><td>Free up to 10,000 hours/month. No redistribution, no derivatives. Attribution if outputs public.</td></tr>
+              <tr><td><a class="hf-model-link" href="https://huggingface.co/shunyalabs/zero-stt-hinglish" target="_blank" rel="noopener" title="View on Hugging Face"><code>zero-stt-hinglish</code></a></td><td>openrail</td><td>Permissive, with responsible-use restrictions.</td></tr>
+              <tr><td><a class="hf-model-link" href="https://huggingface.co/shunyalabs/vak-translate-1.3b-ct2" target="_blank" rel="noopener" title="View on Hugging Face"><code>vak-translate-1.3b-ct2</code></a></td><td>CC-BY-SA-4.0</td><td>Share-alike, derivative works must carry the same license.</td></tr>
             </tbody>
           </table>
         </div>
@@ -138,7 +138,7 @@ segments = tx.transcribe("meeting.wav")</code></pre>
     </main>
   </div>
 
-  <script src="/web_doc/assets/js/shell.js"></script>
+  <script src="/web_doc/assets/js/shell.js?v=3"></script>
   <script src="/web_doc/assets/js/nav.js?v=2"></script>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
   <script src="/web_doc/assets/js/mermaid-init.js?v=2"></script>

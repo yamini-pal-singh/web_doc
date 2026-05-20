@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>LLM → TTS pipeline — Shunya Labs Docs</title>
-  <meta name="description" content="Pipe LLM token output directly to TTS as it arrives — the core latency pattern for voice agents.">
+  <title>LLM → TTS pipeline | Shunya Labs Docs</title>
+  <meta name="description" content="Pipe LLM token output directly to TTS as it arrives, the core latency pattern for voice agents.">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=23">
+  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=37">
   <script src="/web_doc/assets/js/theme.js"></script>
 </head>
 <body>
@@ -16,16 +16,16 @@
         <div class="breadcrumb">
           <a href="/web_doc/index.html">Docs</a><span class="sep">/</span><span>Text-to-Speech</span><span class="sep">/</span><span>LLM → TTS pipeline</span>
         </div>
-        <h1>LLM → TTS streaming pipeline</h1>
-        <p class="lead">The core latency pattern for voice agents. Pipe LLM tokens directly into TTS as they arrive — don't wait for the full response. Saves 200–400 ms of time-to-first-audio and makes conversations feel natural.</p>
+        <h1>LLM → TTS streaming <span class="accent-italic">pipeline</span></h1>
+        <p class="lead">The core latency pattern for voice agents. Pipe LLM tokens directly into TTS as they arrive, don't wait for the full response. Saves 200-400 ms of time-to-first-audio and makes conversations feel natural.</p>
 
         <h2>Why it matters</h2>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>—</th><th>Full-text pipeline</th><th>Token-streaming pipeline</th></tr></thead>
+            <thead><tr><th>-</th><th>Full-text pipeline</th><th>Token-streaming pipeline</th></tr></thead>
             <tbody>
               <tr><td>Time to first audio</td><td>LLM ~500 ms + TTS ~300 ms = ~800 ms</td><td>First sentence ~150 ms + TTS ~200 ms = ~350 ms</td></tr>
-              <tr><td>Memory requirement</td><td>Full response buffered</td><td>Constant — chunk by chunk</td></tr>
+              <tr><td>Memory requirement</td><td>Full response buffered</td><td>Constant, chunk by chunk</td></tr>
               <tr><td>Complexity</td><td>Simple</td><td>Requires sentence buffering</td></tr>
               <tr><td>Best for</td><td>Short, known text</td><td>Voice agents, conversational AI</td></tr>
             </tbody>
@@ -55,17 +55,17 @@
   T-->>S: final audio chunk</div>
 
         <h2>Sentence-buffering strategy</h2>
-        <p>Flush to TTS at <strong>sentence boundaries</strong>, not word boundaries. Word-by-word flushes kill prosody — the model needs full sentences to produce natural intonation.</p>
+        <p>Flush to TTS at <strong>sentence boundaries</strong>, not word boundaries. Word-by-word flushes kill prosody, the model needs full sentences to produce natural intonation.</p>
 
         <ul>
           <li>Accumulate incoming tokens into a string buffer.</li>
           <li>Flush when a sentence-ending punctuation mark appears: <code>. ! ? ;</code></li>
           <li>Apply a minimum buffer length (e.g. 15 characters) to avoid flushing fragments like "Yes."</li>
-          <li>After the LLM stream ends, always flush the remaining buffer — LLMs often end mid-sentence.</li>
+          <li>After the LLM stream ends, always flush the remaining buffer, LLMs often end mid-sentence.</li>
         </ul>
 
         <h2>LLM → Shunyalabs pipeline</h2>
-        <p>Pick your LLM provider — the pattern is the same on both sides: stream tokens out of the LLM, buffer them until a sentence boundary, flush each complete sentence into Shunya TTS.</p>
+        <p>Pick your LLM provider, the pattern is the same on both sides: stream tokens out of the LLM, buffer them until a sentence boundary, flush each complete sentence into Shunya TTS.</p>
 
         <div class="code-group">
           <div class="code-tabs" role="tablist">
@@ -169,8 +169,8 @@ class VoiceAgent:
 
         <h3>Minimising time to first audio</h3>
         <ul>
-          <li><strong>Pre-open the WebSocket</strong> before the LLM call — eliminates ~200 ms connection setup.</li>
-          <li><strong>Use PCM</strong> output format — no client-side decoding.</li>
+          <li><strong>Pre-open the WebSocket</strong> before the LLM call, eliminates ~200 ms connection setup.</li>
+          <li><strong>Use PCM</strong> output format, no client-side decoding.</li>
           <li><strong>Shorter sentences = faster response.</strong> Consider instructing your LLM to be concise in conversational contexts.</li>
         </ul>
 
@@ -178,7 +178,7 @@ class VoiceAgent:
         <ul>
           <li><strong>LLM ends mid-sentence.</strong> Always flush the remaining buffer after the LLM stream ends.</li>
           <li><strong>Markdown tokens in voice output.</strong> Strip <code>**</code>, <code>##</code>, <code>*</code>, etc. before sending to TTS.</li>
-          <li><strong>Empty strings.</strong> Check <code>buffer.strip()</code> before synthesizing — avoid empty calls.</li>
+          <li><strong>Empty strings.</strong> Check <code>buffer.strip()</code> before synthesizing, avoid empty calls.</li>
           <li><strong>Function calls.</strong> Don't send tool-call tokens to TTS. Filter to content-only tokens.</li>
         </ul>
 
@@ -248,8 +248,9 @@ class VoiceAgent:
     </main>
   </div>
 
-  <script src="/web_doc/assets/js/shell.js"></script>
-  <script src="/web_doc/assets/js/nav.js?v=2"></script>
+  <script src="/web_doc/assets/js/shell.js?v=3"></script>
+  <script src="/web_doc/assets/js/tts-nav.js?v=1"></script>
+  <script src="/web_doc/assets/js/nav.js?v=4"></script>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
   <script src="/web_doc/assets/js/mermaid-init.js?v=2"></script>
 </body>

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Authentication | Shunya Labs API Reference</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=37">
+  <script src="/web_doc/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/web_doc/index.html">Docs</a><span class="sep">/</span><a href="/web_doc/api-reference/index.html">API Reference</a><span class="sep">/</span><span>Authentication</span>
+        </div>
+        <h1>API <span class="accent-italic">authentication</span></h1>
+        <p class="lead">All endpoints except <code>/health</code> require a bearer token in the <code>Authorization</code> header. The same API key works for ASR and TTS.</p>
+
+        <h2 class="product-chapter">Speech-to-Text <span class="accent-italic">(ASR)</span></h2>
+        <div class="code-group">
+          <div class="code-panel active"><pre><code class="language-http">Authorization: Bearer $SHUNYALABS_API_KEY</code></pre></div>
+        </div>
+
+        <h2 class="product-chapter">Text-to-Speech <span class="accent-italic">(TTS)</span></h2>
+        <p>Same API key works for both transports. Pick the tab for the protocol you're using.</p>
+
+        <div class="code-group">
+          <div class="code-tabs" role="tablist">
+            <button class="code-tab active">HTTP (Bearer header)</button>
+            <button class="code-tab">WebSocket (header or query param)</button>
+          </div>
+          <div class="code-panel active"><pre><code class="language-http">Authorization: Bearer sk-your-api-key</code></pre></div>
+          <div class="code-panel">
+            <p>Send the key as an <code>Authorization</code> header on the WebSocket upgrade. If your client can't set headers, fall back to a <code>token</code> query parameter:</p>
+            <pre><code class="language-bash">wss://tts.shunyalabs.ai/ws?token=sk-your-api-key</code></pre>
+          </div>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+  <script src="/web_doc/assets/js/shell.js?v=3"></script>
+  <script src="/web_doc/assets/js/api-ref-nav.js?v=2"></script>
+  <script src="/web_doc/assets/js/nav.js?v=4"></script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-# Shunya Labs — Documentation Site
+# Shunya Labs: Documentation Site
 
 Static documentation site for the Shunya Labs voice AI stack (ASR, TTS, Vāķ Translation, voice agents). Built to be clean, persona-driven, and deployable anywhere.
 
@@ -9,7 +9,7 @@ python3 -m http.server 8765
 open http://localhost:8765
 ```
 
-The site uses root-relative paths (`/asset/...`, `/asr/...`), so it must be served from the repo root — opening `index.html` directly with `file://` will not resolve links or assets correctly.
+The site uses root-relative paths (`/asset/...`, `/asr/...`), so it must be served from the repo root: opening `index.html` directly with `file://` will not resolve links or assets correctly.
 
 ## Structure
 
@@ -21,13 +21,13 @@ The site uses root-relative paths (`/asset/...`, `/asr/...`), so it must be serv
     theme.js                Light / dark / auto + persistence
     shell.js                Shared header + sidebar injection
     nav.js                  Sidebar build, TOC, code tabs, search
-/get-started/               What is Shunya · Quickstart · Capability matrix · Glossary
-/personas/                  Developer · Researcher · Enterprise · Operator
-/asr/                       Overview · Models · Configuration · Features · Streaming · Dashboard · API reference
-/tts/                       Overview · Quickstart · Voices · Audio formats · Expression styles · Voice cloning · Streaming · LLM→TTS · API reference
+/get-started/               What is Shunya, Quickstart, Capability matrix, Glossary
+/personas/                  Developer, Researcher, Enterprise, Operator
+/asr/                       Overview, Models, Configuration, Features, Streaming, Dashboard, API reference
+/tts/                       Overview, Quickstart, Voices, Audio formats, Expression styles, Voice cloning, Streaming, LLM→TTS, API reference
 /translation/               Vāķ Translate overview
-/solutions/                 BFSI · Healthcare · Contact centres · Media
-/deployment/                Cloud · on-prem · air-gapped
+/solutions/                 BFSI, Healthcare, Contact centres, Media
+/deployment/                Cloud, on-prem, air-gapped
 /security/                  Compliance & privacy
 ```
 
@@ -39,11 +39,11 @@ The site uses root-relative paths (`/asset/...`, `/asr/...`), so it must be serv
 - Mermaid flow diagrams
 - Per-page table of contents (scroll-spy)
 - Keyboard-friendly search (`/` to focus, Enter to jump to first match)
-- Responsive layout — mobile drawer menu under 900 px
+- Responsive layout: mobile drawer menu under 900 px
 
 ## Deploying
 
-Drop the whole tree on any static host — Netlify, Vercel, GitHub Pages, S3+CloudFront, or an Nginx behind your VPN for internal-only docs.
+Drop the whole tree on any static host: Netlify, Vercel, GitHub Pages, S3+CloudFront, or an Nginx behind your VPN for internal-only docs.
 
 Example `netlify.toml`:
 
@@ -54,12 +54,12 @@ Example `netlify.toml`:
 
 ## Editing
 
-- **Navigation** is in `/assets/js/nav.js` — single source of truth; every page inherits it.
+- **Navigation** is in `/assets/js/nav.js`: single source of truth; every page inherits it.
 - **Theme tokens** are in `/assets/css/main.css` at the top (`:root` and `html.dark`).
-- **Page template** — copy any file under `/asr/` or `/tts/` as a starting point. The shell auto-injects the header and sidebar; you only write the `<main>` content.
+- **Page template**: copy any file under `/asr/` or `/tts/` as a starting point. The shell auto-injects the header and sidebar; you only write the `<main>` content.
 
 ## Known limitations
 
 - Search is currently sidebar-scoped, not full-text. A proper Lunr/FlexSearch index is a future enhancement.
 - Screenshots of the Shunya dashboard are represented as CSS-styled mocks in `/asr/dashboard.html` pending real captures.
-- Integration guides (Salesforce, Genesys, Twilio, WhatsApp) are referenced but not yet written out — hooks exist in `/personas/enterprise.html`.
+- Integration guides (Salesforce, Genesys, WhatsApp) are referenced but not yet written out: hooks exist in `/personas/enterprise.html`.

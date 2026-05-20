@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>API Overview | Shunya Labs Docs</title>
+  <meta name="description" content="Shunya Labs API overview: ASR and TTS base URLs, endpoints, and where to find each reference page.">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=37">
+  <script src="/web_doc/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/web_doc/index.html">Docs</a><span class="sep">/</span><span>API Reference</span>
+        </div>
+        <h1>API <span class="accent-italic">Overview</span></h1>
+        <p class="lead">Cloud APIs for speech-to-text and text-to-speech. Use the sidebar to open General guides or jump straight to an endpoint.</p>
+
+        <h2 class="product-chapter">Speech-to-Text <span class="accent-italic">(ASR)</span></h2>
+        <p>Every endpoint under <code>asr.shunyalabs.ai</code>, their request fields, response shapes, and error codes.</p>
+
+        <h3>Endpoints</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Mode</th><th>Endpoint</th><th>Use for</th></tr></thead>
+            <tbody>
+              <tr><td>Batch</td><td><code>POST https://asr.shunyalabs.ai/v1/audio/transcriptions</code></td><td>Uploaded files, post-processing, async jobs.</td></tr>
+              <tr><td>Streaming</td><td><code>wss://asr.shunyalabs.ai/ws</code></td><td>Live transcription, voice agents, IVR.</td></tr>
+              <tr><td>Health</td><td><code>GET https://asr.shunyalabs.ai/health</code></td><td>Liveness checks. No auth.</td></tr>
+              <tr><td>Languages</td><td><code>GET https://asr.shunyalabs.ai/languages</code></td><td>Returns supported language names, ISO codes, and scripts.</td></tr>
+              <tr><td>Speakers</td><td><code>/v1/speakers/*</code></td><td>Register, list, identify, delete voice profiles for speaker identification.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 class="product-chapter">Text-to-Speech <span class="accent-italic">(TTS)</span></h2>
+        <p>Every endpoint under <code>tts.shunyalabs.ai</code>, every field, every error code.</p>
+
+        <h3>Base URLs</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Interface</th><th>URL</th></tr></thead>
+            <tbody>
+              <tr><td>Batch</td><td><code>https://tts.shunyalabs.ai</code></td></tr>
+              <tr><td>Streaming</td><td><code>wss://tts.shunyalabs.ai/ws</code></td></tr>
+              <tr><td>Health</td><td><code>https://tts.shunyalabs.ai/health</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+
+  <script src="/web_doc/assets/js/shell.js?v=3"></script>
+  <script src="/web_doc/assets/js/api-ref-nav.js?v=2"></script>
+  <script src="/web_doc/assets/js/nav.js?v=4"></script>
+</body>
+</html>

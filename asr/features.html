@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ASR features — Shunya Labs Docs</title>
-  <meta name="description" content="Diarization, emotion, intent, sentiment, summarization, redaction, translation — every feature that sits on top of Zero STT.">
+  <title>ASR features | Shunya Labs Docs</title>
+  <meta name="description" content="Diarization, emotion, intent, sentiment, summarization, redaction, translation, every feature that sits on top of Zero STT.">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=23">
+  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=37">
   <script src="/web_doc/assets/js/theme.js"></script>
 </head>
 <body>
@@ -16,10 +16,15 @@
         <div class="breadcrumb">
           <a href="/web_doc/index.html">Docs</a><span class="sep">/</span><span>Speech-to-Text</span><span class="sep">/</span><span>Features</span>
         </div>
-        <h1>Features</h1>
-        <p class="lead">The intelligence layer on top of Zero STT. Enable each with a boolean flag — none of them are required, and they combine freely. All of these return their results in the same JSON response as the transcript.</p>
+        <h1>ASR <span class="accent-italic">features</span></h1>
+        <p class="lead">The intelligence layer on top of Zero STT. Enable each with a boolean flag, none of them are required, and they combine freely. All of these return their results in the same JSON response as the transcript.</p>
 
-        <h2>1. Diarization</h2>
+        <div class="callout callout-info">
+          <div class="callout-title">Easier to browse?</div>
+          Open the <a href="/web_doc/intelligence/overview.html">Intelligence overview</a> for a card-based UI with jump links and collapsible request/response examples for every feature.
+        </div>
+
+        <h2 id="diarization">1. Diarization</h2>
         <p>"Who spoke when." Adds <code>speaker: SPEAKER_XX</code> to every segment and a top-level <code>speakers</code> array. The full <code>text</code> field is prefixed with <code>[SPEAKER_XX]</code> tags per segment.</p>
 
         <p><strong>Request:</strong></p>
@@ -41,21 +46,21 @@
 
         <ul>
           <li>Segments are capped at 30 seconds each to maintain transcription quality.</li>
-          <li>Works on any number of speakers, but best with 2–6 distinct voices.</li>
+          <li>Works on any number of speakers, but best with 2-6 distinct voices.</li>
           <li>Combine with <code>enable_speaker_identification</code> to get real names instead of anonymous labels.</li>
         </ul>
 
-        <h2>2. Speaker identification</h2>
+        <h2 id="speaker-identification">2. Speaker identification</h2>
         <p>Turns anonymous <code>SPEAKER_00</code> labels into registered names. Requires diarization on and at least one registered voice profile.</p>
 
-        <p><strong>Step 1 — register a speaker</strong> (use a 5–15 second clip of the speaker alone, no background music):</p>
+        <p><strong>Step 1: register a speaker</strong> (use a 5-15 second clip of the speaker alone, no background music):</p>
 <pre><code class="language-bash">curl -X POST https://asr.shunyalabs.ai/v1/speakers/register \
   -H "Authorization: Bearer $SHUNYALABS_API_KEY" \
   -F "name=Priya" \
   -F "file=@priya_sample.wav" \
   -F "project=support_team"</code></pre>
 
-        <p><strong>Step 2 — transcribe with identification on:</strong></p>
+        <p><strong>Step 2: transcribe with identification on:</strong></p>
 <pre><code class="language-bash">curl -X POST https://asr.shunyalabs.ai/v1/audio/transcriptions \
   -H "Authorization: Bearer $SHUNYALABS_API_KEY" \
   -F "file=@call.wav" \
@@ -66,7 +71,7 @@
 
         <p>Unrecognised speakers stay as <code>SPEAKER_XX</code>. The <code>project</code> parameter isolates per-customer or per-team voice libraries.</p>
 
-        <h2>3. Emotion diarization</h2>
+        <h2 id="emotion-diarization">3. Emotion diarization</h2>
         <p>Detects the dominant emotion in each segment's audio. Adds an <code>emotion</code> field. Works independently of speaker diarization but is commonly used together.</p>
 
         <p><strong>Request:</strong></p>
@@ -85,7 +90,7 @@
   ]
 }</code></pre>
 
-        <h2>4. Intent detection</h2>
+        <h2 id="intent-detection">4. Intent detection</h2>
         <p>Classifies the overall transcript intent using Gemini. Pass <code>intent_choices</code> to constrain to your taxonomy, or leave off for free-form detection.</p>
 
         <p><strong>Request:</strong></p>
@@ -107,7 +112,7 @@
   }
 }</code></pre>
 
-        <h2>5. Sentiment analysis</h2>
+        <h2 id="sentiment-analysis">5. Sentiment analysis</h2>
         <p>Overall sentiment of the transcript. Returns a label, a numeric score (-1 to 1), and an explanation.</p>
 
         <p><strong>Request:</strong></p>
@@ -128,7 +133,7 @@
   }
 }</code></pre>
 
-        <h2>6. Summarization</h2>
+        <h2 id="summarization">6. Summarization</h2>
         <p>Concise summary of the transcript. <code>summary_max_length</code> sets an approximate word cap (default 150).</p>
 
         <p><strong>Request:</strong></p>
@@ -146,8 +151,8 @@
   }
 }</code></pre>
 
-        <h2>7. Keyterm normalization</h2>
-        <p>Cleans up domain-specific terms the ASR model might render informally — <code>emi</code> → <code>EMI</code>, <code>nach mandate</code> → <code>NACH mandate</code>. Preserves the original language. Optionally focus on a specific glossary with <code>keyterm_keywords</code>.</p>
+        <h2 id="keyterm-normalization">7. Keyterm normalization</h2>
+        <p>Cleans up domain-specific terms the ASR model might render informally, <code>emi</code> → <code>EMI</code>, <code>nach mandate</code> → <code>NACH mandate</code>. Preserves the original language. Optionally focus on a specific glossary with <code>keyterm_keywords</code>.</p>
 
         <p><strong>Request:</strong></p>
 <pre><code class="language-bash">curl -X POST https://asr.shunyalabs.ai/v1/audio/transcriptions \
@@ -159,7 +164,7 @@
 
         <p>Normalised text returns in <code>nlp_analysis.normalized_text</code>, alongside the original transcript.</p>
 
-        <h2>8. Translation (<code>output_language</code>)</h2>
+        <h2 id="translation-output-language">8. Translation (<code>output_language</code>)</h2>
         <p>Translates the full transcript into a target language via Gemini. ISO 639-1 code (<code>en</code>, <code>hi</code>) or full name (<code>English</code>).</p>
 
         <p><strong>Request:</strong></p>
@@ -176,7 +181,7 @@
   }
 }</code></pre>
 
-        <h2>9. Profanity hashing</h2>
+        <h2 id="profanity-hashing">9. Profanity hashing</h2>
         <p>Masks profane words with <code>****</code> in-place in both the top-level text and segment text.</p>
 
         <p><strong>Request:</strong></p>
@@ -186,8 +191,8 @@
   -F "model=zero-indic" \
   -F "enable_profanity_hashing=true"</code></pre>
 
-        <h2>10. Custom keyword redaction (<code>hash_keywords</code>)</h2>
-        <p>Regex-based masking of specific terms or phrases. No LLM — fast, deterministic. Use for PII and domain-sensitive tokens.</p>
+        <h2 id="custom-keyword-redaction">10. Custom keyword redaction (<code>hash_keywords</code>)</h2>
+        <p>Regex-based masking of specific terms or phrases. No LLM, fast, deterministic. Use for PII and domain-sensitive tokens.</p>
 
         <p><strong>Request:</strong></p>
 <pre><code class="language-bash">curl -X POST https://asr.shunyalabs.ai/v1/audio/transcriptions \
@@ -204,8 +209,8 @@
   ]
 }</code></pre>
 
-        <h2>11. Word timestamps</h2>
-        <p>Per-word timing with a confidence score. Adds a <code>words</code> array to every segment. Runs via ONNX CTC forced alignment on GPU — no external call, negligible latency overhead.</p>
+        <h2 id="word-timestamps">11. Word timestamps</h2>
+        <p>Per-word timing with a confidence score. Adds a <code>words</code> array to every segment. Runs via ONNX CTC forced alignment on GPU, no external call, negligible latency overhead.</p>
 
         <p><strong>Request:</strong></p>
 <pre><code class="language-bash">curl -X POST https://asr.shunyalabs.ai/v1/audio/transcriptions \
@@ -230,7 +235,7 @@
   ]
 }</code></pre>
 
-        <h2>Combining features</h2>
+        <h2 id="combining-features">Combining features</h2>
         <p>Every feature above can be enabled on the same request. Here's a full contact-centre configuration:</p>
 <pre><code>curl -X POST https://asr.shunyalabs.ai/v1/audio/transcriptions \
   -H "Authorization: Bearer $SHUNYALABS_API_KEY" \
@@ -251,7 +256,7 @@
 
         <div class="callout callout-warn">
           <div class="callout-title">Latency trade-off</div>
-          Each intelligence feature adds a Gemini call on top of the ASR path. Enable only what you consume — don't pay for a summary you won't read.
+          Each intelligence feature adds a Gemini call on top of the ASR path. Enable only what you consume, don't pay for a summary you won't read.
         </div>
 
         <div class="pager">
@@ -269,7 +274,8 @@
     </main>
   </div>
 
-  <script src="/web_doc/assets/js/shell.js"></script>
-  <script src="/web_doc/assets/js/nav.js?v=2"></script>
+  <script src="/web_doc/assets/js/shell.js?v=3"></script>
+  <script src="/web_doc/assets/js/stt-nav.js?v=4"></script>
+  <script src="/web_doc/assets/js/nav.js?v=4"></script>
 </body>
 </html>

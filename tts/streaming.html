@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TTS streaming — Shunya Labs Docs</title>
+  <title>TTS streaming | Shunya Labs Docs</title>
   <meta name="description" content="Stream synthesized audio as it's generated over WebSocket. First audio in under 350 ms.">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=23">
+  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=37">
   <script src="/web_doc/assets/js/theme.js"></script>
 </head>
 <body>
@@ -16,7 +16,7 @@
         <div class="breadcrumb">
           <a href="/web_doc/index.html">Docs</a><span class="sep">/</span><span>Text-to-Speech</span><span class="sep">/</span><span>Streaming</span>
         </div>
-        <h1>Streaming TTS</h1>
+        <h1>Streaming <span class="accent-italic">TTS</span></h1>
         <p class="lead">Open a persistent WebSocket and receive audio chunks in real time as synthesis happens. Best for voice agents, IVR, and any case where audio has to start playing before the full text is synthesized.</p>
 
         <h2>Endpoint</h2>
@@ -93,7 +93,7 @@ asyncio.run(main())</code></pre>
         </div>
 
         <h3>Pick the right variant</h3>
-        <p>All four variants do the same job — generate audio for some text — but each one is shaped for a different consumer. Pick the tab that matches your scenario.</p>
+        <p>All four variants do the same job, generate audio for some text, but each one is shaped for a different consumer. Pick the tab that matches your scenario.</p>
 
         <div class="code-group">
           <div class="code-tabs" role="tablist">
@@ -105,14 +105,14 @@ asyncio.run(main())</code></pre>
 
           <div class="code-panel active">
             <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
-            <p style="margin:0 0 0.75rem; padding:0 0.25rem;"><strong>Use when:</strong> you want to play or process each audio chunk the moment it arrives — voice agents, IVR, real-time playback.</p>
+            <p style="margin:0 0 0.75rem; padding:0 0.25rem;"><strong>Use when:</strong> you want to play or process each audio chunk the moment it arrives, voice agents, IVR, real-time playback.</p>
 <pre><code class="language-python">async for audio in await client.tts.stream("Hello!", config=config):
     speaker.write(audio)</code></pre>
           </div>
 
           <div class="code-panel">
             <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
-            <p style="margin:0 0 0.75rem; padding:0 0.25rem;"><strong>Use when:</strong> you also need per-chunk metadata — index, timing, format — for logging, analytics, or buffering decisions.</p>
+            <p style="margin:0 0 0.75rem; padding:0 0.25rem;"><strong>Use when:</strong> you also need per-chunk metadata, index, timing, format, for logging, analytics, or buffering decisions.</p>
 <pre><code class="language-python">async for chunk_meta, audio in await client.tts.stream("Hello!", config=config, detailed=True):
     print(f"chunk {chunk_meta.chunk_index}: {len(audio)} bytes")</code></pre>
           </div>
@@ -125,7 +125,7 @@ asyncio.run(main())</code></pre>
 
           <div class="code-panel">
             <div class="code-header"><span>python</span><button class="copy-btn">Copy</button></div>
-            <p style="margin:0 0 0.75rem; padding:0 0.25rem;"><strong>Use when:</strong> long-form synthesis (audiobooks, batch scripts) where buffering the full audio in RAM is impractical. Writes each chunk to disk as it arrives — constant memory regardless of length.</p>
+            <p style="margin:0 0 0.75rem; padding:0 0.25rem;"><strong>Use when:</strong> long-form synthesis (audiobooks, batch scripts) where buffering the full audio in RAM is impractical. Writes each chunk to disk as it arrives, constant memory regardless of length.</p>
 <pre><code class="language-python">await client.tts.stream_to_file("Hello!", "output.pcm", config=config)</code></pre>
           </div>
         </div>
@@ -134,8 +134,8 @@ asyncio.run(main())</code></pre>
         <p>For interactive sessions where you send multiple text messages over the same WebSocket, two control messages let you drive the lifecycle:</p>
 
         <ul>
-          <li><code>{"type": "flush"}</code> — synthesize whatever buffered text the server has so far, without closing the connection.</li>
-          <li><code>{"type": "close"}</code> — end the session cleanly.</li>
+          <li><code>{"type": "flush"}</code>: synthesize whatever buffered text the server has so far, without closing the connection.</li>
+          <li><code>{"type": "close"}</code>: end the session cleanly.</li>
         </ul>
 
         <h3>Flush mid-stream</h3>
@@ -162,7 +162,7 @@ try:
 except AuthenticationError:
     print("Invalid API key")
 except ConnectionError:
-    print("WebSocket connection failed — check network or endpoint")
+    print("WebSocket connection failed, check network or endpoint")
 except ShunyalabsError as e:
     print(f"SDK error: {e}")</code></pre>
 
@@ -186,16 +186,16 @@ async def stream_with_reconnect(text, config):
 
         <h3>Picking the format</h3>
         <ul>
-          <li><strong>PCM</strong> — real-time playback. No decoding overhead, lowest latency.</li>
-          <li><strong>mulaw</strong> — telephony pipelines. 8 kHz, forward directly to Twilio or SIP.</li>
-          <li><strong>Avoid FLAC</strong> — lossless formats require full-file assembly before playback.</li>
+          <li><strong>PCM</strong>, real-time playback. No decoding overhead, lowest latency.</li>
+          <li><strong>mulaw</strong>, telephony pipelines. 8 kHz, forward directly to SIP.</li>
+          <li><strong>Avoid FLAC</strong>, lossless formats require full-file assembly before playback.</li>
         </ul>
 
         <h3>Minimising time-to-first-audio</h3>
         <ul>
-          <li>Pre-open the WebSocket before your LLM call — saves ~200 ms of connection setup.</li>
-          <li>Use PCM — no client-side decoding overhead.</li>
-          <li>Use shorter sentences as flush units if piping from an LLM — see <a href="/web_doc/tts/llm-to-tts.html">LLM → TTS pipeline</a>.</li>
+          <li>Pre-open the WebSocket before your LLM call, saves ~200 ms of connection setup.</li>
+          <li>Use PCM, no client-side decoding overhead.</li>
+          <li>Use shorter sentences as flush units if piping from an LLM, see <a href="/web_doc/tts/llm-to-tts.html">LLM → TTS pipeline</a>.</li>
         </ul>
 
         <h2>Production readiness checklist</h2>
@@ -203,7 +203,7 @@ async def stream_with_reconnect(text, config):
           <li>✅ <code>SHUNYALABS_API_KEY</code> from env, not code</li>
           <li>✅ Error handler covers <code>ConnectionError</code> and <code>AuthenticationError</code></li>
           <li>✅ Reconnection logic for long-running sessions</li>
-          <li>✅ Audio played incrementally per chunk — not buffered</li>
+          <li>✅ Audio played incrementally per chunk, not buffered</li>
           <li>✅ <code>stream_to_file()</code> used for long-form synthesis (audiobooks) to avoid memory pressure</li>
         </ul>
 
@@ -222,8 +222,9 @@ async def stream_with_reconnect(text, config):
     </main>
   </div>
 
-  <script src="/web_doc/assets/js/shell.js"></script>
-  <script src="/web_doc/assets/js/nav.js?v=2"></script>
+  <script src="/web_doc/assets/js/shell.js?v=3"></script>
+  <script src="/web_doc/assets/js/tts-nav.js?v=1"></script>
+  <script src="/web_doc/assets/js/nav.js?v=4"></script>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
   <script src="/web_doc/assets/js/mermaid-init.js?v=2"></script>
 </body>

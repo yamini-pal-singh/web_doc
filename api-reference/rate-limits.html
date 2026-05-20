@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>API Rate Limits | Shunya Labs API Reference</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=37">
+  <script src="/web_doc/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/web_doc/index.html">Docs</a><span class="sep">/</span><a href="/web_doc/api-reference/index.html">API Reference</a><span class="sep">/</span><span>API Rate Limits</span>
+        </div>
+        <h1>API rate <span class="accent-italic">limits</span></h1>
+        <p class="lead">Upload, concurrency, and timeout limits for ASR and TTS requests.</p>
+
+        <h2 class="product-chapter">Speech-to-Text <span class="accent-italic">(ASR)</span></h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Limit</th><th>Value</th></tr></thead>
+            <tbody>
+              <tr><td>Max file size</td><td>500 MB</td></tr>
+              <tr><td>Max audio duration per file</td><td>4 hours</td></tr>
+              <tr><td>Concurrent requests (default tier)</td><td>16</td></tr>
+              <tr><td>HTTP request timeout</td><td>Use at least 120 s for long audio</td></tr>
+              <tr><td>WebSocket inactivity timeout</td><td>300 s (configurable up to 3600 s)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 class="product-chapter">Text-to-Speech <span class="accent-italic">(TTS)</span></h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Limit</th><th>Value</th></tr></thead>
+            <tbody>
+              <tr><td>Max text length per request</td><td>10,000 characters</td></tr>
+              <tr><td>Recommended per-request</td><td>Under 500 characters for best quality; split longer text</td></tr>
+              <tr><td>HTTP request timeout</td><td>Set to at least 120 s for long text</td></tr>
+              <tr><td>Concurrent requests (default tier)</td><td>16</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+  <script src="/web_doc/assets/js/shell.js?v=3"></script>
+  <script src="/web_doc/assets/js/api-ref-nav.js?v=2"></script>
+  <script src="/web_doc/assets/js/nav.js?v=4"></script>
+</body>
+</html>

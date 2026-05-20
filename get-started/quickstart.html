@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Quickstart — Shunya Labs Docs</title>
+  <title>Quickstart | Shunya Labs Docs</title>
   <meta name="description" content="Authenticate, transcribe, and synthesize in under 5 minutes.">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=23">
+  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=32">
   <script src="/web_doc/assets/js/theme.js"></script>
 </head>
 <body>
@@ -16,14 +16,14 @@
         <div class="breadcrumb">
           <a href="/web_doc/index.html">Docs</a><span class="sep">/</span><span>Get Started</span><span class="sep">/</span><span>Quickstart</span>
         </div>
-        <h1>Quickstart</h1>
+        <h1>Your <span class="accent-italic">quickstart</span></h1>
         <p class="lead">Get from nothing to a working transcription and a working synthesis in five minutes. You'll need an API key and about three lines of code per direction.</p>
 
         <h2>1. Get an API key</h2>
         <ol>
           <li>Sign in at <a href="https://accounts.shunyalabs.ai" target="_blank" rel="noopener">accounts.shunyalabs.ai</a>.</li>
           <li>Navigate to <strong>API Keys</strong> and click <strong>Create New Key</strong>.</li>
-          <li>Copy the key immediately — it's shown once.</li>
+          <li>Copy the key immediately, it's shown once.</li>
         </ol>
 
         <div class="callout callout-warn">
@@ -104,7 +104,7 @@ print(r.text)</code></pre>
           </div>
         </div>
 
-        <h3>What you get back</h3>
+        <h3>Response</h3>
 <pre><code class="language-json">{
   "success": true,
   "request_id": "b3f1a2c4-...",
@@ -117,7 +117,7 @@ print(r.text)</code></pre>
   "inference_time_ms": 812.3
 }</code></pre>
 
-        <h2>3. Synthesize speech</h2>
+        <h2>3. Generate speech</h2>
         <p>Now send text to <code>POST /v1/audio/speech</code>. The response body is audio bytes in your requested format.</p>
 
         <div class="code-group">
@@ -167,34 +167,8 @@ asyncio.run(main())</code></pre>
         </div>
 
         <h2>4. Stream in real time</h2>
-        <p>For voice agents and IVR, both ASR and TTS support streaming over WebSocket. You get partial transcripts as speech is happening, and synthesized audio as text is generated.</p>
+        <p>For voice agents and IVR, both ASR and TTS support streaming over WebSocket, see <a href="/web_doc/asr/streaming.html">ASR streaming</a> and <a href="/web_doc/tts/streaming.html">TTS streaming</a>. You get partial transcripts as speech is happening, and synthesized audio as text is generated.</p>
 
-        <div class="grid grid-2">
-          <a href="/web_doc/asr/streaming.html" class="card-link"><div class="card">
-            <div class="card-title">Streaming ASR →</div>
-            <p class="card-desc">Send PCM or μ-law frames, receive partial and final transcripts with &lt;100 ms latency.</p>
-          </div></a>
-          <a href="/web_doc/tts/streaming.html" class="card-link"><div class="card">
-            <div class="card-title">Streaming TTS →</div>
-            <p class="card-desc">Start playing audio before synthesis is complete. First-audio &lt; 350 ms.</p>
-          </div></a>
-        </div>
-
-        <h2>Next steps</h2>
-        <div class="grid grid-3">
-          <a href="/web_doc/personas/sdk.html" class="card-link"><div class="card">
-            <div class="card-title">Small code · SDK</div>
-            <p class="card-desc">Build a real voice bot end-to-end with the Python SDK.</p>
-          </div></a>
-          <a href="/web_doc/asr/features.html" class="card-link"><div class="card">
-            <div class="card-title">ASR features</div>
-            <p class="card-desc">Diarization, intent, emotion, redaction.</p>
-          </div></a>
-          <a href="/web_doc/tts/voice-cloning.html" class="card-link"><div class="card">
-            <div class="card-title">Voice cloning</div>
-            <p class="card-desc">Clone a voice from a 3-6 second sample.</p>
-          </div></a>
-        </div>
 
         <div class="pager">
           <a class="pager-link" href="/web_doc/get-started/what-is-shunya.html">
@@ -211,7 +185,7 @@ asyncio.run(main())</code></pre>
     </main>
   </div>
 
-  <script src="/web_doc/assets/js/shell.js"></script>
+  <script src="/web_doc/assets/js/shell.js?v=3"></script>
   <script src="/web_doc/assets/js/nav.js?v=2"></script>
 </body>
 </html>

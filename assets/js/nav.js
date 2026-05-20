@@ -12,37 +12,21 @@
       ]
     },
     {
-      heading: 'Pick your journey',
-      items: [
-        { href: '/web_doc/personas/api.html', label: 'Heavy code · API', icon: 'terminal' },
-        { href: '/web_doc/personas/sdk.html', label: 'Small code · SDK', icon: 'code' },
-        { href: '/web_doc/personas/playground.html', label: 'No code · Playground', icon: 'layout' },
-        { href: '/web_doc/personas/openai-compatible.html', label: 'OpenAI compatible', icon: 'compatible' },
-      ]
+      heading: 'Speech-to-Text',
+      headingLink: '/web_doc/asr/overview.html',
+      headingMatch: [/\/asr\//],
     },
     {
-      heading: 'Speech-to-Text (ASR)',
-      items: [
-        { href: '/web_doc/asr/overview.html', label: 'Overview', icon: 'mic' },
-        { href: '/web_doc/asr/models.html', label: 'Models', icon: 'layers' },
-        { href: '/web_doc/asr/configuration.html', label: 'Configuration', icon: 'sliders' },
-        { href: '/web_doc/asr/features.html', label: 'Features', icon: 'star' },
-        { href: '/web_doc/asr/streaming.html', label: 'Streaming (WebSocket)', icon: 'wifi' },
-        { href: '/web_doc/asr/api-reference.html', label: 'API reference', icon: 'terminal' },
-      ]
+      heading: 'Text-to-Speech',
+      headingLink: '/web_doc/tts/overview.html',
+      headingMatch: [/\/tts\//],
     },
     {
-      heading: 'Text-to-Speech (TTS)',
+      heading: 'Intelligence',
       items: [
-        { href: '/web_doc/tts/overview.html', label: 'Overview', icon: 'volume' },
-        { href: '/web_doc/tts/quickstart.html', label: 'Quickstart', icon: 'zap' },
-        { href: '/web_doc/tts/voices.html', label: 'Voices & languages', icon: 'users' },
-        { href: '/web_doc/tts/audio-formats.html', label: 'Audio formats', icon: 'file-audio' },
-        { href: '/web_doc/tts/expression-styles.html', label: 'Expression styles', icon: 'smile' },
-        { href: '/web_doc/tts/voice-cloning.html', label: 'Voice cloning', icon: 'copy' },
-        { href: '/web_doc/tts/streaming.html', label: 'Streaming (WebSocket)', icon: 'wifi' },
-        { href: '/web_doc/tts/llm-to-tts.html', label: 'LLM → TTS pipeline', icon: 'link' },
-        { href: '/web_doc/tts/api-reference.html', label: 'API reference', icon: 'terminal' },
+        { href: '/web_doc/intelligence/overview.html', label: 'Overview & examples', icon: 'sparkles' },
+        { href: '/web_doc/asr/configuration.html#intelligence-layer', label: 'Configuration', icon: 'sliders' },
+        { href: '/web_doc/asr/features.html', label: 'Full reference', icon: 'book' },
       ]
     },
     {
@@ -66,7 +50,6 @@
         { href: '/web_doc/integrations/overview.html', label: 'Overview', icon: 'plug' },
         { href: '/web_doc/integrations/python-sdk.html', label: 'Python SDK', icon: 'code' },
         { href: '/web_doc/integrations/openai-sdk.html', label: 'OpenAI SDK', icon: 'compatible' },
-        { href: '/web_doc/integrations/twilio.html', label: 'Twilio', icon: 'phone' },
         { href: '/web_doc/integrations/sip-pstn.html', label: 'SIP / PSTN', icon: 'wifi' },
         { href: '/web_doc/integrations/hugging-face.html', label: 'Hugging Face', icon: 'flask' },
       ]
@@ -144,22 +127,41 @@
     return '';
   }
 
+  function isHeadingLinkActive(section, normalized) {
+    if (section.headingMatch && section.headingMatch.some((re) => re.test(normalized))) {
+      return true;
+    }
+    const href = section.headingLink || '';
+    return href === normalized ||
+      normalized.endsWith(href.replace('/web_doc', '')) ||
+      (href === '/web_doc/index.html' && normalized === '/');
+  }
+
   function renderSidebar() {
     const base = document.querySelector('meta[name="site-base"]')?.content || '';
     const currentPath = window.location.pathname.replace(/\/index\.html$/, '/');
     const normalized = currentPath === '/' ? '/index.html' : currentPath;
 
-    const html = NAV.map(section => `
+    const html = NAV.map((section) => {
+      if (section.headingLink) {
+        const isActive = isHeadingLinkActive(section, normalized);
+        return `
       <div class="sidebar-section">
-        <div class="sidebar-heading">${section.heading}</div>
-        ${section.items.map(item => {
+        <a class="sidebar-heading sidebar-heading-link${isActive ? ' is-active' : ''}" href="${base}${section.headingLink}">${section.heading}</a>
+      </div>`;
+      }
+      const items = section.items || [];
+      return `
+      <div class="sidebar-section">
+        ${section.heading ? `<div class="sidebar-heading">${section.heading}</div>` : ''}
+        ${items.map((item) => {
           const itemPath = item.href;
           const isActive = itemPath === normalized ||
             (itemPath === '/index.html' && normalized === '/');
           return `<a class="sidebar-link${isActive ? ' active' : ''}" href="${base}${item.href}">${icon(item.icon)}<span>${item.label}</span></a>`;
         }).join('')}
-      </div>
-    `).join('');
+      </div>`;
+    }).join('');
 
     const sidebar = document.querySelector('.sidebar');
     if (!sidebar) return;
@@ -168,7 +170,7 @@
     // After the sidebar renders, scroll the active link into view inside
     // the sidebar so the user can always see where they are in the doc tree.
     // We only scroll the sidebar (its own overflow container) — not the page.
-    const active = sidebar.querySelector('.sidebar-link.active');
+    const active = sidebar.querySelector('.sidebar-link.active, .sidebar-heading-link.is-active');
     if (active) {
       const sb = sidebar.getBoundingClientRect();
       const a = active.getBoundingClientRect();
@@ -187,7 +189,7 @@
     btn.addEventListener('click', () => sidebar.classList.toggle('open'));
     // Close on link click (mobile)
     sidebar.addEventListener('click', (e) => {
-      if (e.target.closest('.sidebar-link') && window.innerWidth <= 900) {
+      if (e.target.closest('.sidebar-link, .sidebar-heading-link, .product-nav-link, .api-ref-link') && window.innerWidth <= 900) {
         sidebar.classList.remove('open');
       }
     });
@@ -224,7 +226,7 @@
           if (link) link.classList.add('active');
         }
       });
-    }, { rootMargin: '-80px 0px -70% 0px' });
+    }, { rootMargin: '-120px 0px -70% 0px' });
     map.forEach((_, el) => obs.observe(el));
   }
 
@@ -259,33 +261,31 @@
   }
 
   function wireSearch() {
-    const input = document.querySelector('.search input');
-    if (!input) return;
-    // Keyboard shortcut: /
-    document.addEventListener('keydown', (e) => {
-      if (e.key === '/' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
-        e.preventDefault();
-        input.focus();
-      }
-    });
-    input.addEventListener('input', () => {
-      const q = input.value.trim().toLowerCase();
-      if (!q) return;
-    });
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        const q = input.value.trim().toLowerCase();
-        if (!q) return;
-        // Naive: find first matching sidebar link
-        const match = Array.from(document.querySelectorAll('.sidebar-link'))
-          .find(a => a.textContent.toLowerCase().includes(q));
-        if (match) window.location.href = match.href;
-      }
-    });
+    /* Search UI lives in doc-search.js (loaded by shell.js) */
+  }
+
+  function bootSidebar() {
+    if (window.ShunyaIntelligenceNav && window.ShunyaIntelligenceNav.isIntelligenceContext()) {
+      window.ShunyaIntelligenceNav.init();
+      return;
+    }
+    if (window.ShunyaSttNav && window.ShunyaSttNav.isSttContext()) {
+      window.ShunyaSttNav.init();
+      return;
+    }
+    if (window.ShunyaTtsNav && window.ShunyaTtsNav.isTtsContext()) {
+      window.ShunyaTtsNav.init();
+      return;
+    }
+    if (window.ShunyaApiRefNav && window.ShunyaApiRefNav.isApiRefContext()) {
+      window.ShunyaApiRefNav.init();
+      return;
+    }
+    renderSidebar();
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    renderSidebar();
+    bootSidebar();
     wireMobileToggle();
     buildTOC();
     wireCodeTabs();

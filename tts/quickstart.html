@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TTS quickstart — Shunya Labs Docs</title>
+  <title>TTS quickstart | Shunya Labs Docs</title>
   <meta name="description" content="Synthesize your first audio in five minutes: SDK, REST, and OpenAI-compatible clients.">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=23">
+  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=37">
   <script src="/web_doc/assets/js/theme.js"></script>
 </head>
 <body>
@@ -16,7 +16,7 @@
         <div class="breadcrumb">
           <a href="/web_doc/index.html">Docs</a><span class="sep">/</span><span>Text-to-Speech</span><span class="sep">/</span><span>Quickstart</span>
         </div>
-        <h1>TTS quickstart</h1>
+        <h1>TTS <span class="accent-italic">quickstart</span></h1>
         <p class="lead">Install, authenticate, synthesize. By the end of this page you'll have an MP3 on disk and know how to switch voice, language, speed, and format.</p>
 
         <h2>1. Install the SDK (optional)</h2>
@@ -24,7 +24,7 @@
 pip install "shunyalabs[all]"         # TTS + ASR + everything
 pip install "shunyalabs[extras]"      # + audio playback helpers (sounddevice)</code></pre>
 
-        <p>You can also call the REST API directly with <code>requests</code> or any HTTP client — the SDK is just a thin wrapper.</p>
+        <p>You can also call the REST API directly with <code>requests</code> or any HTTP client, the SDK is just a thin wrapper.</p>
 
         <h2>2. Configure authentication</h2>
 <pre><code>export SHUNYALABS_API_KEY="sk-your-key"</code></pre>
@@ -64,7 +64,7 @@ async def main():
             config=TTSConfig(model="zero-indic", voice="Varun"),
         )
         result.save("output.mp3")
-        print(f"{len(result.audio_data)} bytes saved · {result.sample_rate} Hz")
+        print(f"{len(result.audio_data)} bytes saved, {result.sample_rate} Hz")
 
 asyncio.run(main())</code></pre>
           </div>
@@ -154,11 +154,11 @@ try:
 except AuthenticationError:
     print("Invalid API key")
 except RateLimitError:
-    print("Rate limited — back off and retry")
+    print("Rate limited, back off and retry")
 except SynthesisError as e:
     print(f"Bad input: {e}")
 except ServerError:
-    print("Server error — safe to retry")
+    print("Server error, safe to retry")
 except ShunyalabsError as e:
     print(f"SDK error: {e}")</code></pre>
 
@@ -182,7 +182,8 @@ except ShunyalabsError as e:
     </main>
   </div>
 
-  <script src="/web_doc/assets/js/shell.js"></script>
-  <script src="/web_doc/assets/js/nav.js?v=2"></script>
+  <script src="/web_doc/assets/js/shell.js?v=3"></script>
+  <script src="/web_doc/assets/js/tts-nav.js?v=1"></script>
+  <script src="/web_doc/assets/js/nav.js?v=4"></script>
 </body>
 </html>

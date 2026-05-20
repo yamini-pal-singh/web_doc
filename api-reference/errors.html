@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HTTP error codes | Shunya Labs API Reference</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=37">
+  <script src="/web_doc/assets/js/theme.js"></script>
+</head>
+<body>
+  <div class="app">
+    <main class="main">
+      <div class="content">
+        <div class="breadcrumb">
+          <a href="/web_doc/index.html">Docs</a><span class="sep">/</span><a href="/web_doc/api-reference/index.html">API Reference</a><span class="sep">/</span><span>HTTP error codes</span>
+        </div>
+        <h1>HTTP error <span class="accent-italic">codes</span></h1>
+        <p class="lead">Status codes returned by the ASR and TTS APIs and what each one means.</p>
+
+        <h2 class="product-chapter">Speech-to-Text <span class="accent-italic">(ASR)</span></h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Status</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td>200</td><td>Success, audio or JSON body returned.</td></tr>
+              <tr><td>400</td><td>Bad request, missing or malformed fields. Response body: <code>{"detail": "..."}</code>.</td></tr>
+              <tr><td>401</td><td>Unauthorized, API key invalid or missing.</td></tr>
+              <tr><td>422</td><td>Synthesis / transcription error (invalid text or config).</td></tr>
+              <tr><td>429</td><td>Rate limit exceeded. Back off and retry.</td></tr>
+              <tr><td>500</td><td>Internal server error, unexpected server-side failure.</td></tr>
+              <tr><td>503</td><td>Service unavailable, Triton or Redis temporarily down.</td></tr>
+              <tr><td>504</td><td>Gateway timeout, request exceeded the processing window.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 class="product-chapter">Text-to-Speech <span class="accent-italic">(TTS)</span></h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Status</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>200</td><td>Success. Audio bytes in response body.</td></tr>
+              <tr><td>400</td><td>Missing or malformed fields. Body: <code>{"detail": "..."}</code>.</td></tr>
+              <tr><td>401</td><td>API key invalid or missing.</td></tr>
+              <tr><td>422</td><td>Invalid text or config.</td></tr>
+              <tr><td>429</td><td>Rate limited.</td></tr>
+              <tr><td>500</td><td>Internal server error.</td></tr>
+              <tr><td>503</td><td>Backend (Triton/Redis) temporarily unavailable.</td></tr>
+              <tr><td>504</td><td>Gateway timeout.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page"></aside>
+    </main>
+  </div>
+  <script src="/web_doc/assets/js/shell.js?v=3"></script>
+  <script src="/web_doc/assets/js/api-ref-nav.js?v=2"></script>
+  <script src="/web_doc/assets/js/nav.js?v=4"></script>
+</body>
+</html>

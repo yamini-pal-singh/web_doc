@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Python SDK — Shunya Labs Docs</title>
-  <meta name="description" content="The shunyalabs Python package — install options, AsyncShunyaClient configuration, error handling.">
+  <title>Python SDK | Shunya Labs Docs</title>
+  <meta name="description" content="The shunyalabs Python package, install options, AsyncShunyaClient configuration, error handling.">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=23">
+  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=32">
   <script src="/web_doc/assets/js/theme.js"></script>
 </head>
 <body>
@@ -16,7 +16,7 @@
         <div class="breadcrumb">
           <a href="/web_doc/index.html">Docs</a><span class="sep">/</span><span>Integrations</span><span class="sep">/</span><span>Python SDK</span>
         </div>
-        <h1>Python SDK</h1>
+        <h1>Python <span class="accent-italic">SDK</span></h1>
         <p class="lead">First-party Python package for Shunya Labs. Async client, async generators for streaming, automatic retries, override URLs for self-hosted deployments.</p>
 
         <h2>Install</h2>
@@ -41,13 +41,13 @@ pip install shunyalabs[extras]</code></pre>
 <pre><code>from shunyalabs import AsyncShunyaClient
 from shunyalabs.tts import TTSConfig
 
-# Option 1 — env var (recommended)
+# Option 1, env var (recommended)
 client = AsyncShunyaClient()
 
-# Option 2 — explicit key
+# Option 2, explicit key
 client = AsyncShunyaClient(api_key="your-api-key")
 
-# Option 3 — full configuration for production
+# Option 3, full configuration for production
 client = AsyncShunyaClient(
     api_key="your-api-key",
     timeout=120.0,    # seconds before request times out
@@ -103,8 +103,8 @@ async with AsyncShunyaClient() as client:
               <tr><td><code>RateLimitError</code></td><td>429</td><td>Rate limit exceeded. Back off and retry.</td></tr>
               <tr><td><code>SynthesisError</code></td><td>422</td><td>Invalid text or configuration.</td></tr>
               <tr><td><code>ServerError</code></td><td>5xx</td><td>Transient server error. Safe to retry.</td></tr>
-              <tr><td><code>TimeoutError</code></td><td>—</td><td>Request exceeded configured timeout.</td></tr>
-              <tr><td><code>ConnectionError</code></td><td>—</td><td>Network connectivity failure.</td></tr>
+              <tr><td><code>TimeoutError</code></td><td>-</td><td>Request exceeded configured timeout.</td></tr>
+              <tr><td><code>ConnectionError</code></td><td>-</td><td>Network connectivity failure.</td></tr>
             </tbody>
           </table>
         </div>
@@ -117,13 +117,13 @@ async with AsyncShunyaClient() as client:
 try:
     result = await client.tts.synthesize("Hello!", config=config)
 except AuthenticationError:
-    print("Invalid API key — check SHUNYALABS_API_KEY")
+    print("Invalid API key, check SHUNYALABS_API_KEY")
 except RateLimitError:
-    print("Rate limit hit — back off and retry")
+    print("Rate limit hit, back off and retry")
 except SynthesisError as e:
     print(f"Synthesis failed: {e}")
 except ServerError:
-    print("Server error — safe to retry")
+    print("Server error, safe to retry")
 except ShunyalabsError as e:
     print(f"SDK error: {e}")</code></pre>
 
@@ -132,7 +132,7 @@ except ShunyalabsError as e:
           <li>Never hardcode API keys in source code.</li>
           <li>Use <code>.env</code> files locally and a secrets manager (AWS Secrets Manager, GCP Secret Manager) in production.</li>
           <li>Add <code>.env</code> to <code>.gitignore</code> to prevent accidental commits.</li>
-          <li>Rotate keys immediately if compromised — generate a new key from the dashboard.</li>
+          <li>Rotate keys immediately if compromised, generate a new key from the dashboard.</li>
         </ul>
 
         <h2>Source &amp; further reading</h2>
@@ -158,7 +158,7 @@ except ShunyalabsError as e:
     </main>
   </div>
 
-  <script src="/web_doc/assets/js/shell.js"></script>
+  <script src="/web_doc/assets/js/shell.js?v=3"></script>
   <script src="/web_doc/assets/js/nav.js?v=2"></script>
 </body>
 </html>

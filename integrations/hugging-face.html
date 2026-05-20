@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hugging Face — Shunya Labs Docs</title>
-  <meta name="description" content="Open weights for Shunya Labs models on Hugging Face — download via huggingface-cli, run with transformers, deploy air-gapped.">
+  <title>Hugging Face | Shunya Labs Docs</title>
+  <meta name="description" content="Open weights for Shunya Labs models on Hugging Face, download via huggingface-cli, run with transformers, deploy air-gapped.">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=23">
+  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=32">
   <script src="/web_doc/assets/js/theme.js"></script>
 </head>
 <body>
@@ -16,32 +16,39 @@
         <div class="breadcrumb">
           <a href="/web_doc/index.html">Docs</a><span class="sep">/</span><span>Integrations</span><span class="sep">/</span><span>Hugging Face</span>
         </div>
-        <h1>Hugging Face</h1>
+        <h1>Hugging <span class="accent-italic">Face</span></h1>
         <p class="lead">Shunya Labs publishes open weights for several models on Hugging Face. Pull them down for local inference, fine-tuning, or air-gapped deployment in environments where the cloud API isn't an option.</p>
 
         <h2>The Shunya Labs organization</h2>
-        <p>All open models live under <a href="https://huggingface.co/shunyalabs" target="_blank" rel="noopener">huggingface.co/shunyalabs</a>.</p>
+        <p>All open models live under <a class="hf-model-link" href="https://huggingface.co/shunyalabs" target="_blank" rel="noopener">huggingface.co/shunyalabs</a>.</p>
 
         <div class="table-wrap">
           <table>
             <thead><tr><th>Model</th><th>Task</th><th>Params</th><th>License</th><th>Notes</th></tr></thead>
             <tbody>
               <tr>
-                <td><a href="https://huggingface.co/shunyalabs/pingala-v1-universal" target="_blank" rel="noopener"><code>pingala-v1-universal</code></a></td>
+                <td><a class="hf-model-link" href="https://huggingface.co/shunyalabs/pingala-v1-universal" target="_blank" rel="noopener" title="View on Hugging Face"><code>pingala-v1-universal</code></a></td>
                 <td>ASR</td>
                 <td>0.8B</td>
                 <td>Shunya Labs RAIL-M</td>
-                <td>3.10% composite WER on the OpenASR leaderboard. 204 languages.</td>
+                <td>3.10% composite WER on the OpenASR leaderboard. 204 languages. API name: <a class="hf-model-link" href="https://huggingface.co/shunyalabs/pingala-v1-universal" target="_blank" rel="noopener" title="View on Hugging Face"><code>zero-universal</code></a>.</td>
               </tr>
               <tr>
-                <td><a href="https://huggingface.co/shunyalabs/zero-stt-hinglish" target="_blank" rel="noopener"><code>zero-stt-hinglish</code></a></td>
+                <td><a class="hf-model-link" href="https://huggingface.co/shunyalabs/pingala-v1-en-verbatim" target="_blank" rel="noopener" title="View on Hugging Face"><code>pingala-v1-en-verbatim</code></a></td>
+                <td>ASR (English verbatim)</td>
+                <td>-</td>
+                <td>-</td>
+                <td>English-focused variant on Hugging Face.</td>
+              </tr>
+              <tr>
+                <td><a class="hf-model-link" href="https://huggingface.co/shunyalabs/zero-stt-hinglish" target="_blank" rel="noopener" title="View on Hugging Face"><code>zero-stt-hinglish</code></a></td>
                 <td>ASR (code-switch)</td>
                 <td>0.8B</td>
                 <td>openrail</td>
-                <td>First Hinglish ASR that handles code-switched conversations natively.</td>
+                <td>First Hinglish ASR that handles code-switched conversations natively. API name: <a class="hf-model-link" href="https://huggingface.co/shunyalabs/zero-stt-hinglish" target="_blank" rel="noopener" title="View on Hugging Face"><code>zero-codeswitch</code></a>.</td>
               </tr>
               <tr>
-                <td><a href="https://huggingface.co/shunyalabs/vak-translate-1.3b-ct2" target="_blank" rel="noopener"><code>vak-translate-1.3b-ct2</code></a></td>
+                <td><a class="hf-model-link" href="https://huggingface.co/shunyalabs/vak-translate-1.3b-ct2" target="_blank" rel="noopener" title="View on Hugging Face"><code>vak-translate-1.3b-ct2</code></a></td>
                 <td>Translation</td>
                 <td>1.3B</td>
                 <td>CC-BY-SA-4.0</td>
@@ -51,16 +58,61 @@
           </table>
         </div>
 
+        <h2>Cloud API names → Hugging Face</h2>
+        <p>Production APIs use short model IDs. Map them to open weights or demos on Hugging Face:</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>API model</th><th>Product</th><th>Hugging Face</th></tr></thead>
+            <tbody>
+              <tr><td><a class="hf-model-link" href="https://huggingface.co/shunyalabs/pingala-v1-universal" target="_blank" rel="noopener" title="View on Hugging Face"><code>zero-universal</code></a></td><td>Zero STT Universal</td><td><a class="hf-model-link" href="https://huggingface.co/shunyalabs/pingala-v1-universal" target="_blank" rel="noopener" title="View on Hugging Face"><code>pingala-v1-universal</code></a> (weights)</td></tr>
+              <tr><td><a class="hf-model-link" href="https://huggingface.co/spaces/shunyalabs/Zero-STT-Shunya-Labs" target="_blank" rel="noopener" title="View on Hugging Face"><code>zero-indic</code></a></td><td><a class="hf-model-link" href="https://huggingface.co/spaces/shunyalabs/Zero-STT-Shunya-Labs" target="_blank" rel="noopener" title="View on Hugging Face">Zero STT Indic</a></td><td><a class="hf-model-link" href="https://huggingface.co/spaces/shunyalabs/Zero-STT-Shunya-Labs" target="_blank" rel="noopener">Zero STT Space</a> (demo)</td></tr>
+              <tr><td><a class="hf-model-link" href="https://huggingface.co/spaces/shunyalabs/Zero_STT_Med_Shunya_Labs" target="_blank" rel="noopener" title="View on Hugging Face"><code>zero-med</code></a></td><td><a class="hf-model-link" href="https://huggingface.co/spaces/shunyalabs/Zero_STT_Med_Shunya_Labs" target="_blank" rel="noopener" title="View on Hugging Face">Zero STT Med</a></td><td><a class="hf-model-link" href="https://huggingface.co/spaces/shunyalabs/Zero_STT_Med_Shunya_Labs" target="_blank" rel="noopener">Zero STT Med Space</a> (demo)</td></tr>
+              <tr><td><a class="hf-model-link" href="https://huggingface.co/shunyalabs/zero-stt-hinglish" target="_blank" rel="noopener" title="View on Hugging Face"><code>zero-codeswitch</code></a></td><td>Zero STT CodeSwitch</td><td><a class="hf-model-link" href="https://huggingface.co/shunyalabs/zero-stt-hinglish" target="_blank" rel="noopener" title="View on Hugging Face"><code>zero-stt-hinglish</code></a> (weights)</td></tr>
+              <tr><td><a class="hf-model-link" href="https://huggingface.co/spaces/shunyalabs/TTS-Indic" target="_blank" rel="noopener"><a class="hf-model-link" href="https://huggingface.co/spaces/shunyalabs/Zero-STT-Shunya-Labs" target="_blank" rel="noopener" title="View on Hugging Face"><code>zero-indic</code></a></a></td><td><a class="hf-model-link" href="https://huggingface.co/spaces/shunyalabs/TTS-Indic" target="_blank" rel="noopener" title="View on Hugging Face">Zero TTS</a></td><td><a class="hf-model-link" href="https://huggingface.co/spaces/shunyalabs/TTS-Indic" target="_blank" rel="noopener">TTS-Indic Space</a> (demo)</td></tr>
+              <tr><td><a class="hf-model-link" href="https://huggingface.co/shunyalabs/vak-translate-1.3b-ct2" target="_blank" rel="noopener" title="View on Hugging Face"><code>vak-translate-1.3b-ct2</code></a></td><td><a class="hf-model-link" href="https://huggingface.co/shunyalabs/vak-translate-1.3b-ct2" target="_blank" rel="noopener" title="View on Hugging Face">Vāķ Translate</a></td><td><a class="hf-model-link" href="https://huggingface.co/shunyalabs/vak-translate-1.3b-ct2" target="_blank" rel="noopener" title="View on Hugging Face"><code>vak-translate-1.3b-ct2</code></a> (weights)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Demos on Hugging Face Spaces</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Space</th><th>Task</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><a class="hf-model-link" href="https://huggingface.co/spaces/shunyalabs/TTS-Indic" target="_blank" rel="noopener"><code>TTS-Indic</code></a></td>
+                <td>Text-to-speech</td>
+                <td>Vāķ Text to Speech, try Indic synthesis in the browser (Gradio). API: <a class="hf-model-link" href="https://huggingface.co/spaces/shunyalabs/Zero-STT-Shunya-Labs" target="_blank" rel="noopener" title="View on Hugging Face"><code>zero-indic</code></a>.</td>
+              </tr>
+              <tr>
+                <td><a class="hf-model-link" href="https://huggingface.co/spaces/shunyalabs/Zero-STT-Shunya-Labs" target="_blank" rel="noopener"><code>Zero-STT-Shunya-Labs</code></a></td>
+                <td>Speech-to-text</td>
+                <td>Multilingual transcription with diarization (demo).</td>
+              </tr>
+              <tr>
+                <td><a class="hf-model-link" href="https://huggingface.co/spaces/shunyalabs/Zero_STT_Med_Shunya_Labs" target="_blank" rel="noopener"><code>Zero_STT_Med_Shunya_Labs</code></a></td>
+                <td>Medical STT</td>
+                <td>Clinical / medical transcription (demo). API: <a class="hf-model-link" href="https://huggingface.co/spaces/shunyalabs/Zero_STT_Med_Shunya_Labs" target="_blank" rel="noopener" title="View on Hugging Face"><code>zero-med</code></a>.</td>
+              </tr>
+              <tr>
+                <td><a class="hf-model-link" href="https://huggingface.co/spaces/shunyalabs/vak-speech-to-text" target="_blank" rel="noopener"><code>vak-speech-to-text</code></a></td>
+                <td>Speech-to-text</td>
+                <td>Vāķ Speech to Text, 55 Indian languages (demo).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
         <h2>Authentication</h2>
         <p>Hugging Face access is gated by a personal access token. Pass it via the <code>HUGGINGFACE_HUB_TOKEN</code> environment variable, the CLI login command, or programmatic <code>login()</code>.</p>
 
-<pre><code># Option 1 — env var
+<pre><code># Option 1, env var
 export HUGGINGFACE_HUB_TOKEN=hf_...
 
-# Option 2 — CLI login (interactive)
+# Option 2, CLI login (interactive)
 huggingface-cli login
 
-# Option 3 — programmatic
+# Option 3, programmatic
 from huggingface_hub import login
 login(token="hf_...")</code></pre>
 
@@ -85,7 +137,7 @@ for s in segments:
     print(f"[{s.start:.2f} → {s.end:.2f}] {s.text}")</code></pre>
 
         <h2>Use the Vāķ translation model</h2>
-        <p>The Vāķ model ships in CTranslate2 format (<code>vak-translate-1.3b-ct2</code>). Run it with the <code>ctranslate2</code> + <code>transformers</code> + <code>sentencepiece</code> stack.</p>
+        <p>The Vāķ model ships in CTranslate2 format (<a class="hf-model-link" href="https://huggingface.co/shunyalabs/vak-translate-1.3b-ct2" target="_blank" rel="noopener" title="View on Hugging Face"><code>vak-translate-1.3b-ct2</code></a>). Run it with the <code>ctranslate2</code> + <code>transformers</code> + <code>sentencepiece</code> stack.</p>
 
 <pre><code>pip install ctranslate2 transformers sentencepiece</code></pre>
 
@@ -109,7 +161,7 @@ print(tokenizer.decode(tokenizer.convert_tokens_to_ids(results[0].hypotheses[0][
           <li>Run the <code>huggingface-cli download</code> commands above on a connected workstation.</li>
           <li>Package the <code>./models</code> directory as a signed tarball.</li>
           <li>Verify checksums, transfer via signed media to the secure zone.</li>
-          <li>Load the model from the local path — no further network calls needed.</li>
+          <li>Load the model from the local path, no further network calls needed.</li>
         </ol>
 
         <div class="callout callout-info">
@@ -119,13 +171,13 @@ print(tokenizer.decode(tokenizer.convert_tokens_to_ids(results[0].hypotheses[0][
 
         <h2>Licence reminder</h2>
         <ul>
-          <li><code>pingala-v1-universal</code> — <strong>Shunya Labs RAIL-M</strong>: free up to 10,000 hours/month. No redistribution, no derivatives. Attribution required when outputs are public.</li>
-          <li><code>zero-stt-hinglish</code> — <strong>openrail</strong>: permissive with responsible-use restrictions.</li>
-          <li><code>vak-translate-1.3b-ct2</code> — <strong>CC-BY-SA-4.0</strong>: share-alike with attribution.</li>
+          <li><a class="hf-model-link" href="https://huggingface.co/shunyalabs/pingala-v1-universal" target="_blank" rel="noopener" title="View on Hugging Face"><code>pingala-v1-universal</code></a>, <strong>Shunya Labs RAIL-M</strong>: free up to 10,000 hours/month. No redistribution, no derivatives. Attribution required when outputs are public.</li>
+          <li><a class="hf-model-link" href="https://huggingface.co/shunyalabs/zero-stt-hinglish" target="_blank" rel="noopener" title="View on Hugging Face"><code>zero-stt-hinglish</code></a>, <strong>openrail</strong>: permissive with responsible-use restrictions.</li>
+          <li><a class="hf-model-link" href="https://huggingface.co/shunyalabs/vak-translate-1.3b-ct2" target="_blank" rel="noopener" title="View on Hugging Face"><code>vak-translate-1.3b-ct2</code></a>, <strong>CC-BY-SA-4.0</strong>: share-alike with attribution.</li>
         </ul>
-        <p>Always check the model card on Hugging Face before shipping — the licence file there is authoritative.</p>
+        <p>Always check the model card on Hugging Face before shipping, the licence file there is authoritative.</p>
 
-        <p class="text-subtle">Source: Shunya Labs Hugging Face organization page (<a href="https://huggingface.co/shunyalabs" target="_blank" rel="noopener">huggingface.co/shunyalabs</a>) and the per-model cards linked above. Air-gapped deployment steps reproduced from the Shunya Labs Deployment guidance.</p>
+        <p class="text-subtle">Source: Shunya Labs Hugging Face organization page (<a class="hf-model-link" href="https://huggingface.co/shunyalabs" target="_blank" rel="noopener">huggingface.co/shunyalabs</a>) and the per-model cards linked above. Air-gapped deployment steps reproduced from the Shunya Labs Deployment guidance.</p>
 
         <div class="pager">
           <a class="pager-link" href="/web_doc/integrations/sip-pstn.html">
@@ -142,7 +194,7 @@ print(tokenizer.decode(tokenizer.convert_tokens_to_ids(results[0].hypotheses[0][
     </main>
   </div>
 
-  <script src="/web_doc/assets/js/shell.js"></script>
+  <script src="/web_doc/assets/js/shell.js?v=3"></script>
   <script src="/web_doc/assets/js/nav.js?v=2"></script>
 </body>
 </html>

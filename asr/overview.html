@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ASR overview — Shunya Labs Docs</title>
+  <title>ASR overview | Shunya Labs Docs</title>
   <meta name="description" content="Speech-to-text overview: models, endpoints, and when to use each.">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=23">
+  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=37">
   <script src="/web_doc/assets/js/theme.js"></script>
 </head>
 <body>
@@ -16,7 +16,7 @@
         <div class="breadcrumb">
           <a href="/web_doc/index.html">Docs</a><span class="sep">/</span><span>Speech-to-Text</span><span class="sep">/</span><span>Overview</span>
         </div>
-        <h1>Speech-to-Text (ASR)</h1>
+        <h1>Speech-to-Text <span class="accent-italic">(ASR)</span></h1>
         <p class="lead">Zero STT is Shunya's speech recognition family. One API surface for batch and streaming, a choice of four models tuned for different domains, and an intelligence layer that adds diarization, emotion, intent, and more on top of the transcript.</p>
 
         <h2>How it fits together</h2>
@@ -26,8 +26,8 @@
   C --> D[Optional: intelligence layer]
   D --> E1[Diarization]
   D --> E2[Emotion]
-  D --> E3[Intent · Sentiment]
-  D --> E4[Summary · Redaction]
+  D --> E3[Intent, Sentiment]
+  D --> E4[Summary, Redaction]
   D --> E5[Translation]
   style B fill:#6366f1,stroke:#4338ca,color:#fff,stroke-width:2px
   style D fill:#a855f7,stroke:#7e22ce,color:#fff,stroke-width:2px</div>
@@ -46,8 +46,8 @@
           </table>
         </div>
 
-        <h2>Batch vs Streaming</h2>
-        <p>Same models, same intelligence layer — different transports. Pick batch when you have a complete audio file in hand. Pick streaming when audio is arriving live and you want partial transcripts as the speaker is still talking.</p>
+        <h2 id="batch-vs-streaming">Batch vs Streaming</h2>
+        <p>Same models, same intelligence layer, different transports. Pick batch when you have a complete audio file in hand. Pick streaming when audio is arriving live and you want partial transcripts as the speaker is still talking.</p>
 
         <div class="bs-compare">
           <!-- BATCH -->
@@ -59,7 +59,7 @@
                 </div>
                 <div>
                   <div class="bs-title">Batch</div>
-                  <div class="bs-subtitle">HTTP POST · transcribe an audio file</div>
+                  <div class="bs-subtitle">HTTP POST, transcribe an audio file</div>
                 </div>
               </div>
 
@@ -68,10 +68,10 @@
               <div class="bs-section">
                 <span class="bs-section-label">Models available</span>
                 <ul class="bs-best">
-                  <li><code>zero-indic</code> — General Indian languages (Hindi, Tamil, Telugu, Kannada, Marathi, Bengali, etc.)</li>
-                  <li><code>zero-med</code> — Medical/clinical audio — auto-applies medical terminology correction via MedGemma</li>
-                  <li><code>zero-codeswitch</code> — Code-switched speech (Hinglish, Tanglish, etc.) — auto-restores English words to Latin script via Gemini</li>
-                  <li><code>zero-universal</code> — 99-language Whisper model — English, European, Asian, and African languages</li>
+                  <li><a class="hf-model-link" href="https://huggingface.co/spaces/shunyalabs/Zero-STT-Shunya-Labs" target="_blank" rel="noopener" title="View on Hugging Face"><code>zero-indic</code></a>, General Indian languages (Hindi, Tamil, Telugu, Kannada, Marathi, Bengali, etc.)</li>
+                  <li><a class="hf-model-link" href="https://huggingface.co/spaces/shunyalabs/Zero_STT_Med_Shunya_Labs" target="_blank" rel="noopener" title="View on Hugging Face"><code>zero-med</code></a>, Medical/clinical audio, auto-applies medical terminology correction via MedGemma</li>
+                  <li><a class="hf-model-link" href="https://huggingface.co/shunyalabs/zero-stt-hinglish" target="_blank" rel="noopener" title="View on Hugging Face"><code>zero-codeswitch</code></a>, Code-switched speech (Hinglish, Tanglish, etc.), auto-restores English words to Latin script via Gemini</li>
+                  <li><a class="hf-model-link" href="https://huggingface.co/shunyalabs/pingala-v1-universal" target="_blank" rel="noopener" title="View on Hugging Face"><code>zero-universal</code></a>, 99-language Whisper model, English, European, Asian, and African languages</li>
                 </ul>
               </div>
 
@@ -109,7 +109,7 @@
                 </div>
                 <div>
                   <div class="bs-title">Streaming</div>
-                  <div class="bs-subtitle">WebSocket · real-time partials + finals</div>
+                  <div class="bs-subtitle">WebSocket, real-time partials + finals</div>
                 </div>
               </div>
 
@@ -118,10 +118,10 @@
               <div class="bs-section">
                 <span class="bs-section-label">Audio formats (dtype)</span>
                 <ul class="bs-best">
-                  <li><code>ulaw</code> — G.711 mu-law (8-bit) · Telephony (8 kHz)</li>
-                  <li><code>alaw</code> — G.711 A-law (8-bit) · Telephony (8 kHz)</li>
-                  <li><code>int16</code> — 16-bit signed PCM · General recording</li>
-                  <li><code>float32</code> — 32-bit IEEE float · Pre-processed audio</li>
+                  <li><code>ulaw</code>: G.711 mu-law (8-bit), Telephony (8 kHz)</li>
+                  <li><code>alaw</code>: G.711 A-law (8-bit), Telephony (8 kHz)</li>
+                  <li><code>int16</code>: 16-bit signed PCM, General recording</li>
+                  <li><code>float32</code>: 32-bit IEEE float, Pre-processed audio</li>
                 </ul>
               </div>
 
@@ -168,28 +168,32 @@
           </div>
         </div>
 
-        <p class="bs-source">Source: Shunyalabs ASR Gateway API Reference (31 March) — "Base Call" and "WebSocket Streaming API" sections, reproduced verbatim.</p>
+        <p class="bs-source">Source: Shunyalabs ASR Gateway API Reference (31 March), "Base Call" and "WebSocket Streaming API" sections, reproduced verbatim.</p>
 
         <h2>Pick a model</h2>
         <p>Every request takes a <code>model</code> field. There are four to choose from:</p>
 
         <div class="grid grid-2">
-          <a href="/web_doc/asr/models.html#zero-indic" class="card-link"><div class="card">
-            <div class="card-title"><code>zero-indic</code></div>
+          <div class="card model-pick-card">
+            <div class="card-title"><a class="hf-model-link" href="https://huggingface.co/spaces/shunyalabs/Zero-STT-Shunya-Labs" target="_blank" rel="noopener" title="View on Hugging Face"><code>zero-indic</code></a></div>
             <p class="card-desc">Hindi, Tamil, Telugu, Kannada, Marathi, Bengali and 50+ Indian languages. The default for Indic content.</p>
-          </div></a>
-          <a href="/web_doc/asr/models.html#zero-universal" class="card-link"><div class="card">
-            <div class="card-title"><code>zero-universal</code></div>
+            <a href="/web_doc/asr/models.html#zero-indic" class="card-cta">View model <span class="card-cta-arrow">→</span></a>
+          </div>
+          <div class="card model-pick-card">
+            <div class="card-title"><a class="hf-model-link" href="https://huggingface.co/shunyalabs/pingala-v1-universal" target="_blank" rel="noopener" title="View on Hugging Face"><code>zero-universal</code></a></div>
             <p class="card-desc">204-language Whisper-class model. English, European, Asian, African. Auto-detects language when you don't know it.</p>
-          </div></a>
-          <a href="/web_doc/asr/models.html#zero-med" class="card-link"><div class="card">
-            <div class="card-title"><code>zero-med</code></div>
+            <a href="/web_doc/asr/models.html#zero-universal" class="card-cta">View model <span class="card-cta-arrow">→</span></a>
+          </div>
+          <div class="card model-pick-card">
+            <div class="card-title"><a class="hf-model-link" href="https://huggingface.co/spaces/shunyalabs/Zero_STT_Med_Shunya_Labs" target="_blank" rel="noopener" title="View on Hugging Face"><code>zero-med</code></a></div>
             <p class="card-desc">Clinical / medical speech with drug, procedure, and diagnosis vocabulary. HIPAA-cleared. Auto-applies medical terminology correction.</p>
-          </div></a>
-          <a href="/web_doc/asr/models.html#zero-codeswitch" class="card-link"><div class="card">
-            <div class="card-title"><code>zero-codeswitch</code></div>
+            <a href="/web_doc/asr/models.html#zero-med" class="card-cta">View model <span class="card-cta-arrow">→</span></a>
+          </div>
+          <div class="card model-pick-card">
+            <div class="card-title"><a class="hf-model-link" href="https://huggingface.co/shunyalabs/zero-stt-hinglish" target="_blank" rel="noopener" title="View on Hugging Face"><code>zero-codeswitch</code></a></div>
             <p class="card-desc">Native handling of mixed Hindi-English (Hinglish), Tamil-English (Tanglish) and similar blends. Gemini-backed code-switch restoration.</p>
-          </div></a>
+            <a href="/web_doc/asr/models.html#zero-codeswitch" class="card-cta">View model <span class="card-cta-arrow">→</span></a>
+          </div>
         </div>
 
         <h2>Your first request</h2>
@@ -205,38 +209,11 @@
   -F "url=https://example.com/call.wav" \
   -F "model=zero-indic"</code></pre>
 
-        <h2>Where to go next</h2>
-        <div class="grid grid-3">
-          <a href="/web_doc/asr/models.html" class="card-link"><div class="card">
-            <div class="card-title">Models →</div>
-            <p class="card-desc">Decide between indic, universal, med, and code-switch.</p>
-          </div></a>
-          <a href="/web_doc/asr/configuration.html" class="card-link"><div class="card">
-            <div class="card-title">Configuration →</div>
-            <p class="card-desc">Every parameter, with defaults and when to change them.</p>
-          </div></a>
-          <a href="/web_doc/asr/features.html" class="card-link"><div class="card">
-            <div class="card-title">Features →</div>
-            <p class="card-desc">Diarization, emotion, intent, redaction, translation.</p>
-          </div></a>
-          <a href="/web_doc/asr/streaming.html" class="card-link"><div class="card">
-            <div class="card-title">Streaming →</div>
-            <p class="card-desc">WebSocket for real-time pipelines.</p>
-          </div></a>
-          <a href="/web_doc/asr/dashboard.html" class="card-link"><div class="card">
-            <div class="card-title">Dashboard →</div>
-            <p class="card-desc">The no-code upload & edit UI.</p>
-          </div></a>
-          <a href="/web_doc/asr/api-reference.html" class="card-link"><div class="card">
-            <div class="card-title">API reference →</div>
-            <p class="card-desc">Every endpoint, field, and error code.</p>
-          </div></a>
-        </div>
 
         <div class="pager">
           <a class="pager-link" href="/web_doc/personas/playground.html">
             <div class="pager-label">← Previous</div>
-            <div class="pager-title">No code · Playground</div>
+            <div class="pager-title">No code: Playground</div>
           </a>
           <a class="pager-link pager-right" href="/web_doc/asr/models.html">
             <div class="pager-label">Next →</div>
@@ -248,8 +225,9 @@
     </main>
   </div>
 
-  <script src="/web_doc/assets/js/shell.js"></script>
-  <script src="/web_doc/assets/js/nav.js?v=2"></script>
+  <script src="/web_doc/assets/js/shell.js?v=3"></script>
+  <script src="/web_doc/assets/js/stt-nav.js?v=4"></script>
+  <script src="/web_doc/assets/js/nav.js?v=4"></script>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
   <script src="/web_doc/assets/js/mermaid-init.js?v=2"></script>
 </body>

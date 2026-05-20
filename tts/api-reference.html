@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TTS API reference — Shunya Labs Docs</title>
+  <title>TTS API reference | Shunya Labs Docs</title>
   <meta name="description" content="Complete TTS API reference: endpoints, fields, response schema, error codes, rate limits.">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=23">
+  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=37">
   <script src="/web_doc/assets/js/theme.js"></script>
 </head>
 <body>
@@ -14,12 +14,12 @@
     <main class="main">
       <div class="content">
         <div class="breadcrumb">
-          <a href="/web_doc/index.html">Docs</a><span class="sep">/</span><span>Text-to-Speech</span><span class="sep">/</span><span>API reference</span>
+          <a href="/web_doc/index.html">Docs</a><span class="sep">/</span><a href="/web_doc/api-reference/index.html">API Reference</a><span class="sep">/</span><span>Text-to-Speech</span><span class="sep">/</span><span>API reference</span>
         </div>
-        <h1>TTS API reference</h1>
+        <h1>TTS API <span class="accent-italic">reference</span></h1>
         <p class="lead">Every endpoint under <code>tts.shunyalabs.ai</code>, every field, every error code.</p>
 
-        <h2>Base URLs</h2>
+        <h2 id="base-urls">Base URLs</h2>
         <div class="table-wrap">
           <table>
             <thead><tr><th>Interface</th><th>URL</th></tr></thead>
@@ -31,7 +31,7 @@
           </table>
         </div>
 
-        <h2>Authentication</h2>
+        <h2 id="authentication">Authentication</h2>
         <p>Same API key works for both transports. Pick the tab for the protocol you're using.</p>
 
         <div class="code-group">
@@ -52,7 +52,7 @@
           </div>
         </div>
 
-        <h2>POST /v1/audio/speech</h2>
+        <h2 id="post-speech">POST /v1/audio/speech</h2>
         <p>Batch synthesis. Returns audio bytes in the requested format.</p>
         <div class="table-wrap">
           <table>
@@ -71,20 +71,20 @@
           <table>
             <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Default</th><th>Description</th></tr></thead>
             <tbody>
-              <tr><td><code>model</code></td><td>string</td><td>Yes</td><td>—</td><td>Use <code>zero-indic</code>.</td></tr>
-              <tr><td><code>input</code></td><td>string</td><td>Yes</td><td>—</td><td>Text to synthesize. Max 10,000 chars.</td></tr>
-              <tr><td><code>voice</code></td><td>string</td><td>Yes</td><td>—</td><td>Speaker name. See Voices & languages.</td></tr>
+              <tr><td><code>model</code></td><td>string</td><td>Yes</td><td>-</td><td>Use <a class="hf-model-link" href="https://huggingface.co/spaces/shunyalabs/TTS-Indic" target="_blank" rel="noopener" title="View on Hugging Face"><code>zero-indic</code></a>.</td></tr>
+              <tr><td><code>input</code></td><td>string</td><td>Yes</td><td>-</td><td>Text to synthesize. Max 10,000 chars.</td></tr>
+              <tr><td><code>voice</code></td><td>string</td><td>Yes</td><td>-</td><td>Speaker name. See Voices & languages.</td></tr>
               <tr><td><code>response_format</code></td><td>string</td><td>No</td><td><code>mp3</code></td><td><code>pcm</code>, <code>wav</code>, <code>mp3</code>, <code>ogg_opus</code>, <code>flac</code>, <code>mulaw</code>, <code>alaw</code>.</td></tr>
               <tr><td><code>speed</code></td><td>float</td><td>No</td><td><code>1.0</code></td><td>0.25 (slowest) to 4.0 (fastest).</td></tr>
               <tr><td><code>language</code></td><td>string</td><td>No</td><td>null</td><td>ISO 639 code for text preprocessing.</td></tr>
               <tr><td><code>trim_silence</code></td><td>bool</td><td>No</td><td><code>false</code></td><td>Remove leading/trailing silence.</td></tr>
               <tr><td><code>volume_normalization</code></td><td>string</td><td>No</td><td>null</td><td><code>peak</code> (0 dBFS) or <code>loudness</code> (EBU R128).</td></tr>
               <tr><td><code>background_audio</code></td><td>string</td><td>No</td><td>null</td><td>Preset name (<code>office</code>, <code>cafe</code>, <code>rain</code>, <code>street</code>) or base64-encoded WAV/MP3.</td></tr>
-              <tr><td><code>background_volume</code></td><td>float</td><td>No</td><td><code>0.1</code></td><td>Background mix ratio, 0.0–1.0.</td></tr>
-              <tr><td><code>reference_wav</code></td><td>string</td><td>No</td><td>null</td><td>Base64 audio for voice cloning. WAV/FLAC/OGG. 1–6 s.</td></tr>
+              <tr><td><code>background_volume</code></td><td>float</td><td>No</td><td><code>0.1</code></td><td>Background mix ratio, 0.0-1.0.</td></tr>
+              <tr><td><code>reference_wav</code></td><td>string</td><td>No</td><td>null</td><td>Base64 audio for voice cloning. WAV/FLAC/OGG. 1-6 s.</td></tr>
               <tr><td><code>reference_text</code></td><td>string</td><td>No</td><td>""</td><td>Transcript of reference audio. Max 500 chars.</td></tr>
               <tr><td><code>word_timestamps</code></td><td>bool</td><td>No</td><td><code>false</code></td><td>Include word-level timestamps (batch only).</td></tr>
-              <tr><td><code>max_tokens</code></td><td>int</td><td>No</td><td><code>2048</code></td><td>Max tokens for internal LLM generation. 1–8192.</td></tr>
+              <tr><td><code>max_tokens</code></td><td>int</td><td>No</td><td><code>2048</code></td><td>Max tokens for internal LLM generation. 1-8192.</td></tr>
             </tbody>
           </table>
         </div>
@@ -96,16 +96,16 @@
             <tbody>
               <tr><td><code>Content-Type</code></td><td>MIME type (<code>audio/mpeg</code>, <code>audio/wav</code>, etc.)</td></tr>
               <tr><td><code>X-Sample-Rate</code></td><td>Sample rate in Hz</td></tr>
-              <tr><td><code>X-Request-Id</code></td><td>Unique identifier — log for support</td></tr>
+              <tr><td><code>X-Request-Id</code></td><td>Unique identifier, log for support</td></tr>
             </tbody>
           </table>
         </div>
 
-        <h2>WebSocket /ws</h2>
+        <h2 id="websocket">WebSocket /ws</h2>
         <p>Full protocol in <a href="/web_doc/tts/streaming.html">Streaming</a>. Summary below.</p>
 
         <h3>Handshake</h3>
-        <p>Three equivalent ways to send the synthesis request on connect — pick whichever fits your client.</p>
+        <p>Three equivalent ways to send the synthesis request on connect, pick whichever fits your client.</p>
 
         <div class="code-group">
           <div class="code-tabs" role="tablist">
@@ -116,7 +116,7 @@
 
           <div class="code-panel active">
             <div class="code-header"><span>shell</span><button class="copy-btn">Copy</button></div>
-            <p style="margin:0 0 0.75rem; padding:0 0.25rem;">Encode parameters in the URL — works in clients that can't easily send post-connect messages.</p>
+            <p style="margin:0 0 0.75rem; padding:0 0.25rem;">Encode parameters in the URL, works in clients that can't easily send post-connect messages.</p>
 <pre><code class="language-bash">wss://tts.shunyalabs.ai/ws?model=zero-indic&amp;voice=Varun&amp;encoding=pcm</code></pre>
           </div>
 
@@ -128,7 +128,7 @@
 
           <div class="code-panel">
             <div class="code-header"><span>json</span><button class="copy-btn">Copy</button></div>
-            <p style="margin:0 0 0.75rem; padding:0 0.25rem;">Send the full synthesis request in one message — the server treats it as both config and synthesis trigger.</p>
+            <p style="margin:0 0 0.75rem; padding:0 0.25rem;">Send the full synthesis request in one message, the server treats it as both config and synthesis trigger.</p>
 <pre><code class="language-json">{"model": "zero-indic", "input": "Hello!", "voice": "Sunita", "response_format": "pcm"}</code></pre>
           </div>
         </div>
@@ -138,11 +138,11 @@
           <table>
             <thead><tr><th>Field</th><th>Required</th><th>Description</th></tr></thead>
             <tbody>
-              <tr><td><code>model</code></td><td>Yes</td><td>Use <code>zero-indic</code>.</td></tr>
+              <tr><td><code>model</code></td><td>Yes</td><td>Use <a class="hf-model-link" href="https://huggingface.co/spaces/shunyalabs/TTS-Indic" target="_blank" rel="noopener" title="View on Hugging Face"><code>zero-indic</code></a>.</td></tr>
               <tr><td><code>input</code></td><td>Yes</td><td>Text. Max 10,000 chars.</td></tr>
               <tr><td><code>voice</code></td><td>Yes</td><td>Speaker name.</td></tr>
               <tr><td><code>response_format</code></td><td>No</td><td>Default <code>pcm</code> on WebSocket.</td></tr>
-              <tr><td><code>speed</code></td><td>No</td><td>0.25–4.0, default 1.0.</td></tr>
+              <tr><td><code>speed</code></td><td>No</td><td>0.25-4.0, default 1.0.</td></tr>
               <tr><td><code>language</code></td><td>No</td><td>ISO 639 code for preprocessing.</td></tr>
               <tr><td><code>trim_silence</code></td><td>No</td><td>Remove silence, default false.</td></tr>
             </tbody>
@@ -186,7 +186,7 @@
   "error": "Error description"
 }</code></pre>
 
-        <h2>GET /health</h2>
+        <h2 id="health">GET /health</h2>
         <p><strong>Request:</strong></p>
 <pre><code class="language-bash">curl https://tts.shunyalabs.ai/health \
   -H "Authorization: Bearer $SHUNYALABS_API_KEY"</code></pre>
@@ -206,13 +206,13 @@
               <tr><td><code>RateLimitError</code></td><td>429</td><td>Rate limit exceeded. Back off.</td></tr>
               <tr><td><code>SynthesisError</code></td><td>422</td><td>Invalid text or config.</td></tr>
               <tr><td><code>ServerError</code></td><td>5xx</td><td>Transient. Safe to retry.</td></tr>
-              <tr><td><code>TimeoutError</code></td><td>—</td><td>Request exceeded timeout.</td></tr>
-              <tr><td><code>ConnectionError</code></td><td>—</td><td>Network failure.</td></tr>
+              <tr><td><code>TimeoutError</code></td><td>-</td><td>Request exceeded timeout.</td></tr>
+              <tr><td><code>ConnectionError</code></td><td>-</td><td>Network failure.</td></tr>
             </tbody>
           </table>
         </div>
 
-        <h2>Rate &amp; concurrency limits</h2>
+        <h2 id="rate-limits">Rate &amp; concurrency limits</h2>
         <div class="table-wrap">
           <table>
             <thead><tr><th>Limit</th><th>Value</th></tr></thead>
@@ -250,7 +250,7 @@ async def safe_synthesize(client, text, config):
 tasks = [safe_synthesize(client, s, config) for s in scripts]
 results = await asyncio.gather(*tasks)</code></pre>
 
-        <h2>HTTP error status codes</h2>
+        <h2 id="http-error-status-codes">HTTP error status codes</h2>
         <div class="table-wrap">
           <table>
             <thead><tr><th>Status</th><th>Description</th></tr></thead>
@@ -306,7 +306,8 @@ results = await asyncio.gather(*tasks)</code></pre>
     </main>
   </div>
 
-  <script src="/web_doc/assets/js/shell.js"></script>
-  <script src="/web_doc/assets/js/nav.js?v=2"></script>
+  <script src="/web_doc/assets/js/shell.js?v=3"></script>
+  <script src="/web_doc/assets/js/tts-nav.js?v=1"></script>
+  <script src="/web_doc/assets/js/nav.js?v=4"></script>
 </body>
 </html>
