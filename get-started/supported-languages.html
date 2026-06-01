@@ -1,86 +1,1031 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Supported Languages | Shunya Labs Docs</title>
-  <meta name="description" content="55+ Indic languages and 204 universal languages supported by Shunya speech models.">
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=32">
-  <script src="/web_doc/assets/js/theme.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ═══════════════════════════════════════════════════════════════════
+       TOKENS — dark theme (default)
+    ═══════════════════════════════════════════════════════════════════ */
+    :root {
+      --bg:            #0f1117;
+      --bg-sidebar:    #13151c;
+      --bg-card:       #1a1d27;
+      --bg-hover:      rgba(255,255,255,0.04);
+      --bg-input:      rgba(255,255,255,0.05);
+      --border:        rgba(255,255,255,0.08);
+      --border-input:  rgba(255,255,255,0.12);
+
+      /* active / accent */
+      --accent-sidebar: #7c6af7;          /* purple – sidebar active */
+      --accent-sidebar-bg: rgba(124,106,247,0.12);
+      --accent-teal:   #2dd4bf;           /* teal – top nav underline */
+      --accent-green:  #22c55e;
+      --accent-green-dim: rgba(34,197,94,0.55);
+
+      /* pill hover colours cycle */
+      --pill-1: rgba(124,106,247,0.15);   /* purple */
+      --pill-1b: rgba(124,106,247,0.55);
+      --pill-2: rgba(45,212,191,0.15);    /* teal */
+      --pill-2b: rgba(45,212,191,0.55);
+      --pill-3: rgba(34,197,94,0.15);     /* green */
+      --pill-3b: rgba(34,197,94,0.55);
+      --pill-4: rgba(251,146,60,0.15);    /* orange */
+      --pill-4b: rgba(251,146,60,0.55);
+      --pill-5: rgba(244,63,94,0.15);     /* rose */
+      --pill-5b: rgba(244,63,94,0.55);
+
+      /* text */
+      --text:          #f0f6fc;
+      --text-muted:    rgba(240,246,252,0.55);
+      --text-faint:    rgba(240,246,252,0.30);
+      --text-section:  rgba(240,246,252,0.40);
+
+      /* nav */
+      --nav-bg:        #0f1117;
+      --nav-border:    rgba(255,255,255,0.08);
+      --nav-text:      rgba(240,246,252,0.70);
+
+      /* stat chip */
+      --chip-bg:       rgba(124,106,247,0.08);
+      --chip-border:   rgba(124,106,247,0.25);
+      --chip-num:      #c4b8fd;
+
+      /* tab */
+      --tab-active-color: #2dd4bf;
+
+      /* card */
+      --card-border:   rgba(255,255,255,0.08);
+
+      /* scrollbar */
+      --sb-track:      #1a1d27;
+      --sb-thumb:      rgba(255,255,255,0.12);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       TOKENS — light theme
+    ═══════════════════════════════════════════════════════════════════ */
+    [data-theme="light"] {
+      --bg:            #ffffff;
+      --bg-sidebar:    #f8f9fb;
+      --bg-card:       #f1f3f8;
+      --bg-hover:      rgba(0,0,0,0.04);
+      --bg-input:      rgba(0,0,0,0.04);
+      --border:        rgba(0,0,0,0.08);
+      --border-input:  rgba(0,0,0,0.14);
+
+      --accent-sidebar: #6254e8;
+      --accent-sidebar-bg: rgba(98,84,232,0.10);
+      --accent-teal:   #0d9488;
+      --accent-green:  #16a34a;
+      --accent-green-dim: rgba(22,163,74,0.5);
+
+      --pill-1: rgba(98,84,232,0.10);
+      --pill-1b: rgba(98,84,232,0.45);
+      --pill-2: rgba(13,148,136,0.10);
+      --pill-2b: rgba(13,148,136,0.50);
+      --pill-3: rgba(22,163,74,0.10);
+      --pill-3b: rgba(22,163,74,0.50);
+      --pill-4: rgba(234,88,12,0.10);
+      --pill-4b: rgba(234,88,12,0.50);
+      --pill-5: rgba(225,29,72,0.10);
+      --pill-5b: rgba(225,29,72,0.50);
+
+      --text:          #111827;
+      --text-muted:    #4b5563;
+      --text-faint:    #9ca3af;
+      --text-section:  #9ca3af;
+
+      --nav-bg:        #ffffff;
+      --nav-border:    rgba(0,0,0,0.08);
+      --nav-text:      #374151;
+
+      --chip-bg:       rgba(98,84,232,0.07);
+      --chip-border:   rgba(98,84,232,0.20);
+      --chip-num:      #6254e8;
+
+      --tab-active-color: #0d9488;
+
+      --card-border:   rgba(0,0,0,0.09);
+
+      --sb-track:      #f1f3f8;
+      --sb-thumb:      rgba(0,0,0,0.12);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       BASE
+    ═══════════════════════════════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { font-size: 14px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--sb-track); }
+    ::-webkit-scrollbar-thumb { background: var(--sb-thumb); border-radius: 3px; }
+
+    a { color: var(--accent-teal); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    code {
+      background: rgba(127,127,127,0.15);
+      border-radius: 4px;
+      font-family: 'Fira Code', 'Cascadia Code', monospace;
+      font-size: 12px;
+      padding: 1px 5px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       TOP NAV
+    ═══════════════════════════════════════════════════════════════════ */
+    .topnav {
+      align-items: center;
+      background: var(--nav-bg);
+      border-bottom: 1px solid var(--nav-border);
+      display: flex;
+      gap: 0;
+      height: 56px;
+      padding: 0 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      transition: background 0.2s;
+    }
+
+    .topnav-logo {
+      align-items: center;
+      display: flex;
+      gap: 10px;
+      margin-right: 32px;
+      flex-shrink: 0;
+    }
+
+    .logo-icon {
+      width: 28px; height: 28px;
+      background: linear-gradient(135deg, #7c6af7, #2dd4bf);
+      border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 800; color: #fff;
+    }
+
+    .logo-name {
+      font-size: 13px; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--text);
+    }
+
+    .topnav-links {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      height: 100%;
+      flex: 1;
+      overflow-x: auto;
+    }
+
+    .topnav-link {
+      align-items: center;
+      border-bottom: 2px solid transparent;
+      color: var(--nav-text);
+      display: flex;
+      font-size: 13px;
+      font-weight: 500;
+      gap: 6px;
+      height: 100%;
+      padding: 0 14px;
+      transition: color 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+
+    .topnav-link:hover { color: var(--text); text-decoration: none; }
+    .topnav-link.active {
+      border-bottom-color: var(--accent-teal);
+      color: var(--text);
+    }
+
+    .topnav-right {
+      display: flex; align-items: center; gap: 10px;
+      margin-left: auto; flex-shrink: 0;
+    }
+
+    .btn-login {
+      background: transparent;
+      border: 1px solid var(--border-input);
+      border-radius: 6px;
+      color: var(--text);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 13px; font-weight: 500;
+      padding: 6px 14px;
+      transition: background 0.15s;
+    }
+    .btn-login:hover { background: var(--bg-hover); }
+
+    .btn-api {
+      background: var(--accent-teal);
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 13px; font-weight: 600;
+      padding: 7px 16px;
+      transition: opacity 0.15s;
+    }
+    .btn-api:hover { opacity: 0.88; }
+
+    .btn-theme {
+      background: transparent;
+      border: 1px solid var(--border-input);
+      border-radius: 6px;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 15px;
+      height: 32px; width: 32px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s;
+    }
+    .btn-theme:hover { background: var(--bg-hover); }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       LAYOUT
+    ═══════════════════════════════════════════════════════════════════ */
+    .layout {
+      display: flex;
+      min-height: calc(100vh - 56px);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       LEFT SIDEBAR
+    ═══════════════════════════════════════════════════════════════════ */
+    .sidebar {
+      width: 260px;
+      min-width: 260px;
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border);
+      padding: 20px 0 40px;
+      position: sticky;
+      top: 56px;
+      height: calc(100vh - 56px);
+      overflow-y: auto;
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+
+    .sidebar-section { margin-bottom: 4px; padding: 0 12px; }
+
+    .sidebar-section-title {
+      color: var(--text-section);
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 14px 8px 5px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sidebar-section-title::before {
+      content: '';
+      display: inline-block;
+      width: 3px; height: 3px;
+      background: var(--accent-sidebar);
+      border-radius: 50%;
+    }
+
+    .sidebar-link {
+      align-items: center;
+      border-radius: 6px;
+      color: var(--text-muted);
+      display: flex;
+      font-size: 13px;
+      font-weight: 400;
+      gap: 8px;
+      padding: 6px 8px;
+      transition: background 0.12s, color 0.12s;
+    }
+
+    .sidebar-link:hover {
+      background: var(--bg-hover);
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .sidebar-link.active {
+      background: var(--accent-sidebar-bg);
+      color: var(--accent-sidebar);
+      font-weight: 600;
+    }
+
+    .sidebar-link .icon {
+      font-size: 13px;
+      opacity: 0.7;
+      width: 16px;
+      text-align: center;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       MAIN
+    ═══════════════════════════════════════════════════════════════════ */
+    .main {
+      flex: 1;
+      min-width: 0;
+      padding: 44px 64px 80px;
+      max-width: 900px;
+    }
+
+    /* breadcrumb */
+    .breadcrumb {
+      align-items: center;
+      color: var(--text-faint);
+      display: flex;
+      font-size: 12px;
+      gap: 6px;
+      margin-bottom: 28px;
+    }
+    .breadcrumb a { color: var(--text-faint); }
+    .breadcrumb a:hover { color: var(--text-muted); text-decoration: none; }
+    .breadcrumb-sep { opacity: 0.45; font-size: 11px; }
+
+    /* heading */
+    .page-title {
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -0.6px;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+
+    .page-subtitle {
+      color: var(--text-muted);
+      font-size: 15px;
+      line-height: 1.75;
+      margin-bottom: 36px;
+      max-width: 640px;
+    }
+
+    /* divider */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 36px 0;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       STAT CHIPS
+    ═══════════════════════════════════════════════════════════════════ */
+    .stats-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 36px;
+    }
+
+    .stat-chip {
+      align-items: center;
+      background: var(--chip-bg);
+      border: 1px solid var(--chip-border);
+      border-radius: 10px;
+      display: flex;
+      gap: 12px;
+      padding: 12px 20px;
+      transition: background 0.15s, border-color 0.15s, transform 0.15s;
+    }
+
+    .stat-chip:hover {
+      border-color: var(--accent-sidebar);
+      transform: translateY(-2px);
+    }
+
+    .stat-chip .num {
+      color: var(--chip-num);
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .stat-chip .lbl {
+      color: var(--text-muted);
+      font-size: 11.5px;
+      line-height: 1.4;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       TABS
+    ═══════════════════════════════════════════════════════════════════ */
+    .tab-bar {
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      margin-bottom: 22px;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 13.5px;
+      font-weight: 500;
+      margin-bottom: -1px;
+      padding: 10px 20px;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .tab-btn:hover { color: var(--text); }
+
+    .tab-btn.active {
+      border-bottom-color: var(--tab-active-color);
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       SEARCH
+    ═══════════════════════════════════════════════════════════════════ */
+    .search-wrap {
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .search-icon {
+      color: var(--text-faint);
+      left: 11px;
+      pointer-events: none;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .search-input {
+      background: var(--bg-input);
+      border: 1px solid var(--border-input);
+      border-radius: 7px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 13px;
+      max-width: 100%;
+      outline: none;
+      padding: 8px 12px 8px 34px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      width: 320px;
+    }
+
+    .search-input::placeholder { color: var(--text-faint); }
+
+    .search-input:focus {
+      border-color: var(--accent-sidebar);
+      box-shadow: 0 0 0 3px rgba(124,106,247,0.12);
+    }
+
+    [data-theme="light"] .search-input:focus {
+      box-shadow: 0 0 0 3px rgba(98,84,232,0.10);
+    }
+
+    .result-count {
+      color: var(--text-faint);
+      font-size: 12px;
+      margin-bottom: 14px;
+      min-height: 18px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       PILL GRID
+       — 5 colour classes cycling: c1 purple · c2 teal · c3 green · c4 orange · c5 rose
+    ═══════════════════════════════════════════════════════════════════ */
+    .pill-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+
+    .pill {
+      align-items: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      cursor: default;
+      display: inline-flex;
+      font-size: 12.5px;
+      font-weight: 450;
+      gap: 6px;
+      letter-spacing: 0.01em;
+      padding: 5px 12px;
+      transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.12s, box-shadow 0.15s;
+      user-select: none;
+    }
+
+    .pill:hover { transform: translateY(-1px); }
+
+    /* colour variants */
+    .pill.c1:hover { background: var(--pill-1); border-color: var(--pill-1b); color: #c4b8fd; box-shadow: 0 4px 14px rgba(124,106,247,0.18); }
+    .pill.c2:hover { background: var(--pill-2); border-color: var(--pill-2b); color: #5eead4; box-shadow: 0 4px 14px rgba(45,212,191,0.18); }
+    .pill.c3:hover { background: var(--pill-3); border-color: var(--pill-3b); color: #86efac; box-shadow: 0 4px 14px rgba(34,197,94,0.18); }
+    .pill.c4:hover { background: var(--pill-4); border-color: var(--pill-4b); color: #fdba74; box-shadow: 0 4px 14px rgba(251,146,60,0.18); }
+    .pill.c5:hover { background: var(--pill-5); border-color: var(--pill-5b); color: #fda4af; box-shadow: 0 4px 14px rgba(244,63,94,0.18); }
+
+    [data-theme="light"] .pill.c1:hover { color: #5344c4; }
+    [data-theme="light"] .pill.c2:hover { color: #0f766e; }
+    [data-theme="light"] .pill.c3:hover { color: #15803d; }
+    [data-theme="light"] .pill.c4:hover { color: #c2410c; }
+    [data-theme="light"] .pill.c5:hover { color: #be123c; }
+
+    .pill svg { flex-shrink: 0; }
+
+    /* globe colour per class */
+    .pill.c1 svg { stroke: rgba(124,106,247,0.6); }
+    .pill.c2 svg { stroke: rgba(45,212,191,0.6); }
+    .pill.c3 svg { stroke: rgba(34,197,94,0.6); }
+    .pill.c4 svg { stroke: rgba(251,146,60,0.6); }
+    .pill.c5 svg { stroke: rgba(244,63,94,0.6); }
+
+    .pill.c1:hover svg { stroke: #c4b8fd; }
+    .pill.c2:hover svg { stroke: #5eead4; }
+    .pill.c3:hover svg { stroke: #86efac; }
+    .pill.c4:hover svg { stroke: #fdba74; }
+    .pill.c5:hover svg { stroke: #fda4af; }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       FOOTER NOTE
+    ═══════════════════════════════════════════════════════════════════ */
+    .footer-note {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent-sidebar);
+      border-radius: 7px;
+      color: var(--text-muted);
+      font-size: 12.5px;
+      line-height: 1.7;
+      margin-top: 4px;
+      padding: 14px 18px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       PAGE NAV
+    ═══════════════════════════════════════════════════════════════════ */
+    .page-nav {
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 16px;
+      justify-content: space-between;
+      margin-top: 64px;
+      padding-top: 24px;
+    }
+
+    .nav-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 150px;
+      padding: 14px 18px;
+      text-decoration: none;
+      transition: border-color 0.15s, background 0.15s, transform 0.12s;
+    }
+
+    .nav-btn:hover {
+      border-color: var(--accent-sidebar);
+      transform: translateY(-2px);
+      text-decoration: none;
+    }
+
+    .nav-btn .dir { color: var(--text-faint); font-size: 11px; }
+    .nav-btn .lbl { color: var(--text); font-size: 13px; font-weight: 500; }
+    .nav-btn.next { text-align: right; }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       RIGHT TOC
+    ═══════════════════════════════════════════════════════════════════ */
+    .toc {
+      width: 200px;
+      min-width: 200px;
+      padding: 44px 0 40px 24px;
+      position: sticky;
+      top: 56px;
+      height: calc(100vh - 56px);
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+
+    .toc-title {
+      color: var(--text-faint);
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .toc-link {
+      color: var(--text-muted);
+      display: block;
+      font-size: 12.5px;
+      padding: 4px 0;
+      transition: color 0.12s;
+    }
+
+    .toc-link:hover { color: var(--accent-teal); text-decoration: none; }
+    .toc-link.active { color: var(--accent-teal); font-weight: 500; }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       EMPTY STATE
+    ═══════════════════════════════════════════════════════════════════ */
+    .empty-state {
+      color: var(--text-faint);
+      font-size: 13.5px;
+      padding: 12px 0 24px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════════════════════════════ */
+    @media (max-width: 1100px) { .toc { display: none; } }
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .main { padding: 28px 20px 60px; }
+      .page-title { font-size: 22px; }
+    }
+  </style>
 </head>
 <body>
   <div class="app">
     <aside class="sidebar" aria-label="Documentation sections"></aside>
     <main class="main">
       <div class="content">
-        <div class="breadcrumb">
-          <a href="/web_doc/index.html">Docs</a><span class="sep">/</span><span>Get Started</span><span class="sep">/</span><span>Supported languages</span>
-        </div>
-        <h1>Supported <span class="accent-italic">languages</span></h1>
-        <p class="lead">Shunya's speech models cover two complementary language sets — an Indic-first model optimised for Indian languages and dialects, and a universal model spanning 204 languages worldwide.</p>
+        <nav class="topnav">
+  <div class="topnav-logo">
+    <div class="logo-icon">S</div>
+    <span class="logo-name">Shunya Labs</span>
+  </div>
 
-        <h2>Language stats</h2>
-        <div class="grid grid-4">
-          <div class="card"><div class="card-title">55+</div><p class="card-desc">Indic languages</p></div>
-          <div class="card"><div class="card-title">204</div><p class="card-desc">Universal languages</p></div>
-          <div class="card"><div class="card-title">2,970</div><p class="card-desc">Translation pairs</p></div>
-          <div class="card"><div class="card-title">3.10%</div><p class="card-desc">Composite WER</p></div>
-        </div>
+  <div class="topnav-links">
+    <a href="#" class="topnav-link active">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      Home
+    </a>
+    <a href="#" class="topnav-link">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      Quickstart
+    </a>
+    <a href="#" class="topnav-link">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      Speech-to-Text
+    </a>
+    <a href="#" class="topnav-link">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/></svg>
+      Text-to-Speech
+    </a>
+    <a href="#" class="topnav-link">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      Translation
+    </a>
+    <a href="#" class="topnav-link">Intelligence</a>
+    <a href="#" class="topnav-link">API Reference ›</a>
+    <a href="#" class="topnav-link">Integrations</a>
+    <a href="#" class="topnav-link">Deployment</a>
+  </div>
 
-        <h2>Language coverage</h2>
+  <div class="topnav-right">
+    <button class="btn-login" onclick="void(0)">Log in</button>
+    <button class="btn-api">Free API key</button>
+    <button class="btn-theme" id="themeToggle" title="Toggle theme" onclick="toggleTheme()">☀️</button>
+  </div>
+</nav>
 
-        <h3>Indic languages (Zero STT Indic — 55+)</h3>
-        <p>Optimised for Indian languages and dialects. The 23 languages below also overlaph Zero TTS.</p>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Language</th><th>ISO</th><th>Script</th></tr></thead>
-            <tbody>
-              <tr><td>Hindi</td><td>hi</td><td>Devanagari</td></tr>
-              <tr><td>Bengali</td><td>bn</td><td>Bengali</td></tr>
-              <tr><td>Telugu</td><td>te</td><td>Telugu</td></tr>
-              <tr><td>Marathi</td><td>mr</td><td>Devanagari</td></tr>
-              <tr><td>Tamil</td><td>ta</td><td>Tamil</td></tr>
-              <tr><td>Urdu</td><td>ur</td><td>Perso-Arabic</td></tr>
-              <tr><td>Gujarati</td><td>gu</td><td>Gujarati</td></tr>
-              <tr><td>Kannada</td><td>kn</td><td>Kannada</td></tr>
-              <tr><td>Odia</td><td>or</td><td>Odia</td></tr>
-              <tr><td>Malayalam</td><td>ml</td><td>Malayalam</td></tr>
-              <tr><td>Punjabi</td><td>pa</td><td>Gurmukhi</td></tr>
-              <tr><td>Assamese</td><td>as</td><td>Assamese</td></tr>
-              <tr><td>Maithili</td><td>mai</td><td>Devanagari</td></tr>
-              <tr><td>Sanskrit</td><td>sa</td><td>Devanagari</td></tr>
-              <tr><td>Nepali</td><td>ne</td><td>Devanagari</td></tr>
-              <tr><td>Konkani</td><td>gom</td><td>Devanagari</td></tr>
-              <tr><td>Dogri</td><td>doi</td><td>Devanagari</td></tr>
-              <tr><td>Kashmiri</td><td>ks</td><td>Perso-Arabic</td></tr>
-              <tr><td>Sindhi</td><td>sd</td><td>Perso-Arabic</td></tr>
-              <tr><td>Bodo</td><td>brx</td><td>Devanagari</td></tr>
-              <tr><td>Manipuri</td><td>mni</td><td>Meitei</td></tr>
-              <tr><td>Santali</td><td>sat</td><td>Ol Chiki</td></tr>
-              <tr><td>English</td><td>en</td><td>Latin</td></tr>
-            </tbody>
-          </table>
-        </div>
+<!-- ══════════════════════════════════════════════════════════════════════
+     BODY LAYOUT
+══════════════════════════════════════════════════════════════════════ -->
+<div class="layout">
 
-        <h3>Universal model (Zero STT Universal — 204 languages)</h3>
-        <p>Spans Indo-European, Dravidian, Austroasiatic, Sino-Tibetan, and Semitic families. The universal model autodetects the input language; pass <code>language_code</cod to lock it. Composite WER: <strong>3.10%</strong>.</p>
+  <!-- ── LEFT SIDEBAR ──────────────────────────────────────────────── -->
+  <aside class="sidebar">
 
-        <div class="pager">
-          <a class="pager-link" href="/web_doc/get-started/capability-matrix.html">
-            <div class="pager-label">← Previous</div>
-            <div class="pager-title">Capability matrix</div>
-          </a>
-          <a class="pager-link pager-right" href="/web_doc/get-started/glossary.html">
-            <div class="pager-label">Next →</div>
-            <div class="pager-title">Glossary</div>
-          </a>
-        </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Get Started</div>
+      <a href="#" class="sidebar-link"><span class="icon">⊞</span>Overview</a>
+      <a href="#" class="sidebar-link"><span class="icon">✦</span>What is Shunya?</a>
+      <a href="#" class="sidebar-link"><span class="icon">✦</span>Quickstart</a>
+      <a href="#" class="sidebar-link"><span class="icon">⊞</span>Capability matrix</a>
+      <a href="#" class="sidebar-link active"><span class="icon">🌐</span>Supported Languages</a>
+      <a href="#" class="sidebar-link"><span class="icon">□</span>Glossary</a>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Speech-to-Text</div>
+      <a href="#" class="sidebar-link"><span class="icon">○</span>Overview</a>
+      <a href="#" class="sidebar-link"><span class="icon">○</span>Models</a>
+      <a href="#" class="sidebar-link"><span class="icon">○</span>Streaming</a>
+      <a href="#" class="sidebar-link"><span class="icon">○</span>Configuration</a>
+      <a href="#" class="sidebar-link"><span class="icon">○</span>API Reference</a>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Text-to-Speech</div>
+      <a href="#" class="sidebar-link"><span class="icon">○</span>Overview</a>
+      <a href="#" class="sidebar-link"><span class="icon">○</span>Voices</a>
+      <a href="#" class="sidebar-link"><span class="icon">○</span>Streaming</a>
+      <a href="#" class="sidebar-link"><span class="icon">○</span>API Reference</a>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Intelligence</div>
+      <a href="#" class="sidebar-link"><span class="icon">✦</span>Overview &amp; examples</a>
+      <a href="#" class="sidebar-link"><span class="icon">⊞</span>Configuration</a>
+      <a href="#" class="sidebar-link"><span class="icon">□</span>Full reference</a>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Translation</div>
+      <a href="#" class="sidebar-link"><span class="icon">🌐</span>Vāķ Translate</a>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Solutions</div>
+      <a href="#" class="sidebar-link"><span class="icon">⊞</span>BFSI</a>
+      <a href="#" class="sidebar-link"><span class="icon">⊞</span>Healthcare</a>
+      <a href="#" class="sidebar-link"><span class="icon">⊞</span>Contact centres</a>
+      <a href="#" class="sidebar-link"><span class="icon">⊞</span>Media &amp; entertainment</a>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Integrations</div>
+      <a href="#" class="sidebar-link"><span class="icon">○</span>Overview</a>
+      <a href="#" class="sidebar-link"><span class="icon">○</span>Python SDK</a>
+      <a href="#" class="sidebar-link"><span class="icon">○</span>OpenAI SDK</a>
+      <a href="#" class="sidebar-link"><span class="icon">○</span>Hugging Face</a>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Deployment</div>
+      <a href="#" class="sidebar-link"><span class="icon">○</span>Cloud / on-prem</a>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Enterprise</div>
+      <a href="#" class="sidebar-link"><span class="icon">○</span>Set up SSO</a>
+      <a href="#" class="sidebar-link"><span class="icon">○</span>Hands-on evaluation</a>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Security</div>
+      <a href="#" class="sidebar-link"><span class="icon">□</span>Compliance &amp; privacy</a>
+    </div>
+
+  </aside>
+
+  <!-- ── MAIN ──────────────────────────────────────────────────────── -->
+  <main class="main">
+
+    <!-- breadcrumb -->
+    <nav class="breadcrumb">
+      <a href="#">Docs</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Get Started</span>
+      <span class="breadcrumb-sep">/</span>
+      <span>Supported Languages</span>
+    </nav>
+
+    <h1 class="page-title" id="top">Supported Languages</h1>
+    <p class="page-subtitle">
+      Shunya's speech models cover two complementary language sets, an Indic-first model optimised for Indian languages and dialects, and a universal model spanning 204
+      languages worldwide. Use the tabs below to explore each set.
+    </p>
+
+    <!-- stat chips -->
+    <div class="stats-row" id="stats">
+      <div class="stat-chip">
+        <span class="num">55+</span>
+        <span class="lbl">Indic<br>Languages</span>
+      </div>
+      <div class="stat-chip">
+        <span class="num">204</span>
+        <span class="lbl">Universal<br>Languages</span>
+      </div>
+      <div class="stat-chip">
+        <span class="num">2,970</span>
+        <span class="lbl">Translation<br>Pairs</span>
+      </div>
+      <div class="stat-chip">
+        <span class="num">3.10%</span>
+        <span class="lbl">Composite<br>WER</span>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- tabs -->
+    <div class="tab-bar" id="language-coverage" role="tablist">
+      <button class="tab-btn active" data-tab="indic"
+              onclick="switchTab('indic')" role="tab" aria-selected="true">
+        Indic Languages (55)
+      </button>
+      <button class="tab-btn" data-tab="universal"
+              onclick="switchTab('universal')" role="tab" aria-selected="false">
+        Universal Languages (204)
+      </button>
+    </div>
+
+    <!-- search -->
+    <div class="search-wrap">
+      <span class="search-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </span>
+      <input class="search-input" id="langSearch" type="text"
+             placeholder="Filter languages…" oninput="filterLangs()" autocomplete="off" />
+    </div>
+
+    <div class="result-count" id="resultCount"></div>
+
+    <!-- pill grid -->
+    <div class="pill-grid" id="pillGrid" role="list"></div>
+
+    <!-- footer note -->
+    <div class="footer-note" id="footerNote"></div>
+
+    <!-- page nav -->
+    <nav class="page-nav">
+      <a href="#" class="nav-btn prev">
+        <span class="dir">← Previous</span>
+        <span class="lbl">Capability matrix</span>
+      </a>
+      <a href="#" class="nav-btn next">
+        <span class="dir">Next →</span>
+        <span class="lbl">Glossary</span>
+      </a>
+    </nav>
+
+  </main>
+
+  <!-- ── RIGHT TOC ─────────────────────────────────────────────────── -->
+  <aside class="toc">
+    <div class="toc-title">On this page</div>
+    <a href="#stats" class="toc-link active">Language stats</a>
+    <a href="#language-coverage" class="toc-link">Language coverage</a>
+    <a href="#top" class="toc-link">Back to top</a>
+  </aside>
+
+</div><!-- /.layout -->
+
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════════════════════════════════ -->
+<script>
+/* ── DATA ─────────────────────────────────────────────────────────────── */
+const DATA = {
+  indic: {
+    langs: [
+      "Hindi","Bengali","Telugu","Marathi","Kannada","Tamil","Malayalam",
+      "Gujarati","Punjabi","Odia","Assamese","English","Urdu","Kashmiri",
+      "Nepali","Sindhi","Sanskrit","Maithili","Bhojpuri","Magahi",
+      "Chhattisgarhi","Rajasthani","Dogri (macrolanguage)",
+      "Konkani (macrolanguage)","Santali","Bodo (India)","Manipuri","Garo",
+      "Marwari (India)","Haryanvi","Awadhi","Braj","Garhwali","Lambadi",
+      "Bhili","Bagri","Kumaoni","Kangri","Bagheli","Nimadi","Rajbanshi",
+      "Marwari","Mewari","Wagdi","Hadothi","Goan Konkani","Ahirani",
+      "Surgujia","Kurukh","Mundari","Sambalpuri","Kachchhi","Tulu","Kodava","Sadri"
+    ],
+    note: `Zero STT Indic (model: <code>zero-indic</code>) supports 55+ Indian languages
+    including major scheduled languages, regional dialects, tribal languages, and
+    code-switching. Pass <code>language_code</code> to lock detection, or leave blank
+    for auto-detect.`
+  },
+  universal: {
+    langs: [
+      "Afar","Abkhaz","Avestan","Afrikaans","Akan","Amharic","Aragonese","Arabic",
+      "Assamese","Avaric","Aymara","Azerbaijani","Bashkir","Belarusian","Bulgarian",
+      "Bihari","Bislama","Bambara","Bengali","Tibetan","Breton","Bosnian","Catalan",
+      "Chechen","Chamorro","Corsican","Cree","Czech","Old Church Slavonic","Chuvash",
+      "Welsh","Danish","German","Divehi","Dzongkha","Ewe","Greek","English",
+      "Esperanto","Spanish","Estonian","Basque","Persian","Fula","Finnish","Fijian",
+      "Faroese","French","Western Frisian","Irish","Scottish Gaelic","Galician",
+      "Guaraní","Gujarati","Manx","Hausa","Hebrew","Hindi","Hiri Motu","Croatian",
+      "Haitian","Hungarian","Armenian","Herero","Interlingua","Indonesian",
+      "Interlingue","Igbo","Nuosu","Inupiaq","Ido","Icelandic","Italian","Inuktitut",
+      "Japanese","Javanese","Georgian","Kongo","Kikuyu","Kwanyama","Kazakh",
+      "Kalaallisut","Khmer","Kannada","Korean","Kanuri","Kashmiri","Kurdish","Komi",
+      "Cornish","Kyrgyz","Latin","Luxembourgish","Ganda","Limburgish","Lingala","Lao",
+      "Lithuanian","Luba-Katanga","Latvian","Malagasy","Marshallese","Māori",
+      "Macedonian","Malayalam","Mongolian","Marathi","Malay","Maltese","Burmese",
+      "Nauru","Norwegian Bokmål","Northern Ndebele","Nepali","Ndonga","Dutch",
+      "Norwegian Nynorsk","Norwegian","Southern Ndebele","Navajo","Chichewa",
+      "Occitan","Ojibwe","Oromo","Oriya","Ossetian","Punjabi","Pāli","Polish",
+      "Pashto","Portuguese","Quechua","Romansh","Kirundi","Romanian","Russian",
+      "Kinyarwanda","Sanskrit","Sardinian","Sindhi","Northern Sami","Sango",
+      "Sinhala","Slovak","Slovenian","Samoan","Shona","Somali","Albanian","Serbian",
+      "Swati","Southern Sotho","Sundanese","Swedish","Swahili","Tamil","Telugu",
+      "Tajik","Thai","Tigrinya","Turkmen","Tagalog","Tswana","Tonga","Turkish",
+      "Tsonga","Tatar","Twi","Tahitian","Uyghur","Ukrainian","Urdu","Uzbek","Venda",
+      "Vietnamese","Volapük","Walloon","Wolof","Xhosa","Yiddish","Yoruba","Zhuang",
+      "Chinese","Zulu","Filipino","Mandarin Chinese","Yue Chinese","Najdi Arabic",
+      "Moroccan Arabic","Egyptian Arabic","Dari","Iranian Persian","Bhojpuri",
+      "Maithili","Fiji Hindi","Central Atlas Tamazight","Kabyle","Asturian",
+      "Ladino","Lombard","Neapolitan","Central Kurdish"
+    ],
+    note: `Zero STT Universal (model: <code>zero-universal</code>) supports 204 languages
+    and dialects spanning Indo-European, Dravidian, Austroasiatic, Sino-Tibetan, and
+    Semitic families. The model auto-detects input language; pass <code>language_code</code>
+    to lock it. Composite WER: <strong>3.10%</strong>, Average RTFx: 146.23.`
+  }
+};
+
+/* colour cycling — 5 classes */
+const COLORS = ['c1','c2','c3','c4','c5'];
+
+/* globe SVG */
+function globeSvg() {
+  return `<svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <line x1="2" y1="12" x2="22" y2="12"/>
+    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10
+             15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+  </svg>`;
+}
+
+/* ── STATE ────────────────────────────────────────────────────────────── */
+let current = 'indic';
+
+/* ── RENDER ───────────────────────────────────────────────────────────── */
+function renderPills(query = '') {
+  const grid     = document.getElementById('pillGrid');
+  const countEl  = document.getElementById('resultCount');
+  const noteEl   = document.getElementById('footerNote');
+
+  const list = DATA[current].langs;
+  const q    = query.trim().toLowerCase();
+  const filtered = q ? list.filter(l => l.toLowerCase().includes(q)) : list;
+
+  countEl.textContent = q
+    ? `${filtered.length} result${filtered.length !== 1 ? 's' : ''} for "${query}"`
+    : '';
+
+  noteEl.innerHTML = DATA[current].note;
+
+  if (!filtered.length) {
+    grid.innerHTML = `<p class="empty-state">No languages match your search.</p>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map((name, i) => {
+    const cls = COLORS[i % COLORS.length];
+    return `<span class="pill ${cls}" role="listitem">${globeSvg()}${name}</span>`;
+  }).join('');
+}
+
+/* ── TAB SWITCH ───────────────────────────────────────────────────────── */
+function switchTab(tab) {
+  current = tab;
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    const active = btn.dataset.tab === tab;
+    btn.classList.toggle('active', active);
+    btn.setAttribute('aria-selected', active ? 'true' : 'false');
+  });
+  document.getElementById('langSearch').value = '';
+  renderPills('');
+}
+
+/* ── FILTER ───────────────────────────────────────────────────────────── */
+function filterLangs() {
+  renderPills(document.getElementById('langSearch').value);
+}
+
+/* ── THEME TOGGLE ─────────────────────────────────────────────────────── */
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('themeToggle').textContent = isDark ? '🌙' : '☀️';
+}
+
+/* ── INIT ─────────────────────────────────────────────────────────────── */
+renderPills();
+</script>
+
       </div>
       <aside class="toc" aria-label="On this page"></aside>
     </main>
   </div>
-
   <script src="/web_doc/assets/js/shell.js?v=3"></script>
   <script src="/web_doc/assets/js/nav.js?v=2"></script>
 </body>
