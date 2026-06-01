@@ -8,6 +8,7 @@
         { href: '/web_doc/get-started/what-is-shunya.html', label: 'What is Shunya?', icon: 'sparkles' },
         { href: '/web_doc/get-started/quickstart.html', label: 'Quickstart', icon: 'zap' },
         { href: '/web_doc/get-started/capability-matrix.html', label: 'Capability matrix', icon: 'grid' },
+        { href: '/web_doc/get-started/supported-languages.html', label: 'Supported languages', icon: 'globe' },
         { href: '/web_doc/get-started/glossary.html', label: 'Glossary', icon: 'book' },
       ]
     },
