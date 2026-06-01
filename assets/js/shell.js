@@ -23,6 +23,40 @@
   let docBase = '';
   let headerNavWired = false;
 
+  // ── Google Translate ───────────────────────────────────────────────────────
+  function loadGoogleTranslate() {
+    if (document.getElementById('gt-script')) return;
+    window.googleTranslateElementInit = function () {
+      new google.translate.TranslateElement(
+        { pageLanguage: 'en', autoDisplay: false },
+        'google_translate_element'
+      );
+    };
+    const s = document.createElement('script');
+    s.id = 'gt-script';
+    s.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    document.head.appendChild(s);
+  }
+
+  function triggerTranslate(lang) {
+    if (lang === 'en') {
+      try {
+        document.querySelector('.goog-te-banner-frame')
+          ?.contentDocument?.querySelector('.goog-close-link')?.click();
+      } catch (e) {}
+      return;
+    }
+    const t = setInterval(() => {
+      const combo = document.querySelector('select.goog-te-combo');
+      if (combo) {
+        combo.value = lang;
+        combo.dispatchEvent(new Event('change'));
+        clearInterval(t);
+      }
+    }, 100);
+    setTimeout(() => clearInterval(t), 5000);
+  }
+
   function getDocBase() {
     if (docBase) return docBase;
     const link = document.querySelector('link[href*="main.css"]');
@@ -106,17 +140,85 @@
           </a>
           <a href="https://accounts.shunyalabs.ai" class="header-btn header-btn-ghost" target="_blank" rel="noopener">Log in</a>
           <a href="https://accounts.shunyalabs.ai" class="header-btn header-btn-primary" target="_blank" rel="noopener">Free API key</a>
+          <div id="google_translate_element" style="display:none"></div>
+          <div class="lang-switcher-wrapper">
+            <select id="customLangSelect" aria-label="Select Language">
+              <optgroup label="🌐 International">
+                <option value="en" selected>🌐 EN</option>
+                <option value="ja">🇯🇵 Japanese</option>
+                <option value="zh-CN">🇨🇳 Chinese (S)</option>
+                <option value="zh-TW">🇹🇼 Chinese (T)</option>
+                <option value="ar">🇸🇦 Arabic</option>
+                <option value="de">🇩🇪 German</option>
+                <option value="fr">🇫🇷 French</option>
+                <option value="es">🇪🇸 Spanish</option>
+                <option value="pt">🇧🇷 Portuguese</option>
+                <option value="ru">🇷🇺 Russian</option>
+                <option value="ko">🇰🇷 Korean</option>
+              </optgroup>
+              <optgroup label="🇮🇳 Hindi Belt">
+                <option value="hi">हिन्दी — Hindi</option>
+                <option value="bho">भोजपुरी — Bhojpuri</option>
+                <option value="mai">मैथिली — Maithili</option>
+                <option value="raj">राजस्थानी — Rajasthani</option>
+              </optgroup>
+              <optgroup label="🇮🇳 South India">
+                <option value="ta">தமிழ் — Tamil</option>
+                <option value="te">తెలుగు — Telugu</option>
+                <option value="kn">ಕನ್ನಡ — Kannada</option>
+                <option value="ml">മലയാളം — Malayalam</option>
+              </optgroup>
+              <optgroup label="🇮🇳 West India">
+                <option value="mr">मराठी — Marathi</option>
+                <option value="gu">ગુજરાતી — Gujarati</option>
+                <option value="kok">कोंकणी — Konkani</option>
+              </optgroup>
+              <optgroup label="🇮🇳 East India">
+                <option value="bn">বাংলা — Bengali</option>
+                <option value="or">ଓଡ଼ିଆ — Odia</option>
+                <option value="as">অসমীয়া — Assamese</option>
+              </optgroup>
+              <optgroup label="🇮🇳 North-East">
+                <option value="mni">মেইতেই — Meitei</option>
+                <option value="ne">नेपाली — Nepali</option>
+              </optgroup>
+              <optgroup label="🇮🇳 North India">
+                <option value="pa">ਪੰਜਾਬੀ — Punjabi</option>
+                <option value="ur">اردو — Urdu</option>
+                <option value="ks">کٲشُر — Kashmiri</option>
+                <option value="doi">डोगरी — Dogri</option>
+                <option value="sd">سنڌي — Sindhi</option>
+              </optgroup>
+            </select>
+          </div>
           <button type="button" id="theme-btn" class="icon-btn" aria-label="Toggle theme"></button>
         </div>
       </div>
       <nav class="header-nav" aria-label="Jump to product area"></nav>
     `;
+
     const themeBtn = header.querySelector('#theme-btn');
     if (themeBtn) {
       themeBtn.addEventListener('click', () => {
         if (window.ShunyaTheme) window.ShunyaTheme.cycle();
       });
     }
+
+    // ── Language switcher ──────────────────────────────────────────
+    const sel = header.querySelector('#customLangSelect');
+    if (sel) {
+      // Restore saved language
+      const saved = localStorage.getItem('shunya_lang');
+      if (saved && saved !== 'en') {
+        sel.value = saved;
+        setTimeout(() => triggerTranslate(saved), 900);
+      }
+      sel.addEventListener('change', function () {
+        localStorage.setItem('shunya_lang', this.value);
+        triggerTranslate(this.value);
+      });
+    }
+
     return header;
   }
 
@@ -263,6 +365,7 @@
   }
 
   function init() {
+    loadGoogleTranslate(); // ← add this line
     const app = document.querySelector('.app');
     if (!app) return;
 

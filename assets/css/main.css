@@ -3025,3 +3025,42 @@ html.dark .api-ref-group-toggle:hover {
   .product-nav-link::before,
   .api-ref-link.product-nav-link::before { transition: none; }
 }
+/* ── Language Switcher ───────────────────────────────────────────── */
+.goog-te-banner-frame.skiptranslate { display: none !important; }
+.goog-te-gadget { display: none !important; }
+body { top: 0 !important; }
+
+.lang-switcher-wrapper {
+  display: flex;
+  align-items: center;
+  margin-left: 4px;
+}
+
+#customLangSelect {
+  background: transparent;
+  color: var(--text, #e2e8f0);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 6px;
+  padding: 5px 24px 5px 10px;
+  font-size: 13px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 7px center;
+  width: 90px;
+  transition: border-color 0.15s;
+}
+
+#customLangSelect:hover,
+#customLangSelect:focus {
+  border-color: var(--accent, #6366f1);
+  outline: none;
+}
+
+#customLangSelect option,
+#customLangSelect optgroup {
+  background: #13131a;
+  color: #e2e8f0;
+}
