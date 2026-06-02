@@ -57,6 +57,187 @@
     setTimeout(() => clearInterval(t), 5000);
   }
 
+  // ── Google Translate ───────────────────────────────────────────────────────
+  const LANGUAGES = [
+    { group: '🌐 International' },
+    { value: 'en',    label: 'English',            flag: '🌐' },
+    { value: 'ja',    label: 'Japanese',           flag: '🇯🇵' },
+    { value: 'zh-CN', label: 'Chinese (Simplified)',flag: '🇨🇳' },
+    { value: 'zh-TW', label: 'Chinese (Traditional)',flag:'🇹🇼' },
+    { value: 'ar',    label: 'Arabic',             flag: '🇸🇦' },
+    { value: 'de',    label: 'German',             flag: '🇩🇪' },
+    { value: 'fr',    label: 'French',             flag: '🇫🇷' },
+    { value: 'es',    label: 'Spanish',            flag: '🇪🇸' },
+    { value: 'pt',    label: 'Portuguese',         flag: '🇧🇷' },
+    { value: 'ru',    label: 'Russian',            flag: '🇷🇺' },
+    { value: 'ko',    label: 'Korean',             flag: '🇰🇷' },
+    { group: '🇮🇳 Hindi Belt' },
+    { value: 'hi',    label: 'हिन्दी — Hindi',      flag: '🇮🇳' },
+    { value: 'bho',   label: 'भोजपुरी — Bhojpuri', flag: '🇮🇳' },
+    { value: 'mai',   label: 'मैथिली — Maithili',  flag: '🇮🇳' },
+    { value: 'raj',   label: 'राजस्थानी — Rajasthani', flag: '🇮🇳' },
+    { group: '🇮🇳 South India' },
+    { value: 'ta',    label: 'தமிழ் — Tamil',      flag: '🇮🇳' },
+    { value: 'te',    label: 'తెలుగు — Telugu',    flag: '🇮🇳' },
+    { value: 'kn',    label: 'ಕನ್ನಡ — Kannada',    flag: '🇮🇳' },
+    { value: 'ml',    label: 'മലയാളം — Malayalam', flag: '🇮🇳' },
+    { group: '🇮🇳 West India' },
+    { value: 'mr',    label: 'मराठी — Marathi',    flag: '🇮🇳' },
+    { value: 'gu',    label: 'ગુજરાતી — Gujarati', flag: '🇮🇳' },
+    { value: 'kok',   label: 'कोंकणी — Konkani',   flag: '🇮🇳' },
+    { group: '🇮🇳 East India' },
+    { value: 'bn',    label: 'বাংলা — Bengali',    flag: '🇮🇳' },
+    { value: 'or',    label: 'ଓଡ଼ିଆ — Odia',       flag: '🇮🇳' },
+    { value: 'as',    label: 'অসমীয়া — Assamese', flag: '🇮🇳' },
+    { group: '🇮🇳 North-East' },
+    { value: 'mni',   label: 'মেইতেই — Meitei',   flag: '🇮🇳' },
+    { value: 'ne',    label: 'नेपाली — Nepali',    flag: '🇮🇳' },
+    { group: '🇮🇳 North India' },
+    { value: 'pa',    label: 'ਪੰਜਾਬੀ — Punjabi',   flag: '🇮🇳' },
+    { value: 'ur',    label: 'اردو — Urdu',        flag: '🇮🇳' },
+    { value: 'ks',    label: 'کٲشُر — Kashmiri',   flag: '🇮🇳' },
+    { value: 'doi',   label: 'डोगरी — Dogri',      flag: '🇮🇳' },
+    { value: 'sd',    label: 'سنڌي — Sindhi',      flag: '🇮🇳' },
+  ];
+
+  let currentLang = 'en';
+
+  function loadGoogleTranslate() {
+    if (document.getElementById('gt-script')) return;
+    window.googleTranslateElementInit = function () {
+      new google.translate.TranslateElement(
+        { pageLanguage: 'en', autoDisplay: false },
+        'google_translate_element'
+      );
+    };
+    const s = document.createElement('script');
+    s.id = 'gt-script';
+    s.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    document.head.appendChild(s);
+  }
+
+  function triggerTranslate(lang) {
+    if (lang === 'en') {
+      try {
+        document.querySelector('.goog-te-banner-frame')
+          ?.contentDocument?.querySelector('.goog-close-link')?.click();
+      } catch (e) {}
+      return;
+    }
+    const t = setInterval(() => {
+      const combo = document.querySelector('select.goog-te-combo');
+      if (combo) {
+        combo.value = lang;
+        combo.dispatchEvent(new Event('change'));
+        clearInterval(t);
+      }
+    }, 100);
+    setTimeout(() => clearInterval(t), 5000);
+  }
+
+  function renderLangList(filter) {
+    const list = document.getElementById('langList');
+    if (!list) return;
+    const q = (filter || '').toLowerCase();
+    let html = '';
+    let inGroup = false;
+    LANGUAGES.forEach(item => {
+      if (item.group) {
+        if (!q) {
+          html += `<div class="lang-group">${item.group}</div>`;
+          inGroup = true;
+        }
+        return;
+      }
+      if (q && !item.label.toLowerCase().includes(q)) return;
+      const active = item.value === currentLang;
+      html += `
+        <div class="lang-option${active ? ' is-active' : ''}" data-value="${item.value}" role="option" aria-selected="${active}">
+          <span class="lang-flag">${item.flag}</span>
+          <span class="lang-name">${item.label}</span>
+          ${active ? '<svg class="lang-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' : ''}
+        </div>`;
+    });
+    list.innerHTML = html || '<div class="lang-no-results">No results</div>';
+
+    list.querySelectorAll('.lang-option').forEach(el => {
+      el.addEventListener('click', () => {
+        const val = el.dataset.value;
+        selectLang(val);
+      });
+    });
+  }
+
+  function selectLang(val) {
+    const item = LANGUAGES.find(l => l.value === val);
+    if (!item) return;
+    currentLang = val;
+    localStorage.setItem('shunya_lang', val);
+
+    // Update trigger label
+    const label = document.getElementById('langLabel');
+    if (label) label.textContent = val === 'en' ? 'EN' : (item.flag + ' ' + val.toUpperCase().slice(0, 3));
+
+    closeLangDropdown();
+    triggerTranslate(val);
+  }
+
+  function closeLangDropdown() {
+    const dropdown = document.getElementById('langDropdown');
+    const trigger = document.getElementById('langTrigger');
+    const switcher = document.getElementById('langSwitcher');
+    if (dropdown) dropdown.classList.remove('is-open');
+    if (trigger) trigger.setAttribute('aria-expanded', 'false');
+    if (switcher) switcher.classList.remove('is-open');
+  }
+
+  function wireLangSwitcher() {
+    const trigger = document.getElementById('langTrigger');
+    const dropdown = document.getElementById('langDropdown');
+    const search = document.getElementById('langSearch');
+    const switcher = document.getElementById('langSwitcher');
+    if (!trigger || !dropdown) return;
+
+    // Render full list
+    const saved = localStorage.getItem('shunya_lang') || 'en';
+    currentLang = saved;
+    const savedItem = LANGUAGES.find(l => l.value === saved);
+    if (savedItem && saved !== 'en') {
+      const label = document.getElementById('langLabel');
+      if (label) label.textContent = savedItem.flag + ' ' + saved.toUpperCase().slice(0, 3);
+      setTimeout(() => triggerTranslate(saved), 900);
+    }
+    renderLangList('');
+
+    // Toggle open/close
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = dropdown.classList.toggle('is-open');
+      trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      switcher.classList.toggle('is-open', isOpen);
+      if (isOpen) {
+        setTimeout(() => search && search.focus(), 50);
+        renderLangList('');
+      }
+    });
+
+    // Search filter
+    if (search) {
+      search.addEventListener('input', () => renderLangList(search.value));
+      search.addEventListener('click', e => e.stopPropagation());
+    }
+
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+      if (!switcher.contains(e.target)) closeLangDropdown();
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLangDropdown();
+    });
+  }
+
   function getDocBase() {
     if (docBase) return docBase;
     const link = document.querySelector('link[href*="main.css"]');
@@ -140,60 +321,67 @@
           </a>
           <a href="https://accounts.shunyalabs.ai" class="header-btn header-btn-ghost" target="_blank" rel="noopener">Log in</a>
           <a href="https://accounts.shunyalabs.ai" class="header-btn header-btn-primary" target="_blank" rel="noopener">Free API key</a>
-          <div id="google_translate_element" style="display:none"></div>
-          <div class="lang-switcher-wrapper">
-            <select id="customLangSelect" aria-label="Select Language">
-              <optgroup label="🌐 International">
-                <option value="en" selected>🌐 EN</option>
-                <option value="ja">🇯🇵 Japanese</option>
-                <option value="zh-CN">🇨🇳 Chinese (S)</option>
-                <option value="zh-TW">🇹🇼 Chinese (T)</option>
-                <option value="ar">🇸🇦 Arabic</option>
-                <option value="de">🇩🇪 German</option>
-                <option value="fr">🇫🇷 French</option>
-                <option value="es">🇪🇸 Spanish</option>
-                <option value="pt">🇧🇷 Portuguese</option>
-                <option value="ru">🇷🇺 Russian</option>
-                <option value="ko">🇰🇷 Korean</option>
-              </optgroup>
-              <optgroup label="🇮🇳 Hindi Belt">
-                <option value="hi">हिन्दी — Hindi</option>
-                <option value="bho">भोजपुरी — Bhojpuri</option>
-                <option value="mai">मैथिली — Maithili</option>
-                <option value="raj">राजस्थानी — Rajasthani</option>
-              </optgroup>
-              <optgroup label="🇮🇳 South India">
-                <option value="ta">தமிழ் — Tamil</option>
-                <option value="te">తెలుగు — Telugu</option>
-                <option value="kn">ಕನ್ನಡ — Kannada</option>
-                <option value="ml">മലയാളം — Malayalam</option>
-              </optgroup>
-              <optgroup label="🇮🇳 West India">
-                <option value="mr">मराठी — Marathi</option>
-                <option value="gu">ગુજરાતી — Gujarati</option>
-                <option value="kok">कोंकणी — Konkani</option>
-              </optgroup>
-              <optgroup label="🇮🇳 East India">
-                <option value="bn">বাংলা — Bengali</option>
-                <option value="or">ଓଡ଼ିଆ — Odia</option>
-                <option value="as">অসমীয়া — Assamese</option>
-              </optgroup>
-              <optgroup label="🇮🇳 North-East">
-                <option value="mni">মেইতেই — Meitei</option>
-                <option value="ne">नेपाली — Nepali</option>
-              </optgroup>
-              <optgroup label="🇮🇳 North India">
-                <option value="pa">ਪੰਜਾਬੀ — Punjabi</option>
-                <option value="ur">اردو — Urdu</option>
-                <option value="ks">کٲشُر — Kashmiri</option>
-                <option value="doi">डोगरी — Dogri</option>
-                <option value="sd">سنڌي — Sindhi</option>
-              </optgroup>
-            </select>
+         <div id="google_translate_element" style="display:none"></div>
+          <div class="lang-switcher-wrapper" id="langSwitcher">
+            <button type="button" class="lang-trigger" id="langTrigger" aria-haspopup="listbox" aria-expanded="false">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              <span id="langLabel">EN</span>
+              <svg class="lang-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="lang-dropdown" id="langDropdown" role="listbox" aria-label="Select Language">
+              <div class="lang-search-wrap">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" class="lang-search" id="langSearch" placeholder="Search language..." autocomplete="off" spellcheck="false">
+              </div>
+              <div class="lang-list" id="langList">
+                <div class="lang-group-label">🌐 International</div>
+                <div class="lang-option active" data-value="en" data-label="EN">🇺🇸 English</div>
+                <div class="lang-option" data-value="ja" data-label="JA">🇯🇵 Japanese</div>
+                <div class="lang-option" data-value="zh-CN" data-label="中文">🇨🇳 Chinese (Simplified)</div>
+                <div class="lang-option" data-value="zh-TW" data-label="中文">🇹🇼 Chinese (Traditional)</div>
+                <div class="lang-option" data-value="ar" data-label="AR">🇸🇦 Arabic</div>
+                <div class="lang-option" data-value="de" data-label="DE">🇩🇪 German</div>
+                <div class="lang-option" data-value="fr" data-label="FR">🇫🇷 French</div>
+                <div class="lang-option" data-value="es" data-label="ES">🇪🇸 Spanish</div>
+                <div class="lang-option" data-value="pt" data-label="PT">🇧🇷 Portuguese</div>
+                <div class="lang-option" data-value="ru" data-label="RU">🇷🇺 Russian</div>
+                <div class="lang-option" data-value="ko" data-label="KO">🇰🇷 Korean</div>
+                <div class="lang-option" data-value="tr" data-label="TR">🇹🇷 Turkish</div>
+                <div class="lang-option" data-value="vi" data-label="VI">🇻🇳 Vietnamese</div>
+                <div class="lang-option" data-value="id" data-label="ID">🇮🇩 Indonesian</div>
+                <div class="lang-group-label">🇮🇳 Hindi Belt</div>
+                <div class="lang-option" data-value="hi" data-label="हिंदी">हिन्दी — Hindi</div>
+                <div class="lang-option" data-value="bho" data-label="भोजपुरी">भोजपुरी — Bhojpuri</div>
+                <div class="lang-option" data-value="mai" data-label="मैथिली">मैथिली — Maithili</div>
+                <div class="lang-option" data-value="raj" data-label="राजस्थानी">राजस्थानी — Rajasthani</div>
+                <div class="lang-group-label">🇮🇳 South India</div>
+                <div class="lang-option" data-value="ta" data-label="தமிழ்">தமிழ் — Tamil</div>
+                <div class="lang-option" data-value="te" data-label="తెలుగు">తెలుగు — Telugu</div>
+                <div class="lang-option" data-value="kn" data-label="ಕನ್ನಡ">ಕನ್ನಡ — Kannada</div>
+                <div class="lang-option" data-value="ml" data-label="മലയാളം">മലയാളം — Malayalam</div>
+                <div class="lang-group-label">🇮🇳 West India</div>
+                <div class="lang-option" data-value="mr" data-label="मराठी">मराठी — Marathi</div>
+                <div class="lang-option" data-value="gu" data-label="ગુજરાતી">ગુજરાતી — Gujarati</div>
+                <div class="lang-option" data-value="kok" data-label="कोंकणी">कोंकणी — Konkani</div>
+                <div class="lang-group-label">🇮🇳 East India</div>
+                <div class="lang-option" data-value="bn" data-label="বাংলা">বাংলা — Bengali</div>
+                <div class="lang-option" data-value="or" data-label="ଓଡ଼ିଆ">ଓଡ଼ିଆ — Odia</div>
+                <div class="lang-option" data-value="as" data-label="অসমীয়া">অসমীয়া — Assamese</div>
+                <div class="lang-group-label">🇮🇳 North-East India</div>
+                <div class="lang-option" data-value="mni" data-label="মেইতেই">মেইতেই — Meitei</div>
+                <div class="lang-option" data-value="ne" data-label="नेपाली">नेपाली — Nepali</div>
+                <div class="lang-group-label">🇮🇳 North India</div>
+                <div class="lang-option" data-value="pa" data-label="ਪੰਜਾਬੀ">ਪੰਜਾਬੀ — Punjabi</div>
+                <div class="lang-option" data-value="ur" data-label="اردو">اردو — Urdu</div>
+                <div class="lang-option" data-value="ks" data-label="کٲشُر">کٲشُر — Kashmiri</div>
+                <div class="lang-option" data-value="doi" data-label="डोगरी">डोगरी — Dogri</div>
+                <div class="lang-option" data-value="sd" data-label="سنڌي">سنڌي — Sindhi</div>
+              </div>
+            </div>
           </div>
           <button type="button" id="theme-btn" class="icon-btn" aria-label="Toggle theme"></button>
-        </div>
-      </div>
+        </div><!-- close .header-actions -->
+      </div><!-- close .header-top -->
       <nav class="header-nav" aria-label="Jump to product area"></nav>
     `;
 
@@ -204,24 +392,82 @@
       });
     }
 
-    // ── Language switcher ──────────────────────────────────────────
-    const sel = header.querySelector('#customLangSelect');
-    if (sel) {
-      // Restore saved language
-      const saved = localStorage.getItem('shunya_lang');
-      if (saved && saved !== 'en') {
-        sel.value = saved;
-        setTimeout(() => triggerTranslate(saved), 900);
-      }
-      sel.addEventListener('change', function () {
-        localStorage.setItem('shunya_lang', this.value);
-        triggerTranslate(this.value);
+    // ── Language switcher wiring ───────────────────────────────────
+    const trigger  = header.querySelector('#langTrigger');
+    const dropdown = header.querySelector('#langDropdown');
+    const label    = header.querySelector('#langLabel');
+    const search   = header.querySelector('#langSearch');
+    const list     = header.querySelector('#langList');
+
+    function setLang(value, labelText) {
+      label.textContent = labelText;
+      list.querySelectorAll('.lang-option').forEach(o =>
+        o.classList.toggle('active', o.dataset.value === value)
+      );
+      closeLang();
+      localStorage.setItem('shunya_lang', value);
+      triggerTranslate(value);
+    }
+
+    function openLang() {
+      dropdown.classList.add('open');
+      trigger.setAttribute('aria-expanded', 'true');
+      search.value = '';
+      filterLang('');
+      setTimeout(() => search.focus(), 50);
+    }
+
+    function closeLang() {
+      dropdown.classList.remove('open');
+      trigger.setAttribute('aria-expanded', 'false');
+    }
+
+    function filterLang(q) {
+      const query = q.toLowerCase();
+      list.querySelectorAll('.lang-option').forEach(o => {
+        o.style.display = o.textContent.toLowerCase().includes(query) ? '' : 'none';
       });
+      list.querySelectorAll('.lang-group-label').forEach(g => {
+        let el = g.nextElementSibling;
+        let hasVisible = false;
+        while (el && !el.classList.contains('lang-group-label')) {
+          if (el.style.display !== 'none') hasVisible = true;
+          el = el.nextElementSibling;
+        }
+        g.style.display = hasVisible ? '' : 'none';
+      });
+    }
+
+    if (trigger && dropdown) {
+      trigger.addEventListener('click', e => {
+        e.stopPropagation();
+        dropdown.classList.contains('open') ? closeLang() : openLang();
+      });
+      list.addEventListener('click', e => {
+        const opt = e.target.closest('.lang-option');
+        if (opt) setLang(opt.dataset.value, opt.dataset.label);
+      });
+      search.addEventListener('input', e => filterLang(e.target.value));
+      search.addEventListener('click', e => e.stopPropagation());
+      document.addEventListener('click', e => {
+        if (!document.getElementById('langSwitcher')?.contains(e.target)) closeLang();
+      });
+
+      // Restore saved language on load
+      const saved = localStorage.getItem('shunya_lang');
+      if (saved) {
+        const savedOpt = list.querySelector(`[data-value="${saved}"]`);
+        if (savedOpt) {
+          label.textContent = savedOpt.dataset.label;
+          list.querySelector('.lang-option.active')?.classList.remove('active');
+          savedOpt.classList.add('active');
+          if (saved !== 'en') setTimeout(() => triggerTranslate(saved), 900);
+        }
+      }
     }
 
     return header;
   }
-
   const TOP_LINKS = [
     {
       id: 'home',
