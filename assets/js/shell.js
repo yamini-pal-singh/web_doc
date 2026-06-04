@@ -102,39 +102,6 @@
 
   let currentLang = 'en';
 
-  function loadGoogleTranslate() {
-    if (document.getElementById('gt-script')) return;
-    window.googleTranslateElementInit = function () {
-      new google.translate.TranslateElement(
-        { pageLanguage: 'en', autoDisplay: false },
-        'google_translate_element'
-      );
-    };
-    const s = document.createElement('script');
-    s.id = 'gt-script';
-    s.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-    document.head.appendChild(s);
-  }
-
-  function triggerTranslate(lang) {
-    if (lang === 'en') {
-      try {
-        document.querySelector('.goog-te-banner-frame')
-          ?.contentDocument?.querySelector('.goog-close-link')?.click();
-      } catch (e) {}
-      return;
-    }
-    const t = setInterval(() => {
-      const combo = document.querySelector('select.goog-te-combo');
-      if (combo) {
-        combo.value = lang;
-        combo.dispatchEvent(new Event('change'));
-        clearInterval(t);
-      }
-    }, 100);
-    setTimeout(() => clearInterval(t), 5000);
-  }
-
   function renderLangList(filter) {
     const list = document.getElementById('langList');
     if (!list) return;
