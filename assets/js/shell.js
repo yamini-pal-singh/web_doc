@@ -441,7 +441,7 @@
       label: 'Home',
       path: '/index.html',
       icon: 'home',
-      match: [/index\.html$/, /\/web_doc\/?$/, /what-is-shunya/, /glossary/, /capability-matrix/],
+      match: [/index\.html$/, /\/web_doc\/?$/, /what-is-shunya/, /glossary/, /capability-matrix/, /\/faqs/],
     },
     {
       id: 'quickstart',

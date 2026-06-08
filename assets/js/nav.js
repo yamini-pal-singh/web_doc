@@ -10,6 +10,7 @@
         { href: '/web_doc/get-started/capability-matrix.html', label: 'Capability matrix', icon: 'grid' },
         { href: '/web_doc/get-started/supported-languages.html', label: 'Supported languages', icon: 'globe' },
         { href: '/web_doc/get-started/glossary.html', label: 'Glossary', icon: 'book' },
+        { href: '/web_doc/get-started/faqs.html', label: 'FAQs', icon: 'help-circle' },
       ]
     },
     {
@@ -112,6 +113,7 @@
     phone: '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>',
     lock: '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
     beaker: '<path d="M9 2v6L4 18a2 2 0 0 0 1.79 3h12.42A2 2 0 0 0 20 18l-5-10V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="6" y1="14" x2="18" y2="14"/>',
+    'help-circle': '<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
   };
 
   function icon(name) {
