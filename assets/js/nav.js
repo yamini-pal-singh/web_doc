@@ -54,6 +54,8 @@
         { href: '/web_doc/integrations/openai-sdk.html', label: 'OpenAI SDK', icon: 'compatible' },
         { href: '/web_doc/integrations/sip-pstn.html', label: 'SIP / PSTN', icon: 'wifi' },
         { href: '/web_doc/integrations/hugging-face.html', label: 'Hugging Face', icon: 'flask' },
+        { href: '/web_doc/integrations/pipecat.html', label: 'Pipecat', icon: 'building' },
+        { href: '/web_doc/integrations/livekit.html', label: 'LiveKit', icon: 'phone' },
       ]
     },
     {
