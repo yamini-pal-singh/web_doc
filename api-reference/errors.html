@@ -43,6 +43,9 @@
     .error-badge.s2xx { background: #ecfdf5; color: #065f46; }
     .error-badge.s4xx { background: #fffbeb; color: #92400e; }
     .error-badge.s5xx { background: #fef2f2; color: #991b1b; }
+    .error-badge.ws-ok   { background: #ecfdf5; color: #065f46; }
+    .error-badge.ws-warn { background: #fffbeb; color: #92400e; }
+    .error-badge.ws-err  { background: #fef2f2; color: #991b1b; }
 
     .error-body {
       padding: 0.85rem 1.1rem;
@@ -141,7 +144,7 @@
         </div>
 
         <h1>HTTP error <span class="accent-italic">codes</span></h1>
-        <p class="lead">Status codes returned by the ASR and TTS APIs — what each one means, why it happens, and how to fix it.</p>
+        <p class="lead">Status codes returned by the STT, TTS, Live Streaming, and WebSocket APIs — what each one means, why it happens, and how to fix it.</p>
 
         <!-- ── ASR ──────────────────────────────────────────────────────── -->
         <h2 class="product-chapter">Speech-to-Text <span class="accent-italic">(ASR)</span></h2>
@@ -165,6 +168,69 @@
                 <div>
                   <p class="error-row-label">What to do</p>
                   <p class="error-row-value">Nothing — read the transcript from the response body. Check <code>language</code> and <code>confidence</code> fields if your use case needs them.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 201 -->
+          <div class="error-card">
+            <div class="error-badge s2xx">201</div>
+            <div class="error-body">
+              <p class="error-title">Created — resource successfully created</p>
+              <div class="error-meta">
+                <span class="tag tag-ok">Success</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">A new resource (e.g. a custom vocabulary or async job) was created on the server. The response body contains the new resource's <code>id</code> and initial <code>status</code>.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">What to do</p>
+                  <p class="error-row-value">Store the returned <code>id</code> — you'll need it to poll for status or retrieve results later.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 202 -->
+          <div class="error-card">
+            <div class="error-badge s2xx">202</div>
+            <div class="error-body">
+              <p class="error-title">Accepted — queued for async processing</p>
+              <div class="error-meta">
+                <span class="tag tag-ok">Success</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">Your request was received and queued but hasn't been processed yet. The response body will include a job <code>id</code> and <code>status: "processing"</code>. This is normal for long audio files submitted via the async endpoint.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">What to do</p>
+                  <p class="error-row-value">Poll the job status endpoint with the returned <code>id</code> at a reasonable interval (e.g. every 5 s) until the status changes to <code>completed</code> or <code>failed</code>.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 204 -->
+          <div class="error-card">
+            <div class="error-badge s2xx">204</div>
+            <div class="error-body">
+              <p class="error-title">No Content — request succeeded, no body</p>
+              <div class="error-meta">
+                <span class="tag tag-ok">Success</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The action completed successfully but there's nothing to return — typical for DELETE operations or config updates.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">What to do</p>
+                  <p class="error-row-value">Treat this as success. Don't attempt to parse a response body — it will be empty.</p>
                 </div>
               </div>
             </div>
@@ -216,6 +282,183 @@
                     <li>Copy your key fresh from the dashboard — avoid extra spaces or newlines.</li>
                     <li>If the key was recently rotated, update it in your app's config and redeploy.</li>
                     <li>Check your dashboard to ensure the key is active and hasn't been revoked.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 403 -->
+          <div class="error-card">
+            <div class="error-badge s4xx">403</div>
+            <div class="error-body">
+              <p class="error-title">Forbidden — permission denied</p>
+              <div class="error-meta">
+                <span class="tag tag-auth">Authentication</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">Your credentials are valid but your account or API key doesn't have access to this resource. This differs from 401 — the server knows who you are, it just won't let you in.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Confirm the resource belongs to your account (check the resource <code>id</code>).</li>
+                    <li>Verify your plan includes access to this feature or endpoint.</li>
+                    <li>Check that your API key has the required scopes enabled in the dashboard.</li>
+                    <li>Contact support if you believe access should be permitted.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 404 -->
+          <div class="error-card">
+            <div class="error-badge s4xx">404</div>
+            <div class="error-body">
+              <p class="error-title">Not Found — endpoint or resource doesn't exist</p>
+              <div class="error-meta">
+                <span class="tag tag-client">Client error</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The URL path or resource ID you requested doesn't exist. Common causes: typo in the endpoint path, a stale resource <code>id</code> that was already deleted, or using a deprecated API version.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Double-check the endpoint URL against the API reference.</li>
+                    <li>Confirm the resource <code>id</code> still exists (it may have been deleted).</li>
+                    <li>Ensure you're targeting the correct API version prefix (e.g., <code>/v1/</code>).</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 405 -->
+          <div class="error-card">
+            <div class="error-badge s4xx">405</div>
+            <div class="error-body">
+              <p class="error-title">Method Not Allowed — wrong HTTP verb</p>
+              <div class="error-meta">
+                <span class="tag tag-client">Client error</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The endpoint exists but doesn't support the HTTP method you used (e.g., sending a <code>GET</code> to an endpoint that only accepts <code>POST</code>).</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Check the API reference for the correct method for this endpoint.</li>
+                    <li>Inspect the <code>Allow</code> response header — it lists the accepted methods.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 408 -->
+          <div class="error-card">
+            <div class="error-badge s4xx">408</div>
+            <div class="error-body">
+              <p class="error-title">Request Timeout — client took too long to send</p>
+              <div class="error-meta">
+                <span class="tag tag-client">Client error</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The server closed the connection because your client didn't finish sending the request within the allowed time. Usually caused by slow upload of large audio files on a poor connection.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Check your upload speed — large files on slow connections will time out.</li>
+                    <li>Compress or reduce audio quality before uploading if file size is large.</li>
+                    <li>Increase your HTTP client's send timeout setting.</li>
+                    <li>Retry on a more stable network connection.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 409 -->
+          <div class="error-card">
+            <div class="error-badge s4xx">409</div>
+            <div class="error-body">
+              <p class="error-title">Conflict — request contradicts current state</p>
+              <div class="error-meta">
+                <span class="tag tag-client">Client error</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">Your request conflicts with the server's current state. For example, trying to create a resource with a name that already exists, or modifying a job that's already completed.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Read the error <code>message</code> to identify what's in conflict.</li>
+                    <li>Fetch the current state of the resource before modifying it.</li>
+                    <li>Use a unique name or identifier if creating a resource that already exists.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 413 -->
+          <div class="error-card">
+            <div class="error-badge s4xx">413</div>
+            <div class="error-body">
+              <p class="error-title">Payload Too Large — file or body exceeds size limit</p>
+              <div class="error-meta">
+                <span class="tag tag-client">Client error</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The uploaded audio file or request body exceeds the maximum allowed size for a single synchronous request.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Check the file size limit in the API reference for your plan tier.</li>
+                    <li>Compress the audio (e.g., lower bitrate MP3) to reduce file size.</li>
+                    <li>Split long recordings into shorter segments and submit them separately.</li>
+                    <li>Use the async transcription endpoint, which supports larger files.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 415 -->
+          <div class="error-card">
+            <div class="error-badge s4xx">415</div>
+            <div class="error-body">
+              <p class="error-title">Unsupported Media Type — format not accepted</p>
+              <div class="error-meta">
+                <span class="tag tag-client">Client error</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The audio format or <code>Content-Type</code> header you sent isn't supported. Common causes: sending a video file, an uncommon codec (e.g., AMR-NB), or a mismatched <code>Content-Type</code> header.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Convert your audio to a supported format: WAV, MP3, FLAC, OGG, or M4A.</li>
+                    <li>Set the <code>Content-Type</code> header to match the actual file format (e.g., <code>audio/mpeg</code> for MP3).</li>
+                    <li>If sending JSON, ensure <code>Content-Type: application/json</code> is set.</li>
                   </ol>
                 </div>
               </div>
@@ -292,8 +535,33 @@
                   <ol class="fix-steps">
                     <li>Wait 5–10 seconds and retry with the same request.</li>
                     <li>Use exponential back-off for up to 3 retries before surfacing an error to users.</li>
-                    <li>If the error persists for more than a few minutes, check the <a href="https://status.shunvalabs.ai">status page</a>.</li>
+                    <li>If the error persists for more than a few minutes, contact support with the request ID.</li>
                     <li>Report the issue with your request ID (from the <code>X-Request-Id</code> header) if it continues.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 502 -->
+          <div class="error-card">
+            <div class="error-badge s5xx">502</div>
+            <div class="error-body">
+              <p class="error-title">Bad Gateway — upstream returned an invalid response</p>
+              <div class="error-meta">
+                <span class="tag tag-infra">Infrastructure</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The API gateway received a bad or unreadable response from an upstream service (e.g., the inference engine or an internal microservice). This is a server-side issue, not caused by your request.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Wait a few seconds and retry — upstream errors are often momentary.</li>
+                    <li>Contact support if the error continues.</li>
+                    <li>If the error recurs consistently, report it with the <code>X-Request-Id</code> header value.</li>
                   </ol>
                 </div>
               </div>
@@ -318,7 +586,7 @@
                   <ol class="fix-steps">
                     <li>Retry after 15–30 seconds.</li>
                     <li>Honour the <code>Retry-After</code> header if present.</li>
-                    <li>Check the <a href="https://status.shunvalabs.ai">status page</a> for any active incidents.</li>
+                    <li>Contact support if the error continues.</li>
                     <li>Consider queuing requests in your app so users aren't directly exposed to this error.</li>
                   </ol>
                 </div>
@@ -382,6 +650,69 @@
             </div>
           </div>
 
+          <!-- 201 -->
+          <div class="error-card">
+            <div class="error-badge s2xx">201</div>
+            <div class="error-body">
+              <p class="error-title">Created — voice or resource successfully created</p>
+              <div class="error-meta">
+                <span class="tag tag-ok">Success</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">A new resource was created — for example, a custom voice clone or a saved pronunciation. The response body contains the new resource's <code>id</code>.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">What to do</p>
+                  <p class="error-row-value">Store the returned <code>id</code> to reference this resource in future synthesis requests via the <code>voice</code> parameter.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 202 -->
+          <div class="error-card">
+            <div class="error-badge s2xx">202</div>
+            <div class="error-body">
+              <p class="error-title">Accepted — queued for async synthesis</p>
+              <div class="error-meta">
+                <span class="tag tag-ok">Success</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">Your synthesis job was accepted and queued but the audio isn't ready yet. The response body includes a job <code>id</code> and <code>status: "processing"</code>.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">What to do</p>
+                  <p class="error-row-value">Poll the job status endpoint using the returned <code>id</code> until status becomes <code>completed</code>, then download the audio from the provided URL.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 204 -->
+          <div class="error-card">
+            <div class="error-badge s2xx">204</div>
+            <div class="error-body">
+              <p class="error-title">No Content — request succeeded, no body</p>
+              <div class="error-meta">
+                <span class="tag tag-ok">Success</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The action completed successfully with nothing to return — typical for deleting a custom voice or clearing a pronunciation dictionary entry.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">What to do</p>
+                  <p class="error-row-value">Treat this as success. The response body is empty — don't try to parse it.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- 400 -->
           <div class="error-card">
             <div class="error-badge s4xx">400</div>
@@ -427,6 +758,180 @@
                     <li>Send <code>Authorization: Bearer &lt;your-key&gt;</code> with every request.</li>
                     <li>Paste your key directly from the dashboard to avoid whitespace issues.</li>
                     <li>Confirm the key is enabled in your account settings.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 403 -->
+          <div class="error-card">
+            <div class="error-badge s4xx">403</div>
+            <div class="error-body">
+              <p class="error-title">Forbidden — permission denied</p>
+              <div class="error-meta">
+                <span class="tag tag-auth">Authentication</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">Your credentials are valid but you don't have access to this resource. Common example: attempting to use a voice that belongs to a different account.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Confirm the <code>voice</code> ID belongs to your account.</li>
+                    <li>Check that your plan includes access to the feature you're requesting.</li>
+                    <li>Verify your API key has the necessary scopes in the dashboard.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 404 -->
+          <div class="error-card">
+            <div class="error-badge s4xx">404</div>
+            <div class="error-body">
+              <p class="error-title">Not Found — endpoint or resource doesn't exist</p>
+              <div class="error-meta">
+                <span class="tag tag-client">Client error</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The URL path or resource ID you referenced doesn't exist. Common causes: typo in the path, a voice or job <code>id</code> that was deleted, or targeting a deprecated API version.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Check the endpoint URL against the API reference for exact spelling.</li>
+                    <li>Verify the resource <code>id</code> is still valid (it may have been deleted).</li>
+                    <li>Ensure you're using the correct API version prefix (e.g., <code>/v1/</code>).</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 405 -->
+          <div class="error-card">
+            <div class="error-badge s4xx">405</div>
+            <div class="error-body">
+              <p class="error-title">Method Not Allowed — wrong HTTP verb</p>
+              <div class="error-meta">
+                <span class="tag tag-client">Client error</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">You used an HTTP method the endpoint doesn't support — for example, sending a <code>GET</code> to the synthesis endpoint instead of <code>POST</code>.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Check the API reference to confirm the correct method for this endpoint.</li>
+                    <li>Read the <code>Allow</code> response header for the list of accepted methods.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 408 -->
+          <div class="error-card">
+            <div class="error-badge s4xx">408</div>
+            <div class="error-body">
+              <p class="error-title">Request Timeout — client took too long to send</p>
+              <div class="error-meta">
+                <span class="tag tag-client">Client error</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The server closed the connection before your client finished sending the request. Usually caused by a slow or unstable network connection.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Check your network connection stability.</li>
+                    <li>Increase your HTTP client's connection and send timeout values.</li>
+                    <li>Retry the request on a more reliable connection.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 409 -->
+          <div class="error-card">
+            <div class="error-badge s4xx">409</div>
+            <div class="error-body">
+              <p class="error-title">Conflict — request contradicts current state</p>
+              <div class="error-meta">
+                <span class="tag tag-client">Client error</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">Your request conflicts with existing data — for example, creating a custom voice with a name that already exists in your account.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Read the error <code>message</code> to identify the conflict.</li>
+                    <li>Use a unique name or <code>id</code> for the new resource.</li>
+                    <li>Delete or rename the existing conflicting resource first if you want to replace it.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 413 -->
+          <div class="error-card">
+            <div class="error-badge s4xx">413</div>
+            <div class="error-body">
+              <p class="error-title">Payload Too Large — text or body exceeds size limit</p>
+              <div class="error-meta">
+                <span class="tag tag-client">Client error</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The request body (text input or audio sample for voice cloning) is larger than the maximum allowed per request for your plan.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Split long text into smaller chunks (≤3,000 characters each) and synthesize them separately.</li>
+                    <li>For voice cloning uploads, trim or compress the audio sample to meet the size limit.</li>
+                    <li>Use the async TTS endpoint which supports larger payloads.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 415 -->
+          <div class="error-card">
+            <div class="error-badge s4xx">415</div>
+            <div class="error-body">
+              <p class="error-title">Unsupported Media Type — format not accepted</p>
+              <div class="error-meta">
+                <span class="tag tag-client">Client error</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The <code>output_format</code> you requested or the <code>Content-Type</code> of the request body isn't supported. Also occurs when uploading an unsupported audio format for voice cloning.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Set <code>output_format</code> to a supported value: <code>mp3</code>, <code>wav</code>, <code>ogg</code>, or <code>flac</code>.</li>
+                    <li>Ensure your request body uses <code>Content-Type: application/json</code>.</li>
+                    <li>For voice sample uploads, use WAV or MP3 format.</li>
                   </ol>
                 </div>
               </div>
@@ -503,7 +1008,31 @@
                   <ol class="fix-steps">
                     <li>Wait 5–10 seconds, then retry the identical request.</li>
                     <li>Use exponential back-off for up to 3 automatic retries.</li>
-                    <li>If the problem persists, check the <a href="https://status.shunvalabs.ai">status page</a> and contact support with the <code>X-Request-Id</code>.</li>
+                    <li>Contact support with the <code>X-Request-Id</code> if the problem persists.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 502 -->
+          <div class="error-card">
+            <div class="error-badge s5xx">502</div>
+            <div class="error-body">
+              <p class="error-title">Bad Gateway — upstream returned an invalid response</p>
+              <div class="error-meta">
+                <span class="tag tag-infra">Infrastructure</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The API gateway got a bad response from an upstream service (e.g. the synthesis engine). This is a server-side issue — your request was valid.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Retry after a few seconds — these errors are usually transient.</li>
+                    <li>Contact support with the <code>X-Request-Id</code> if the error recurs.</li>
                   </ol>
                 </div>
               </div>
@@ -527,7 +1056,7 @@
                   <p class="error-row-label">How to fix it</p>
                   <ol class="fix-steps">
                     <li>Retry after 15–30 seconds.</li>
-                    <li>Check the <a href="https://status.shunvalabs.ai">status page</a> for any active incidents.</li>
+                    <li>Contact support if the error continues.</li>
                     <li>Queue pending synthesis requests so users see a loading state rather than an error.</li>
                   </ol>
                 </div>
@@ -562,6 +1091,262 @@
           </div>
 
         </div><!-- /error-grid TTS -->
+
+        <!-- ── WebSocket ─────────────────────────────────────────────────── -->
+        <h2 class="product-chapter">WebSocket <span class="accent-italic">close codes</span></h2>
+        <p class="section-intro">Returned by the Live Streaming and WebSocket APIs when a connection is closed. Check your WebSocket client's <code>CloseEvent.code</code> property to identify which code was received.</p>
+
+        <div class="error-grid">
+
+          <!-- 1000 -->
+          <div class="error-card">
+            <div class="error-badge s2xx">1000</div>
+            <div class="error-body">
+              <p class="error-title">Normal Closure — session ended cleanly</p>
+              <div class="error-meta">
+                <span class="tag tag-ok">Success</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The WebSocket connection was closed intentionally by either side after completing its purpose. This is expected behaviour at the end of a streaming session.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">What to do</p>
+                  <p class="error-row-value">Nothing — the session ended successfully. Open a new connection when you're ready to start another session.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 1001 -->
+          <div class="error-card">
+            <div class="error-badge s4xx">1001</div>
+            <div class="error-body">
+              <p class="error-title">Endpoint Going Away — server shutting down</p>
+              <div class="error-meta">
+                <span class="tag tag-infra">Infrastructure</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The server endpoint is going offline — typically a planned restart or rolling deployment. The connection was closed gracefully before shutdown.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Reconnect after a short delay (5–10 seconds).</li>
+                    <li>Implement automatic reconnection logic in your WebSocket client.</li>
+                    <li>Resume the session from the last acknowledged checkpoint if your protocol supports it.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 1002 -->
+          <div class="error-card">
+            <div class="error-badge s4xx">1002</div>
+            <div class="error-body">
+              <p class="error-title">Protocol Error — WebSocket handshake or framing violation</p>
+              <div class="error-meta">
+                <span class="tag tag-client">Client error</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The client sent a frame that violates the WebSocket protocol — for example, a malformed control frame or an invalid opcode.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Use a well-tested WebSocket library rather than a hand-rolled implementation.</li>
+                    <li>Ensure you're following the correct framing format defined in RFC 6455.</li>
+                    <li>Check your client library version — upgrade if outdated.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 1003 -->
+          <div class="error-card">
+            <div class="error-badge s4xx">1003</div>
+            <div class="error-body">
+              <p class="error-title">Unsupported Data — wrong message type</p>
+              <div class="error-meta">
+                <span class="tag tag-client">Client error</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The server received a message type it doesn't support — for example, sending binary frames to an endpoint that expects text (JSON), or vice versa.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Check the API reference to confirm whether the endpoint expects text or binary frames.</li>
+                    <li>For live transcription, ensure you're sending raw audio as binary frames.</li>
+                    <li>For control messages, ensure you're sending JSON as text frames.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 1006 -->
+          <div class="error-card">
+            <div class="error-badge s5xx">1006</div>
+            <div class="error-body">
+              <p class="error-title">Abnormal Closure — connection dropped unexpectedly</p>
+              <div class="error-meta">
+                <span class="tag tag-infra">Infrastructure</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The connection was lost without a proper close handshake. This usually means a network interruption, a server crash, or an intermediate proxy killing the connection (e.g. idle timeout).</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Implement automatic reconnection with exponential back-off.</li>
+                    <li>Send periodic ping frames to keep the connection alive through idle-timeout proxies.</li>
+                    <li>Check your network stability — this is often a connectivity issue on the client side.</li>
+                    <li>If it occurs consistently on good networks, contact support.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 1007 -->
+          <div class="error-card">
+            <div class="error-badge s4xx">1007</div>
+            <div class="error-body">
+              <p class="error-title">Invalid Payload Data — message content unreadable</p>
+              <div class="error-meta">
+                <span class="tag tag-client">Client error</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The server received a text frame that wasn't valid UTF-8, or a binary payload that couldn't be parsed as expected audio data.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Ensure all JSON control messages are encoded as valid UTF-8 text.</li>
+                    <li>Confirm audio is being sent in a supported format and encoding.</li>
+                    <li>Validate JSON payloads against the schema before sending.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 1008 -->
+          <div class="error-card">
+            <div class="error-badge s4xx">1008</div>
+            <div class="error-body">
+              <p class="error-title">Policy Violation — message broke an application rule</p>
+              <div class="error-meta">
+                <span class="tag tag-client">Client error</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The message was technically valid but violated a server-side policy — for example, sending a message larger than the allowed limit, or sending a command that isn't permitted in the current session state.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Review the streaming API reference for valid message types and session states.</li>
+                    <li>Ensure you're sending messages in the correct sequence (e.g., <code>start</code> before audio data).</li>
+                    <li>Check that individual message sizes are within the documented per-message limit.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 1009 -->
+          <div class="error-card">
+            <div class="error-badge s4xx">1009</div>
+            <div class="error-body">
+              <p class="error-title">Message Too Large — single frame exceeds size limit</p>
+              <div class="error-meta">
+                <span class="tag tag-client">Client error</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">A single WebSocket message exceeded the server's maximum allowed message size. The server closed the connection immediately upon detecting this.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Send audio in smaller chunks — the recommended chunk size is 100–500 ms of audio at a time.</li>
+                    <li>Check the API reference for the maximum frame size for your streaming endpoint.</li>
+                    <li>Reduce your audio buffer size in the client before sending.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 1011 -->
+          <div class="error-card">
+            <div class="error-badge s5xx">1011</div>
+            <div class="error-body">
+              <p class="error-title">Internal Error — unexpected server-side failure</p>
+              <div class="error-meta">
+                <span class="tag tag-server">Server error</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The server encountered an unexpected condition that prevented it from continuing the session. This is a server-side error and was not caused by your messages.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Reconnect and retry the session after a short delay.</li>
+                    <li>If the error recurs consistently, contact support.</li>
+                    <li>Report the issue to support with timestamps and the session ID if available.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 1013 -->
+          <div class="error-card">
+            <div class="error-badge s5xx">1013</div>
+            <div class="error-body">
+              <p class="error-title">Service Overloaded — server at capacity</p>
+              <div class="error-meta">
+                <span class="tag tag-infra">Infrastructure</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The streaming server is temporarily overloaded and couldn't accept or continue your session. Connections are being shed until load drops.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Wait 10–30 seconds before attempting to reconnect.</li>
+                    <li>Use exponential back-off for repeated reconnection attempts.</li>
+                    <li>Contact support if the error continues.</li>
+                    <li>If you're hitting this frequently at scale, contact us about dedicated capacity options.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /error-grid WebSocket -->
 
       </div><!-- /content -->
       <aside class="toc" aria-label="On this page"></aside>
