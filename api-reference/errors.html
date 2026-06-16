@@ -7,6 +7,130 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/web_doc/assets/css/main.css?v=37">
   <script src="/web_doc/assets/js/theme.js"></script>
+  <style>
+    .error-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 1.5rem 0 2.5rem;
+    }
+
+    .error-card {
+      display: grid;
+      grid-template-columns: 88px 1fr;
+      border: 1px solid var(--border, #e5e7eb);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--card-bg, #fff);
+      transition: box-shadow 0.15s;
+    }
+
+    .error-card:hover {
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    }
+
+    .error-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.05rem;
+      font-weight: 500;
+      min-height: 80px;
+      padding: 1rem 0.5rem;
+    }
+
+    .error-badge.s2xx { background: #ecfdf5; color: #065f46; }
+    .error-badge.s4xx { background: #fffbeb; color: #92400e; }
+    .error-badge.s5xx { background: #fef2f2; color: #991b1b; }
+
+    .error-body {
+      padding: 0.85rem 1.1rem;
+      border-left: 1px solid var(--border, #e5e7eb);
+    }
+
+    .error-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-primary, #111827);
+      margin: 0 0 4px;
+    }
+
+    .error-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .tag {
+      font-size: 0.72rem;
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    .tag-client  { background: #fef9c3; color: #713f12; }
+    .tag-server  { background: #fce7f3; color: #831843; }
+    .tag-auth    { background: #ede9fe; color: #4c1d95; }
+    .tag-limit   { background: #e0f2fe; color: #075985; }
+    .tag-ok      { background: #d1fae5; color: #064e3b; }
+    .tag-infra   { background: #fee2e2; color: #7f1d1d; }
+
+    .error-rows {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px 16px;
+    }
+
+    .error-row-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted, #6b7280);
+      margin-bottom: 2px;
+    }
+
+    .error-row-value {
+      font-size: 0.82rem;
+      color: var(--text-primary, #374151);
+      line-height: 1.5;
+    }
+
+    .error-row-value code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      background: #f3f4f6;
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+
+    .fix-steps {
+      margin: 0;
+      padding-left: 1rem;
+      list-style: decimal;
+    }
+
+    .fix-steps li {
+      font-size: 0.82rem;
+      color: var(--text-primary, #374151);
+      line-height: 1.6;
+    }
+
+    .section-intro {
+      font-size: 0.85rem;
+      color: var(--text-muted, #6b7280);
+      margin: -0.5rem 0 1.25rem;
+    }
+
+    @media (max-width: 600px) {
+      .error-card { grid-template-columns: 72px 1fr; }
+      .error-rows { grid-template-columns: 1fr; }
+      .error-badge { font-size: 0.9rem; min-height: 70px; }
+    }
+  </style>
 </head>
 <body>
   <div class="app">
@@ -15,43 +139,431 @@
         <div class="breadcrumb">
           <a href="/web_doc/index.html">Docs</a><span class="sep">/</span><a href="/web_doc/api-reference/index.html">API Reference</a><span class="sep">/</span><span>HTTP error codes</span>
         </div>
+
         <h1>HTTP error <span class="accent-italic">codes</span></h1>
-        <p class="lead">Status codes returned by the ASR and TTS APIs and what each one means.</p>
+        <p class="lead">Status codes returned by the ASR and TTS APIs — what each one means, why it happens, and how to fix it.</p>
 
+        <!-- ── ASR ──────────────────────────────────────────────────────── -->
         <h2 class="product-chapter">Speech-to-Text <span class="accent-italic">(ASR)</span></h2>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Status</th><th>Meaning</th></tr></thead>
-            <tbody>
-              <tr><td>200</td><td>Success, audio or JSON body returned.</td></tr>
-              <tr><td>400</td><td>Bad request, missing or malformed fields. Response body: <code>{"detail": "..."}</code>.</td></tr>
-              <tr><td>401</td><td>Unauthorized, API key invalid or missing.</td></tr>
-              <tr><td>422</td><td>Synthesis / transcription error (invalid text or config).</td></tr>
-              <tr><td>429</td><td>Rate limit exceeded. Back off and retry.</td></tr>
-              <tr><td>500</td><td>Internal server error, unexpected server-side failure.</td></tr>
-              <tr><td>503</td><td>Service unavailable, Triton or Redis temporarily down.</td></tr>
-              <tr><td>504</td><td>Gateway timeout, request exceeded the processing window.</td></tr>
-            </tbody>
-          </table>
-        </div>
+        <p class="section-intro">Returned by the <code>/v1/asr/transcribe</code> endpoint when submitting audio for transcription.</p>
 
+        <div class="error-grid">
+
+          <!-- 200 -->
+          <div class="error-card">
+            <div class="error-badge s2xx">200</div>
+            <div class="error-body">
+              <p class="error-title">OK — transcription succeeded</p>
+              <div class="error-meta">
+                <span class="tag tag-ok">Success</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">Your audio was received and transcribed. The response body contains the transcript as JSON or raw text depending on the <code>response_format</code> you set.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">What to do</p>
+                  <p class="error-row-value">Nothing — read the transcript from the response body. Check <code>language</code> and <code>confidence</code> fields if your use case needs them.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 400 -->
+          <div class="error-card">
+            <div class="error-badge s4xx">400</div>
+            <div class="error-body">
+              <p class="error-title">Bad Request — missing or invalid fields</p>
+              <div class="error-meta">
+                <span class="tag tag-client">Client error</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The request was malformed. Common causes: missing <code>audio</code> field, unsupported file format, invalid <code>language</code> code, or a field set to the wrong type. The <code>detail</code> field in the response body explains exactly what was wrong.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Read the <code>detail</code> message in the JSON body — it identifies the exact field.</li>
+                    <li>Verify your audio is one of the supported formats (WAV, MP3, FLAC, OGG, M4A).</li>
+                    <li>Check that required fields like <code>audio</code> and <code>model</code> are present.</li>
+                    <li>Confirm field types match the schema (e.g., <code>language</code> must be an ISO 639-1 string).</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 401 -->
+          <div class="error-card">
+            <div class="error-badge s4xx">401</div>
+            <div class="error-body">
+              <p class="error-title">Unauthorized — API key missing or invalid</p>
+              <div class="error-meta">
+                <span class="tag tag-auth">Authentication</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The server could not verify your identity. Either no <code>Authorization</code> header was sent, the API key is incorrect, or the key has been revoked.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Confirm you're sending <code>Authorization: Bearer &lt;your-key&gt;</code> in every request.</li>
+                    <li>Copy your key fresh from the dashboard — avoid extra spaces or newlines.</li>
+                    <li>If the key was recently rotated, update it in your app's config and redeploy.</li>
+                    <li>Check your dashboard to ensure the key is active and hasn't been revoked.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 422 -->
+          <div class="error-card">
+            <div class="error-badge s4xx">422</div>
+            <div class="error-body">
+              <p class="error-title">Unprocessable — audio or config rejected by the model</p>
+              <div class="error-meta">
+                <span class="tag tag-client">Client error</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The request was structurally valid but the transcription engine rejected it. Common causes: corrupt or silent audio file, audio duration exceeds the limit, or an unsupported combination of model parameters.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Play the audio locally to confirm it's audible and not corrupt.</li>
+                    <li>Check that the file duration is within the per-request limit (see rate limits).</li>
+                    <li>Remove non-default model parameters and retry with defaults first.</li>
+                    <li>Re-export or re-encode the audio if the file may be malformed.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 429 -->
+          <div class="error-card">
+            <div class="error-badge s4xx">429</div>
+            <div class="error-body">
+              <p class="error-title">Too Many Requests — rate limit reached</p>
+              <div class="error-meta">
+                <span class="tag tag-limit">Rate limited</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">Your account has exceeded the allowed number of requests per minute (or per hour). Requests are being dropped until the window resets. Check the <code>Retry-After</code> response header for the exact wait time.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Wait for the number of seconds in the <code>Retry-After</code> header, then retry.</li>
+                    <li>Implement exponential back-off in your retry loop (e.g., 1 s → 2 s → 4 s).</li>
+                    <li>Queue requests client-side to stay within your tier's limits.</li>
+                    <li>If you regularly hit this limit, request a higher-throughput plan from the dashboard.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 500 -->
+          <div class="error-card">
+            <div class="error-badge s5xx">500</div>
+            <div class="error-body">
+              <p class="error-title">Internal Server Error — unexpected failure</p>
+              <div class="error-meta">
+                <span class="tag tag-server">Server error</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">Something went wrong on our side that wasn't caused by your request. This is almost always transient and resolves on its own.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Wait 5–10 seconds and retry with the same request.</li>
+                    <li>Use exponential back-off for up to 3 retries before surfacing an error to users.</li>
+                    <li>If the error persists for more than a few minutes, check the <a href="https://status.shunvalabs.ai">status page</a>.</li>
+                    <li>Report the issue with your request ID (from the <code>X-Request-Id</code> header) if it continues.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 503 -->
+          <div class="error-card">
+            <div class="error-badge s5xx">503</div>
+            <div class="error-body">
+              <p class="error-title">Service Unavailable — backend temporarily down</p>
+              <div class="error-meta">
+                <span class="tag tag-infra">Infrastructure</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The inference backend (Triton) or cache layer (Redis) is temporarily unavailable. This typically happens during a deployment, a restart, or an unexpected outage and usually lasts under 60 seconds.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Retry after 15–30 seconds.</li>
+                    <li>Honour the <code>Retry-After</code> header if present.</li>
+                    <li>Check the <a href="https://status.shunvalabs.ai">status page</a> for any active incidents.</li>
+                    <li>Consider queuing requests in your app so users aren't directly exposed to this error.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 504 -->
+          <div class="error-card">
+            <div class="error-badge s5xx">504</div>
+            <div class="error-body">
+              <p class="error-title">Gateway Timeout — request took too long</p>
+              <div class="error-meta">
+                <span class="tag tag-infra">Infrastructure</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The request didn't complete within the gateway's processing window. Most common with long audio files (>10 min) submitted during peak load.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Split long audio files into shorter segments (recommended: ≤5 min each) and submit them in parallel.</li>
+                    <li>Retry the same request during off-peak hours if the audio is short.</li>
+                    <li>Consider using the async transcription endpoint for files longer than 5 minutes.</li>
+                    <li>If timeouts are frequent for normal-length audio, contact support with the <code>X-Request-Id</code>.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /error-grid ASR -->
+
+
+        <!-- ── TTS ──────────────────────────────────────────────────────── -->
         <h2 class="product-chapter">Text-to-Speech <span class="accent-italic">(TTS)</span></h2>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Status</th><th>Description</th></tr></thead>
-            <tbody>
-              <tr><td>200</td><td>Success. Audio bytes in response body.</td></tr>
-              <tr><td>400</td><td>Missing or malformed fields. Body: <code>{"detail": "..."}</code>.</td></tr>
-              <tr><td>401</td><td>API key invalid or missing.</td></tr>
-              <tr><td>422</td><td>Invalid text or config.</td></tr>
-              <tr><td>429</td><td>Rate limited.</td></tr>
-              <tr><td>500</td><td>Internal server error.</td></tr>
-              <tr><td>503</td><td>Backend (Triton/Redis) temporarily unavailable.</td></tr>
-              <tr><td>504</td><td>Gateway timeout.</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+        <p class="section-intro">Returned by the <code>/v1/tts/synthesize</code> endpoint when generating speech from text.</p>
+
+        <div class="error-grid">
+
+          <!-- 200 -->
+          <div class="error-card">
+            <div class="error-badge s2xx">200</div>
+            <div class="error-body">
+              <p class="error-title">OK — audio generated</p>
+              <div class="error-meta">
+                <span class="tag tag-ok">Success</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">Speech synthesis completed. The response body is the raw audio bytes in the format you requested via <code>output_format</code> (defaults to MP3).</p>
+                </div>
+                <div>
+                  <p class="error-row-label">What to do</p>
+                  <p class="error-row-value">Read the binary body as audio. Use the <code>Content-Type</code> header to confirm the audio format if needed.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 400 -->
+          <div class="error-card">
+            <div class="error-badge s4xx">400</div>
+            <div class="error-body">
+              <p class="error-title">Bad Request — missing or invalid fields</p>
+              <div class="error-meta">
+                <span class="tag tag-client">Client error</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The request body was malformed. Common causes: missing <code>text</code> field, unsupported <code>voice</code> ID, invalid <code>output_format</code>, or <code>speed</code>/<code>pitch</code> values outside the allowed range. The JSON body's <code>detail</code> key identifies the specific problem.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Read the <code>detail</code> key in the error body — it names the offending field.</li>
+                    <li>Confirm the <code>text</code> field is non-empty and within the character limit.</li>
+                    <li>Verify the <code>voice</code> ID exists in your account's voice library.</li>
+                    <li>Check that numeric params like <code>speed</code> (0.25–4.0) are within documented bounds.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 401 -->
+          <div class="error-card">
+            <div class="error-badge s4xx">401</div>
+            <div class="error-body">
+              <p class="error-title">Unauthorized — API key missing or invalid</p>
+              <div class="error-meta">
+                <span class="tag tag-auth">Authentication</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The <code>Authorization</code> header is missing, the key is wrong, or it's been deactivated.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Send <code>Authorization: Bearer &lt;your-key&gt;</code> with every request.</li>
+                    <li>Paste your key directly from the dashboard to avoid whitespace issues.</li>
+                    <li>Confirm the key is enabled in your account settings.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 422 -->
+          <div class="error-card">
+            <div class="error-badge s4xx">422</div>
+            <div class="error-body">
+              <p class="error-title">Unprocessable — text or config rejected by the model</p>
+              <div class="error-meta">
+                <span class="tag tag-client">Client error</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The request was structurally valid but synthesis failed. Common causes: text too long (exceeds per-request character limit), text contains only whitespace or unsupported characters, or SSML markup is invalid.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Check the <code>detail</code> field for the synthesis failure reason.</li>
+                    <li>Split long input into smaller chunks (recommended: ≤3,000 characters each).</li>
+                    <li>Strip or escape any special characters that may break SSML parsing.</li>
+                    <li>Validate your SSML against the <a href="/web_doc/api-reference/ssml.html">SSML reference</a> if you're using markup.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 429 -->
+          <div class="error-card">
+            <div class="error-badge s4xx">429</div>
+            <div class="error-body">
+              <p class="error-title">Too Many Requests — rate limit reached</p>
+              <div class="error-meta">
+                <span class="tag tag-limit">Rate limited</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">You've exceeded the number of synthesis requests allowed in the current time window. The <code>Retry-After</code> header tells you exactly how many seconds to wait.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Wait for the duration in <code>Retry-After</code>, then retry.</li>
+                    <li>Implement exponential back-off in your retry loop.</li>
+                    <li>Batch small texts into fewer requests where possible.</li>
+                    <li>Upgrade your plan if you consistently hit the limit in production.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 500 -->
+          <div class="error-card">
+            <div class="error-badge s5xx">500</div>
+            <div class="error-body">
+              <p class="error-title">Internal Server Error — unexpected failure</p>
+              <div class="error-meta">
+                <span class="tag tag-server">Server error</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">An unexpected error occurred on our servers. Your request was not processed. This is almost always transient.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Wait 5–10 seconds, then retry the identical request.</li>
+                    <li>Use exponential back-off for up to 3 automatic retries.</li>
+                    <li>If the problem persists, check the <a href="https://status.shunvalabs.ai">status page</a> and contact support with the <code>X-Request-Id</code>.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 503 -->
+          <div class="error-card">
+            <div class="error-badge s5xx">503</div>
+            <div class="error-body">
+              <p class="error-title">Service Unavailable — synthesis backend down</p>
+              <div class="error-meta">
+                <span class="tag tag-infra">Infrastructure</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The Triton inference server or Redis cache is temporarily unavailable, typically during a deploy or restart. Usually resolves within 30–60 seconds.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Retry after 15–30 seconds.</li>
+                    <li>Check the <a href="https://status.shunvalabs.ai">status page</a> for any active incidents.</li>
+                    <li>Queue pending synthesis requests so users see a loading state rather than an error.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 504 -->
+          <div class="error-card">
+            <div class="error-badge s5xx">504</div>
+            <div class="error-body">
+              <p class="error-title">Gateway Timeout — synthesis took too long</p>
+              <div class="error-meta">
+                <span class="tag tag-infra">Infrastructure</span>
+              </div>
+              <div class="error-rows">
+                <div>
+                  <p class="error-row-label">What happened</p>
+                  <p class="error-row-value">The synthesis job exceeded the gateway's time limit before completing. Most common with very long texts during peak hours.</p>
+                </div>
+                <div>
+                  <p class="error-row-label">How to fix it</p>
+                  <ol class="fix-steps">
+                    <li>Break your text into shorter segments (≤3,000 characters) and synthesize them in parallel.</li>
+                    <li>Retry the same request once — it may have been a transient spike.</li>
+                    <li>Use the async TTS endpoint for long-form content that exceeds the synchronous limit.</li>
+                    <li>Report repeated timeouts for short texts to support with the <code>X-Request-Id</code>.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /error-grid TTS -->
+
+      </div><!-- /content -->
       <aside class="toc" aria-label="On this page"></aside>
     </main>
   </div>
