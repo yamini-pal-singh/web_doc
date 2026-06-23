@@ -106,6 +106,16 @@
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.78rem;
       background: #f3f4f6;
+      color: #1e293b;
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+
+    .fix-steps code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      background: #f3f4f6;
+      color: #1e293b;
       padding: 1px 5px;
       border-radius: 4px;
     }
@@ -126,6 +136,35 @@
       font-size: 0.85rem;
       color: var(--text-muted, #6b7280);
       margin: -0.5rem 0 1.25rem;
+    }
+
+    /* Dark theme: error cards use site tokens; code keeps readable contrast */
+    html.dark .error-card {
+      background: var(--bg-elevated);
+      border-color: var(--border);
+    }
+
+    html.dark .error-card:hover {
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+    }
+
+    html.dark .error-body {
+      border-left-color: var(--border);
+    }
+
+    html.dark .error-title {
+      color: var(--text);
+    }
+
+    html.dark .error-row-value,
+    html.dark .fix-steps li {
+      color: var(--text-muted);
+    }
+
+    html.dark .error-row-value code,
+    html.dark .fix-steps code {
+      background: var(--bg-muted);
+      color: var(--code-text);
     }
 
     @media (max-width: 600px) {
@@ -173,7 +212,7 @@
             </div>
           </div>
 
-          <!-- 201 -->
+          <!-- 201, 202, 204
           <div class="error-card">
             <div class="error-badge s2xx">201</div>
             <div class="error-body">
@@ -194,7 +233,6 @@
             </div>
           </div>
 
-          <!-- 202 -->
           <div class="error-card">
             <div class="error-badge s2xx">202</div>
             <div class="error-body">
@@ -215,7 +253,6 @@
             </div>
           </div>
 
-          <!-- 204 -->
           <div class="error-card">
             <div class="error-badge s2xx">204</div>
             <div class="error-body">
@@ -235,6 +272,7 @@
               </div>
             </div>
           </div>
+          -->
 
           <!-- 400 -->
           <div class="error-card">
@@ -288,7 +326,7 @@
             </div>
           </div>
 
-          <!-- 403 -->
+          <!-- 403
           <div class="error-card">
             <div class="error-badge s4xx">403</div>
             <div class="error-body">
@@ -313,6 +351,7 @@
               </div>
             </div>
           </div>
+          -->
 
           <!-- 404 -->
           <div class="error-card">
@@ -363,7 +402,7 @@
             </div>
           </div>
 
-          <!-- 408 -->
+          <!-- 408, 409, 413, 415
           <div class="error-card">
             <div class="error-badge s4xx">408</div>
             <div class="error-body">
@@ -389,7 +428,6 @@
             </div>
           </div>
 
-          <!-- 409 -->
           <div class="error-card">
             <div class="error-badge s4xx">409</div>
             <div class="error-body">
@@ -414,7 +452,6 @@
             </div>
           </div>
 
-          <!-- 413 -->
           <div class="error-card">
             <div class="error-badge s4xx">413</div>
             <div class="error-body">
@@ -440,7 +477,6 @@
             </div>
           </div>
 
-          <!-- 415 -->
           <div class="error-card">
             <div class="error-badge s4xx">415</div>
             <div class="error-body">
@@ -464,6 +500,7 @@
               </div>
             </div>
           </div>
+          -->
 
           <!-- 422 -->
           <div class="error-card">
@@ -491,7 +528,7 @@
             </div>
           </div>
 
-          <!-- 429 -->
+          <!-- 429
           <div class="error-card">
             <div class="error-badge s4xx">429</div>
             <div class="error-body">
@@ -516,6 +553,7 @@
               </div>
             </div>
           </div>
+          -->
 
           <!-- 500 -->
           <div class="error-card">
@@ -650,7 +688,7 @@
             </div>
           </div>
 
-          <!-- 201 -->
+          <!-- 201, 202, 204
           <div class="error-card">
             <div class="error-badge s2xx">201</div>
             <div class="error-body">
@@ -671,7 +709,6 @@
             </div>
           </div>
 
-          <!-- 202 -->
           <div class="error-card">
             <div class="error-badge s2xx">202</div>
             <div class="error-body">
@@ -692,7 +729,6 @@
             </div>
           </div>
 
-          <!-- 204 -->
           <div class="error-card">
             <div class="error-badge s2xx">204</div>
             <div class="error-body">
@@ -712,6 +748,7 @@
               </div>
             </div>
           </div>
+          -->
 
           <!-- 400 -->
           <div class="error-card">
@@ -764,7 +801,7 @@
             </div>
           </div>
 
-          <!-- 403 -->
+          <!-- 403
           <div class="error-card">
             <div class="error-badge s4xx">403</div>
             <div class="error-body">
@@ -788,6 +825,7 @@
               </div>
             </div>
           </div>
+          -->
 
           <!-- 404 -->
           <div class="error-card">
@@ -838,7 +876,7 @@
             </div>
           </div>
 
-          <!-- 408 -->
+          <!-- 408, 409
           <div class="error-card">
             <div class="error-badge s4xx">408</div>
             <div class="error-body">
@@ -863,7 +901,6 @@
             </div>
           </div>
 
-          <!-- 409 -->
           <div class="error-card">
             <div class="error-badge s4xx">409</div>
             <div class="error-body">
@@ -887,6 +924,7 @@
               </div>
             </div>
           </div>
+          -->
 
           <!-- 413 -->
           <div class="error-card">
@@ -913,7 +951,7 @@
             </div>
           </div>
 
-          <!-- 415 -->
+          <!-- 415
           <div class="error-card">
             <div class="error-badge s4xx">415</div>
             <div class="error-body">
@@ -937,6 +975,7 @@
               </div>
             </div>
           </div>
+          -->
 
           <!-- 422 -->
           <div class="error-card">
@@ -964,7 +1003,7 @@
             </div>
           </div>
 
-          <!-- 429 -->
+          <!-- 429
           <div class="error-card">
             <div class="error-badge s4xx">429</div>
             <div class="error-body">
@@ -989,6 +1028,7 @@
               </div>
             </div>
           </div>
+          -->
 
           <!-- 500 -->
           <div class="error-card">
@@ -1119,7 +1159,7 @@
             </div>
           </div>
 
-          <!-- 1001 -->
+          <!-- 1001, 1002, 1003
           <div class="error-card">
             <div class="error-badge s4xx">1001</div>
             <div class="error-body">
@@ -1144,7 +1184,6 @@
             </div>
           </div>
 
-          <!-- 1002 -->
           <div class="error-card">
             <div class="error-badge s4xx">1002</div>
             <div class="error-body">
@@ -1169,7 +1208,6 @@
             </div>
           </div>
 
-          <!-- 1003 -->
           <div class="error-card">
             <div class="error-badge s4xx">1003</div>
             <div class="error-body">
@@ -1193,6 +1231,7 @@
               </div>
             </div>
           </div>
+          -->
 
           <!-- 1006 -->
           <div class="error-card">
@@ -1220,7 +1259,7 @@
             </div>
           </div>
 
-          <!-- 1007 -->
+          <!-- 1007
           <div class="error-card">
             <div class="error-badge s4xx">1007</div>
             <div class="error-body">
@@ -1244,6 +1283,7 @@
               </div>
             </div>
           </div>
+          -->
 
           <!-- 1008 -->
           <div class="error-card">
@@ -1270,7 +1310,7 @@
             </div>
           </div>
 
-          <!-- 1009 -->
+          <!-- 1009
           <div class="error-card">
             <div class="error-badge s4xx">1009</div>
             <div class="error-body">
@@ -1294,6 +1334,7 @@
               </div>
             </div>
           </div>
+          -->
 
           <!-- 1011 -->
           <div class="error-card">
@@ -1320,7 +1361,7 @@
             </div>
           </div>
 
-          <!-- 1013 -->
+          <!-- 1013
           <div class="error-card">
             <div class="error-badge s5xx">1013</div>
             <div class="error-body">
@@ -1345,6 +1386,7 @@
               </div>
             </div>
           </div>
+          -->
 
         </div><!-- /error-grid WebSocket -->
 
